@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.59)
-AC_INIT(crack-attack,1.1.12,lorien420@myrealbox.com)
+AC_INIT(crack-attack,1.1.12-2,lorien420@myrealbox.com)
 AC_CONFIG_SRCDIR(src/Attack.cxx)
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(src/config.h)
@@ -108,6 +108,7 @@ AC_CONFIG_FILES(
   src/Makefile 
   src/gtk-gui/Makefile
   data/Makefile 
-  doc/Makefile)
+  doc/Makefile
+  autopackage/default.apspec)
 
 AC_OUTPUT

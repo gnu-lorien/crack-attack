@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Crack Attack!
+Exec=crack-attack
+Icon=crack-attack.xpm
+Terminal=false
+Type=Application
+Categories=Application;Games;
+StartupNotify=false
