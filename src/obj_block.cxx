@@ -1510,6 +1510,12 @@ void Displayer::generateBlockDisplayList (   )
       "since it segfaults\n**********" << endl;
     return;
   }
+  if (strstr((char*) renderer, "865G 20021115")) {
+    cerr << "**********\nWARNING:"
+      "disabling call to 1d texturing on 865G 20021115 renderer "
+      "since it segfaults\n**********" << endl;
+    return;
+  }
 
   glTexImage1D(GL_TEXTURE_1D, 0, GL_LUMINANCE, 32, GL_FALSE, GL_LUMINANCE,
    GL_UNSIGNED_BYTE, texture);
