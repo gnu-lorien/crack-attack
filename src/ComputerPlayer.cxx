@@ -1,5 +1,6 @@
 using namespace std;
 
+#include "LevelLights.h"
 #include "ComputerPlayer.h"
 #include "Score.h"
 #include "GarbageQueue.h"
@@ -57,6 +58,10 @@ void ComputerPlayer::timeStep()
   if (!ai) {
     return;
   }
+  
+  // handle the lights
+  LevelLights::handleAI();
+
   ComputerPlayerAI &localAi = *ai;
   if (first_time) {
     MESSAGE("AI will drop again in " << ((localAi.alarm() - Game::time_step) / GC_STEPS_PER_SECOND) << " seconds");
@@ -85,4 +90,30 @@ void ComputerPlayer::addGarbage ( int height, int width, int flavor ) {
   assert(ai != NULL);
   MESSAGE("Adding garbage to queue");
   ai->garbageQueue()->add(height, width, flavor);
+}
+
+bool ComputerPlayer::checkLevelLightDying()
+{
+  int height = ai->garbageQueue()->height();
+  int ninety = ai->lossHeight() * .9;
+  //MESSAGE("ninety " << ninety);
+  if (ninety == ai->lossHeight())
+    ninety = ai->lossHeight() - 1;
+  if (height >= ninety)
+    return true;
+  return false;
+}
+
+bool ComputerPlayer::checkLevelLightBlue(int n)
+{
+  double max = LL_NUMBER_LEVEL_LIGHTS;
+  double lh = ai->lossHeight();
+  //MESSAGE("lh " << lh << " max " << max);
+  double partition = lh / max;
+  double colorh = n * partition;
+  //MESSAGE("n " << n << " partition " << partition << " colorh " << colorh << " height " << ai->garbageQueue()->height());
+  if (colorh >= ai->garbageQueue()->height())
+    return true;
+  else
+    return false;
 }

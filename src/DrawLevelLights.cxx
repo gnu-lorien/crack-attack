@@ -80,7 +80,7 @@ void Displayer::drawLevelLights (   )
       }
 
       static int hold_set = 0;
-      if (MetaState::mode & CM_SOLO) {
+      if ((MetaState::mode & CM_SOLO) && !(MetaState::mode & CM_AI)) {
         hold_set = set;
         set = LL_LOCAL_LIGHTS;
       }
@@ -156,7 +156,7 @@ void Displayer::drawLevelLights (   )
         glCallList(level_light_list);
       }
 
-      if (MetaState::mode & CM_SOLO)
+      if ((MetaState::mode & CM_SOLO) && !(MetaState::mode & CM_AI))
         set = hold_set;
 
     glPopMatrix();

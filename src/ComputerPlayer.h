@@ -25,6 +25,10 @@ public:
   static int gameFinish (    );
 
   static void addGarbage ( int height, int width, int flavor );
+
+  // lights
+  static bool checkLevelLightDying ( );
+  static bool checkLevelLightBlue ( int block );
 };
 
 #endif

@@ -22,8 +22,7 @@ protected:
 
   virtual int baseSteps();
   virtual int stateSteps();
-
-  virtual int lossHeight();
+  virtual int garbageShatterDelay ( );
 
   virtual void shatter();
 
@@ -34,10 +33,11 @@ public:
 
   int alarm ( );
   void resetAlarm ( );
-  virtual int garbageShatterDelay ( );
   GarbageQueue *garbageQueue ( );
   virtual GarbageQueue *garbageAmount ( );
+
   virtual bool determineLoss ( );
+  virtual int lossHeight();
 };
 
 class EasyAI :public ComputerPlayerAI { 
