@@ -23,7 +23,6 @@
  * 174 W. 18th Ave.
  * Columbus, OH  43210
  *
- * The garbage blocks is what this details.
  */
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
