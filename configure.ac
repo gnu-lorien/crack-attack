@@ -11,6 +11,9 @@ AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_RANLIB
 
+AC_CANONICAL_HOST 
+AC_CANONICAL_TARGET
+
 dnl Checks for libraries.
 # FIXME: Replace `main' with a function in `-lGL':
 AC_CHECK_LIB([GL], [glBegin])
@@ -47,6 +50,25 @@ fi
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
 AM_CONDITIONAL([WANT_GTK], [test "$enable_gtk" = yes])
+
+dnl Check for SDL_mixer
+AC_ARG_ENABLE(sound,
+  AC_HELP_STRING([--enable-sound=[yes/no]],
+    [Play sounds and music during game[default=yes]]),
+  enable_sound="$enableval",
+  enable_sound=yes)
+if test "$enable_sound" = "yes"; then
+  AM_PATH_SDL(1.2.0,, AC_MSG_ERROR([libSDL is needed]))
+  AC_CHECK_LIB([SDL_mixer],
+    [Mix_OpenAudio],
+    AC_MSG_RESULT("SDL_mixer found"); SOUND_LIBS="-lSDL_mixer"; enable_sound=no;,
+    AC_MSG_RESULT("SDL_mixer not found"); SOUND_LIBS=""; enable_sound=no;)
+else
+  SOUND_LIBS=""
+fi
+AC_SUBST(SOUND_LIBS)
+AM_CONDITIONAL([AUDIO_ENABLED], [test "$enable_sound" = yes])
+
 
 dnl Check for debugging
 AC_ARG_ENABLE(debug,
