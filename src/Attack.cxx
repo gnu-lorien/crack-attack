@@ -82,12 +82,15 @@ int main ( int argc, char **argv )
 
 inline void usage (   )
 {
-  cerr << "Usage: " GC_BINARY " --server [PORT] [--low] [-X] [--wait] "
+  cerr << "Usage: " GC_BINARY " --server [PORT] [--low] [--extreme] [--wait] "
    "[--name 'NAME']\n"
    "        <or>\n"
-   "       " GC_BINARY " SERVER[:PORT] [--low] [--name 'NAME']\n"
+   "       " GC_BINARY " SERVER[:PORT] [[--really] --low] [--name 'NAME']\n"
    "        <or>\n"
-   "       " GC_BINARY " --solo [--low] [-X] [--name 'NAME']"
+   "       " GC_BINARY " --solo [[--really] --low] [-X] [--name 'NAME']\n"
+   "        <or in short>\n"
+   "       " GC_BINARY " -1 [[-r] -l] [-X] [-n 'NAME']\n"
+   "        <etc...>"
    << endl;
   exit(1);
 }
@@ -162,8 +165,13 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
     } else if (!strcmp(argv[n], "-l") || !strcmp(argv[n], "--low"))
 
       mode |= CM_LOW_GRAPHICS;
+    
+    else if (!strcmp(argv[n], "-r") || !strcmp(argv[n], "--really")) {
 
-    else if (!strcmp(argv[n], "-X") || !strcmp(argv[n], "--extreme"))
+      mode |= CM_LOW_GRAPHICS;
+      mode |= CM_REALLY_LOW_GRAPHICS;
+
+    } else if (!strcmp(argv[n], "-X") || !strcmp(argv[n], "--extreme"))
 
       mode |= CM_X;
 
@@ -189,6 +197,9 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
 
   if ((mode & CM_NO_TIME_OUT) && !(mode & CM_SERVER))
     usage();
+
+  if ((mode & CM_REALLY_LOW_GRAPHICS) && !(mode & CM_LOW_GRAPHICS))
+    usage();
 }
 
 void setupLocalDataDirectory (   )
@@ -197,12 +208,13 @@ void setupLocalDataDirectory (   )
   TextureLoader::buildLocalDataDirectoryName(local_directory);
   if (!TextureLoader::fileExists(local_directory)
 #ifndef _WIN32
-   && mkdir(local_directory, 0777)) {
+   && mkdir(local_directory, 0777)
 #else
-   && _mkdir(local_directory)) {
+   && _mkdir(local_directory)
 #endif
-    cerr << "Error creating local data directory '" << local_directory
-     << "'." << endl;
-    exit(1);
+   ) {
+   cerr << "Error creating local data directory '" << local_directory
+    << "'." << endl;
+   exit(1);
   }
 }
