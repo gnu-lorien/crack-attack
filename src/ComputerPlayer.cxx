@@ -63,8 +63,8 @@ void ComputerPlayer::timeStep()
     //delete tmp;
     //queue->reset();
     localAi.resetAlarm();
-    MESSAGE("AI will drop again in " << ((localAi.alarm() - Game::time_step) / GC_STEPS_PER_SECOND));
-    LOG("AI will drop again in " << ((localAi.alarm() - Game::time_step) / GC_STEPS_PER_SECOND));
+    MESSAGE("AI will drop again in " << ((localAi.alarm() - Game::time_step) / GC_STEPS_PER_SECOND) << " seconds");
+    LOG("AI will drop again in " << ((localAi.alarm() - Game::time_step) / GC_STEPS_PER_SECOND) << " seconds");
   }
   if(localAi.determineLoss()) {
     Game::aiPlayerLoss();

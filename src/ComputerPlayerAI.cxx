@@ -51,7 +51,6 @@ int ComputerPlayerAI::alarm()
 int ComputerPlayerAI::garbageShatterDelay()
 {
   int delay = GC_INITIAL_POP_DELAY + (last_shatter_height * GC_PLAY_WIDTH * GC_INTERNAL_POP_DELAY) + GC_FINAL_POP_DELAY;
-  LOG("shatter delay " << delay << " for " << last_shatter_height);
 }
 
 GarbageQueue *ComputerPlayerAI::garbageQueue ()
