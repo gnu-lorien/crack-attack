@@ -42,7 +42,8 @@ using namespace std;
 
 void Displayer::drawScoreToBeatMessage_inline_split_ (   )
 {
-  if (!(MetaState::mode & CM_SOLO) || !(MetaState::state & MS_BOTH_KEY_WAIT))
+  if (!(MetaState::mode & CM_SOLO) || 
+      !(MetaState::state & MS_BOTH_KEY_WAIT))
     return;
 
   glBindTexture(GL_TEXTURE_2D, score_to_beat_texture);
@@ -64,6 +65,7 @@ void Displayer::drawScoreRecord_inline_split_ (   )
   if (!(MetaState::mode & CM_SOLO)
    || !(MetaState::state & MS_GAME_OVER_KEY_WAIT) || !WinRecord::won)
     return;
+  if (MetaState::mode & CM_AI) return;
 
   if (Game::time_step < DC_WIN_FADE_TIME) return;
 

@@ -54,7 +54,7 @@ public:
 
   static inline void gameFinish (   )
   {
-    if (!(MetaState::mode & CM_SOLO)) return;
+    if (!(MetaState::mode & CM_SOLO) || (MetaState::mode & CM_AI)) return;
     if (!WinRecord::won) return;
 
     gameFinish_inline_split_();

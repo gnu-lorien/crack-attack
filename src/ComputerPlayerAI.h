@@ -45,6 +45,7 @@ public:
   EasyAI() { cout << "Creating a fucking easy" << endl;}
   ~EasyAI(){}
 
+  virtual int lossHeight();
 protected:
   virtual int baseSteps();
 };
@@ -53,9 +54,10 @@ class MediumAI :public ComputerPlayerAI {
 public:
   MediumAI(){}
   ~MediumAI(){}
+
+  virtual int lossHeight();
 protected:
   virtual int baseSteps();
-  virtual int lossHeight();
 };
 
 class HardAI :public ComputerPlayerAI { 
@@ -63,9 +65,9 @@ public:
   HardAI(){}
   ~HardAI(){}
 
+  virtual int lossHeight();
 protected:
   virtual int baseSteps();
-  virtual int lossHeight();
 
 };
 

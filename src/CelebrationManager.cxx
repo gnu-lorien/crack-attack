@@ -158,7 +158,8 @@ void CelebrationManager::timeStep (   )
 
       // and, if you've been really good, spark
       if (WinRecord::isMatchFinished()
-       && (!(MetaState::mode & CM_SOLO) || Score::topRank())) {
+       && (!(MetaState::mode & CM_SOLO) || 
+         Score::topRank() || (MetaState::mode & CM_AI_HARD))) {
 
         // this algorithm is supposed to cause the sparks to be created in
         // spurts, sort of like a sputtering firework

@@ -115,7 +115,9 @@ void MetaState::gameStart (   )
 
 void MetaState::gameWon (   )
 {
+  DOT(3);
   WinRecord::gameWon();
+  DOT(3);
   gameFinish();
 }
 
@@ -129,9 +131,11 @@ void MetaState::gameFinish (   )
 {
   final_time_step = Game::time_step;
 
+  DOT(3);
   if (state & MS_CONCESSION)
     WinRecord::matchConceded();
 
+  DOT(3);
   if (!(mode & CM_SOLO))
     Communicator::gameFinish();
   Game::gameFinish();
@@ -154,7 +158,7 @@ void MetaState::gameFinish (   )
   // glutSpecialUpFunc is set.  This is the only use of
   // Controller::keyboardUpMeta() .
   // glutKeyboardUpFunc(null); // removed
-  if (mode & CM_SOLO) {
+  if (mode & CM_SOLO || mode & CM_AI) {
     glutSpecialUpFunc(Controller::specialUpMeta);
     glutKeyboardUpFunc(Controller::keyboardUpMeta); // workaround
   } else {

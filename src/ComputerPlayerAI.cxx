@@ -144,6 +144,11 @@ int EasyAI::baseSteps()
   return a;
 }
 
+int EasyAI::lossHeight()
+{
+  return 4;
+}
+
 int MediumAI::baseSteps()
 {
   return ComputerPlayerAI::baseSteps() * 10;

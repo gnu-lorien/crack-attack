@@ -462,6 +462,9 @@ void Game::idlePlay (   )
       if ((MetaState::mode & CM_SOLO) && !(MetaState::mode & CM_AI))
         state = Score::gameFinish();
 
+      if (MetaState::mode & CM_AI)
+        state = ComputerPlayer::gameFinish();
+
       if (state & GS_LOST)
         MetaState::gameLoss();
       else

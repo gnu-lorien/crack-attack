@@ -47,7 +47,7 @@ void show_element_foreach (gpointer e, gpointer unused)
 
 int ComputerPlayer::gameFinish()
 {
-  return lost ? GS_WON : GS_LOST;
+  return ai->determineLoss() ? GS_WON : GS_LOST;
 }
 
 void ComputerPlayer::timeStep()
