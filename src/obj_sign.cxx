@@ -45,29 +45,29 @@ GLuint Displayer::sign_small_texture;
 GLuint Displayer::sign_large_texture;
 
 const char *sign_small_subtexture_files[DC_NUMBER_SMALL_SIGN_SUBTEXTURES]
- = { GC_DATA_DIRECTORY "sign_4.tga",
-     GC_DATA_DIRECTORY "sign_5.tga",
-     GC_DATA_DIRECTORY "sign_6.tga",
-     GC_DATA_DIRECTORY "sign_7.tga",
-     GC_DATA_DIRECTORY "sign_8.tga",
-     GC_DATA_DIRECTORY "sign_9.tga" };
+ = { GC_DATA_DIRECTORY("sign_4.tga"),
+     GC_DATA_DIRECTORY("sign_5.tga"),
+     GC_DATA_DIRECTORY("sign_6.tga"),
+     GC_DATA_DIRECTORY("sign_7.tga"),
+     GC_DATA_DIRECTORY("sign_8.tga"),
+     GC_DATA_DIRECTORY("sign_9.tga") };
 
 const char *sign_large_subtexture_files[DC_NUMBER_LARGE_SIGN_SUBTEXTURES]
- = { GC_DATA_DIRECTORY "sign_10.tga",
-     GC_DATA_DIRECTORY "sign_11.tga",
-     GC_DATA_DIRECTORY "sign_12.tga",
-     GC_DATA_DIRECTORY "sign_x2.tga",
-     GC_DATA_DIRECTORY "sign_x3.tga",
-     GC_DATA_DIRECTORY "sign_x4.tga",
-     GC_DATA_DIRECTORY "sign_x5.tga",
-     GC_DATA_DIRECTORY "sign_x6.tga",
-     GC_DATA_DIRECTORY "sign_x7.tga",
-     GC_DATA_DIRECTORY "sign_x8.tga",
-     GC_DATA_DIRECTORY "sign_x9.tga",
-     GC_DATA_DIRECTORY "sign_x10.tga",
-     GC_DATA_DIRECTORY "sign_x11.tga",
-     GC_DATA_DIRECTORY "sign_x12.tga",
-     GC_DATA_DIRECTORY "sign_bonus.tga" };
+ = { GC_DATA_DIRECTORY("sign_10.tga"),
+     GC_DATA_DIRECTORY("sign_11.tga"),
+     GC_DATA_DIRECTORY("sign_12.tga"),
+     GC_DATA_DIRECTORY("sign_x2.tga"),
+     GC_DATA_DIRECTORY("sign_x3.tga"),
+     GC_DATA_DIRECTORY("sign_x4.tga"),
+     GC_DATA_DIRECTORY("sign_x5.tga"),
+     GC_DATA_DIRECTORY("sign_x6.tga"),
+     GC_DATA_DIRECTORY("sign_x7.tga"),
+     GC_DATA_DIRECTORY("sign_x8.tga"),
+     GC_DATA_DIRECTORY("sign_x9.tga"),
+     GC_DATA_DIRECTORY("sign_x10.tga"),
+     GC_DATA_DIRECTORY("sign_x11.tga"),
+     GC_DATA_DIRECTORY("sign_x12.tga"),
+     GC_DATA_DIRECTORY("sign_bonus.tga") };
 
 void Displayer::generateSignList (   )
 {

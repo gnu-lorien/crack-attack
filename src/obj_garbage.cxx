@@ -47,12 +47,12 @@ using namespace std;
 #include "Random.h"
 
 const char *garbage_lightmap_files[DC_NUMBER_GARBAGE_LIGHTMAPS]
- = { GC_DATA_DIRECTORY "garbage_lightmap_0.tga",
-     GC_DATA_DIRECTORY "garbage_lightmap_1.tga",
-     GC_DATA_DIRECTORY "garbage_lightmap_2.tga",
-     GC_DATA_DIRECTORY "garbage_lightmap_3.tga",
-     GC_DATA_DIRECTORY "garbage_lightmap_4.tga",
-     GC_DATA_DIRECTORY "garbage_lightmap_5.tga" };
+ = { GC_DATA_DIRECTORY("garbage_lightmap_0.tga"),
+     GC_DATA_DIRECTORY("garbage_lightmap_1.tga"),
+     GC_DATA_DIRECTORY("garbage_lightmap_2.tga"),
+     GC_DATA_DIRECTORY("garbage_lightmap_3.tga"),
+     GC_DATA_DIRECTORY("garbage_lightmap_4.tga"),
+     GC_DATA_DIRECTORY("garbage_lightmap_5.tga") };
 
 GLuint Displayer::garbage_lightmap;
 GLuint Displayer::garbage_texture;

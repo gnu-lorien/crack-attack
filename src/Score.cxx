@@ -134,8 +134,7 @@ void Score::setupDefaultScoreRecord (   )
 {
   ifstream file(GC_DEFAULT_REC_FILE_NAME);
   if (file.fail()) {
-    cerr << "Error opening data file '" GC_DEFAULT_REC_FILE_NAME "'."
-     << endl;
+    cerr << "Error opening data file '" << GC_DEFAULT_REC_FILE_NAME << "'." << endl;
     exit(1);
   }
 

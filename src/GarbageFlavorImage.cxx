@@ -206,7 +206,7 @@ void GarbageFlavorImage::buildGarbageTextureFileName ( char file_name[256],
 void GarbageFlavorImage::buildOriginalGarbageTextureFileName (
  char file_name[256], int n )
 {
-  buildGarbageTextureFileName(file_name, GC_DATA_DIRECTORY, n);
+  buildGarbageTextureFileName(file_name, GC_DATA_DIRECTORY(""), n);
 }
 
 void GarbageFlavorImage::requestGarbageFlavorImage_inline_split_ (

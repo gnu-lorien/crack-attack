@@ -108,7 +108,7 @@ void ComputerPlayer::addGarbage ( int height, int width, int flavor ) {
 bool ComputerPlayer::checkLevelLightDying()
 {
   int height = ai->garbageQueue()->height();
-  int ninety = ai->lossHeight() * .9;
+  int ninety = (int)(ai->lossHeight() * .9);
   if (ninety == ai->lossHeight())
     ninety = ai->lossHeight() - 1;
   if (height >= ninety)

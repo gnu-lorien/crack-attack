@@ -92,3 +92,6 @@ v 1.1.12
   - Change protocol numbering to make this release compatible with Windows
     version which is still 1.1.8.
   - Name, resolution, and graphics settings are now remembered by the GUI.
+
+v 1.1.13cvs
+	- Implemented binary relocatability

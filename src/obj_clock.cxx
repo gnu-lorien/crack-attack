@@ -42,17 +42,17 @@ using namespace std;
 GLuint Displayer::clock_digit_textures[11];
 
 const char *clock_digit_texture_files[11]
- = { GC_DATA_DIRECTORY "clock_0.tga",
-     GC_DATA_DIRECTORY "clock_1.tga",
-     GC_DATA_DIRECTORY "clock_2.tga",
-     GC_DATA_DIRECTORY "clock_3.tga",
-     GC_DATA_DIRECTORY "clock_4.tga",
-     GC_DATA_DIRECTORY "clock_5.tga",
-     GC_DATA_DIRECTORY "clock_6.tga",
-     GC_DATA_DIRECTORY "clock_7.tga",
-     GC_DATA_DIRECTORY "clock_8.tga",
-     GC_DATA_DIRECTORY "clock_9.tga",
-     GC_DATA_DIRECTORY "clock_extra.tga" };
+ = { GC_DATA_DIRECTORY("clock_0.tga"),
+     GC_DATA_DIRECTORY("clock_1.tga"),
+     GC_DATA_DIRECTORY("clock_2.tga"),
+     GC_DATA_DIRECTORY("clock_3.tga"),
+     GC_DATA_DIRECTORY("clock_4.tga"),
+     GC_DATA_DIRECTORY("clock_5.tga"),
+     GC_DATA_DIRECTORY("clock_6.tga"),
+     GC_DATA_DIRECTORY("clock_7.tga"),
+     GC_DATA_DIRECTORY("clock_8.tga"),
+     GC_DATA_DIRECTORY("clock_9.tga"),
+     GC_DATA_DIRECTORY("clock_extra.tga") };
 
 void Displayer::generateClock (   )
 {

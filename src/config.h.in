@@ -1,5 +1,11 @@
 /* src/config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Include pthread support for binary relocation? */
+#undef BR_PTHREAD
+
+/* Use binary relocation? */
+#undef ENABLE_BINRELOC
+
 /* Define to 1 if you have the <arpa/inet.h> header file. */
 #undef HAVE_ARPA_INET_H
 
@@ -26,6 +32,9 @@
 
 /* Define to 1 if you have the `glut' library (-lglut). */
 #undef HAVE_LIBGLUT
+
+/* Define to 1 if you have the `pthread' library (-lpthread). */
+#undef HAVE_LIBPTHREAD
 
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H

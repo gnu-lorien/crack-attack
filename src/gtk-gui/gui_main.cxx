@@ -83,7 +83,7 @@ int gui_main ( int argc, char **argv )
 
   gtk_set_locale ();
   if (gtk_init_check (&argc, &argv)) {
-    add_pixmap_directory (PACKAGE_DATA_DIR "/" PACKAGE);
+    add_pixmap_directory (GC_DATA_DIRECTORY(""));
     winCrackAttackSplash = create_winCrackAttackSplash ();
 		gui_data_read(winCrackAttackSplash);
     gtk_widget_show (winCrackAttackSplash);

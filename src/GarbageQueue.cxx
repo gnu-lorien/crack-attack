@@ -39,6 +39,7 @@ void GarbageQueue::reset () {
   cached_height = -1;
 }
 
+// FIXME: This makes xtreme an error condition
 int GarbageQueue::removeWithSpecials ()
 {
   if ((*(garbage_queue.begin())).flavor == GF_GRAY) {
@@ -46,7 +47,6 @@ int GarbageQueue::removeWithSpecials ()
   } else {
     return removeToFirst(GF_GRAY);
   }
-#warning xtreme not supported
   return 0;
 }
 

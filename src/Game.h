@@ -69,14 +69,20 @@ using namespace std;
 // file constants
 #ifndef _WIN32
 #  ifndef DATA_DIRECTORY
-#    define GC_DATA_DIRECTORY            "." GC_DD "data/"
+#    define GC_DATA_DIRECTORY(x)         "." GC_DD "data/" x
 #  else
-#    define GC_DATA_DIRECTORY            DATA_DIRECTORY
+#    define GC_DATA_DIRECTORY(x)          DATA_DIRECTORY x
 #  endif
 #  define GC_LOCAL_DATA_DIRECTORY        GC_DD "." GC_BINARY GC_DD
 #else
-#  define GC_DATA_DIRECTORY              ".." GC_DD "data" GC_DD
-#  define GC_LOCAL_DATA_DIRECTORY        ".." GC_DD "localdata" GC_DD
+#  define GC_DATA_DIRECTORY(x)              ".." GC_DD "data" GC_DD x
+#  define GC_LOCAL_DATA_DIRECTORY(x)        ".." GC_DD "localdata" GC_DD x
+#endif
+#ifdef ENABLE_BINRELOC
+#  undef GC_DATA_DIRECTORY               
+#  include "prefix.h"
+#  define GC_DATA_DIRECTORY_INTER        br_strcat(DATADIR, GC_DD GC_BINARY GC_DD)
+#  define GC_DATA_DIRECTORY(x)           br_strcat(GC_DATA_DIRECTORY_INTER, x)
 #endif
 #define GC_GARBAGE_TEX_FILE_NAME_BASE    "garbage_flavor"
 #define GC_GARBAGE_TEX_NUMBER_DIGITS     (3)
@@ -86,28 +92,28 @@ using namespace std;
                                           "_net.tga"
 #define GC_GARBAGE_MY_TEX_FILE_NAME      GC_GARBAGE_TEX_FILE_NAME_BASE \
                                           "_my.tga"
-#define GC_LOGO_TEX_FILE_NAME            GC_DATA_DIRECTORY "logo.tga"
-#define GC_X_LOGO_TEX_FILE_NAME          GC_DATA_DIRECTORY "logo_x.tga"
-#define GC_GARBAGE_LOGO_TEX_FILE_NAME    GC_DATA_DIRECTORY \
+#define GC_LOGO_TEX_FILE_NAME            GC_DATA_DIRECTORY("logo.tga")
+#define GC_X_LOGO_TEX_FILE_NAME          GC_DATA_DIRECTORY("logo_x.tga")
+#define GC_GARBAGE_LOGO_TEX_FILE_NAME    GC_DATA_DIRECTORY(\
                                           GC_GARBAGE_TEX_FILE_NAME_BASE \
-                                          "_logo.tga"
-#define GC_GARBAGE_X_LOGO_TEX_FILE_NAME  GC_DATA_DIRECTORY \
+                                          "_logo.tga")
+#define GC_GARBAGE_X_LOGO_TEX_FILE_NAME  GC_DATA_DIRECTORY(\
                                           GC_GARBAGE_TEX_FILE_NAME_BASE \
-                                          "_logo_x.tga"
-#define GC_COUNT_DOWN_GO_TEX_FILE_NAME   GC_DATA_DIRECTORY "count_down_go.tga"
-#define GC_COUNT_DOWN_1_TEX_FILE_NAME    GC_DATA_DIRECTORY "count_down_1.tga"
-#define GC_COUNT_DOWN_2_TEX_FILE_NAME    GC_DATA_DIRECTORY "count_down_2.tga"
-#define GC_COUNT_DOWN_3_TEX_FILE_NAME    GC_DATA_DIRECTORY "count_down_3.tga"
-#define GC_ANYKEY_TEX_FILE_NAME          GC_DATA_DIRECTORY "message_anykey.tga"
-#define GC_WAITING_TEX_FILE_NAME         GC_DATA_DIRECTORY "message_waiting.tga"
-#define GC_PAUSED_TEX_FILE_NAME          GC_DATA_DIRECTORY "message_paused.tga"
-#define GC_WINNER_TEX_FILE_NAME          GC_DATA_DIRECTORY "message_winner.tga"
-#define GC_LOSER_TEX_FILE_NAME           GC_DATA_DIRECTORY "message_loser.tga"
-#define GC_GAME_OVER_TEX_FILE_NAME       GC_DATA_DIRECTORY \
-                                          "message_game_over.tga"
+                                          "_logo_x.tga")
+#define GC_COUNT_DOWN_GO_TEX_FILE_NAME   GC_DATA_DIRECTORY("count_down_go.tga")
+#define GC_COUNT_DOWN_1_TEX_FILE_NAME    GC_DATA_DIRECTORY("count_down_1.tga")
+#define GC_COUNT_DOWN_2_TEX_FILE_NAME    GC_DATA_DIRECTORY("count_down_2.tga")
+#define GC_COUNT_DOWN_3_TEX_FILE_NAME    GC_DATA_DIRECTORY("count_down_3.tga")
+#define GC_ANYKEY_TEX_FILE_NAME          GC_DATA_DIRECTORY("message_anykey.tga")
+#define GC_WAITING_TEX_FILE_NAME         GC_DATA_DIRECTORY("message_waiting.tga")
+#define GC_PAUSED_TEX_FILE_NAME          GC_DATA_DIRECTORY("message_paused.tga")
+#define GC_WINNER_TEX_FILE_NAME          GC_DATA_DIRECTORY("message_winner.tga")
+#define GC_LOSER_TEX_FILE_NAME           GC_DATA_DIRECTORY("message_loser.tga")
+#define GC_GAME_OVER_TEX_FILE_NAME       GC_DATA_DIRECTORY(\
+                                          "message_game_over.tga")
 #define GC_X_REC_FILE_NAME               "score_record_x"
 #define GC_REC_FILE_NAME                 "score_record"
-#define GC_DEFAULT_REC_FILE_NAME         GC_DATA_DIRECTORY "default_record"
+#define GC_DEFAULT_REC_FILE_NAME         GC_DATA_DIRECTORY("default_record")
 
 // random angle tables' size; must be power of two
 #define GC_SIZE_RANDOM_ANGLE_TABLE       (256)
