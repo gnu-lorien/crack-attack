@@ -22,7 +22,7 @@ AutopackageTarget: 1.0
 Crack-Attack! is a fast-paced puzzle game inspired by the classic Super NES title Tetris Attack!
 
 [BuildPrepare]
-prepareBuild --enable-gtk --enable-binreloc
+prepareBuild --enable-gtk --enable-binreloc --disable-sound
 
 [BuildUnprepare]
 unprepareBuild
