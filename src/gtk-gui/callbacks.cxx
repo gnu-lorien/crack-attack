@@ -320,28 +320,28 @@ void
 on_800by600_activate                   (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-  height = width = 600;
+  height = width = 570;
 }
 
 void
 on_1024by768_activate                  (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-	height = width = 700;	
+	height = width = 680;	
 }
 
 void
 on_1280by1024_activate                 (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-	height = width = 1000;	
+	height = width = 970;	
 }
 
 void
 on_1600by1200_activate                 (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-	height = width = 1200;
+	height = width = 1170;
 }
 
 static void undo_ai_settings() 
