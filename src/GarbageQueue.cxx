@@ -30,7 +30,7 @@ int GarbageQueue::removeWithSpecials ()
 int GarbageQueue::removeToFirst ( int flavor )
 {
   int num_removed = 0;
-  assert(*(garbage_queue.begin()).flavor != flavor);
+  assert((*(garbage_queue.begin())).flavor != flavor);
   if (garbage_queue.empty()) return 0;
   vector<GarbageQueueElement>::iterator iter;
   for (iter = garbage_queue.begin(); iter != garbage_queue.end(); ++iter) {
@@ -66,10 +66,10 @@ static void show_element (GarbageQueueElement &e) {
 void GarbageQueue::add ( GarbageQueueElement &element )
 {
   element.active = true;
-  MESSAGE("Adding garbage " << element->active);
+  MESSAGE("Adding garbage " << element.active);
   show_element(element);
-  assert(element->height <= GC_PLAY_HEIGHT);
-  assert(element->width  <= GC_PLAY_WIDTH);
+  assert(element.height <= GC_PLAY_HEIGHT);
+  assert(element.width  <= GC_PLAY_WIDTH);
   garbage_queue.push_back(element);
   cached_height = -1;
 }
