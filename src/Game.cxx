@@ -264,6 +264,19 @@ void Game::syncUnpause (   )
 
 void Game::idleMeta (   )
 {
+  timeval now;
+  double nowd;
+  gettimeofday(&now,NULL);
+  #define FPSDIFF (1.0f/30.0f)
+  nowd = now.tv_sec;
+  nowd += (double)now.tv_usec / 1000000.0f;
+
+  if ( (nowd - lastframe) > FPSDIFF ) {
+    lastframe = nowd;
+  } else {
+    usleep(1000);
+  }
+
   int modified_and_complete = false;
 
   do {
