@@ -459,18 +459,8 @@ void Game::idlePlay (   )
       if (state & GS_PAUSED)
         MessageManager::freeMessage();
 
-      if (MetaState::mode & CM_SOLO)
+      if ((MetaState::mode & CM_SOLO) && !(MetaState::mode & CM_AI))
         state = Score::gameFinish();
-
-      cerr << "Past game finish... " << endl;
-      fprintf(stderr, "%x\n", state);
-      if (MetaState::mode & CM_AI) {
-        cerr << "In CM_AI" << endl;
-        cerr << "Won? " << (state & GS_WON) << endl;
-        step_play = false;
-        //state = ComputerPlayer::gameFinish();
-        cerr << "Won? " << (state & GS_WON) << endl;
-      }
 
       if (state & GS_LOST)
         MetaState::gameLoss();

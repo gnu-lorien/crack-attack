@@ -152,30 +152,29 @@ void GarbageGenerator::addToQueue ( CommunicationBuffer &buffer )
 	addToQueue(buffer.garbage, buffer.count);
 }
 
+void GarbageGenerator::addToQueue (uint32 height, uint32 width, uint32 flavor, uint32 stamp)
+{
+  assert(height <= GC_PLAY_HEIGHT);
+  assert(width  <= GC_PLAY_WIDTH);
+  if (!GarbageManager::isSpecialFlavor(flavor))
+    dealLocalGarbage(height, width, flavor, stamp);
+  else
+    dealSpecialLocalGarbage(flavor, stamp);
+}
+
 void GarbageGenerator::addToQueue ( GarbageQueueElement *element )
 {
   int stamp = Game::time_step;
   if (!element)
     return;
   GarbageQueueElement e = *element;
-  assert(e.height <= GC_PLAY_HEIGHT);
-  assert(e.width  <= GC_PLAY_WIDTH);
-  if (!GarbageManager::isSpecialFlavor(e.flavor))
-    dealLocalGarbage(e.height, e.width, e.flavor, stamp);
-  else
-    dealSpecialLocalGarbage(e.flavor, stamp);
+  addToQueue(e.height, e.width, e.flavor, stamp);
 }
 
 void GarbageGenerator::addToQueue ( BufferElement *garbage, size_t size ) {
 	for (size_t n = 0; n < size; n++) {
     BufferElement e = garbage[n];
-    MESSAGE("h " << e.height << " w " << e.width << " stamp " << e.time_stamp << endl);
-    assert(e.height < GC_PLAY_HEIGHT);
-    assert(e.width  < GC_PLAY_WIDTH);
-    if (!GarbageManager::isSpecialFlavor(e.flavor))
-      dealLocalGarbage(e.height, e.width, e.flavor, e.time_stamp);
-    else
-      dealSpecialLocalGarbage(e.flavor, e.time_stamp);
+    addToQueue(e.height, e.width, e.flavor, e.time_stamp);
   }
 }
 
