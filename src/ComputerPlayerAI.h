@@ -25,6 +25,8 @@ protected:
 
   virtual int lossHeight();
 
+  virtual void shatter();
+
 public:
 
   ComputerPlayerAI();

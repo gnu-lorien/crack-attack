@@ -97,22 +97,32 @@ GarbageQueue *ComputerPlayerAI::garbageAmount( )
   loopi(norm_mod) q->add(1, 6, GF_NORMAL);
   //loopi(more_gray) q->add(1, 6, GF_GRAY);
 
-  MESSAGE("Resetting garbageQueue");
+  shatter();
+  return q;
+}
+
+void ComputerPlayerAI::shatter()
+{
+  MESSAGE("Resetting garbageQueue " << garbageQueue()->height());
   if (garbageQueue()->height() > 0) {
     state = AI_SHATTERING; 
-    last_shatter_height = garbageQueue()->height();
+    int gray_height = garbageQueue()->specialHeight();
+    last_shatter_height = garbageQueue()->removeToFirstGray();
+    MESSAGE(last_shatter_height << " shattered and " << garbageQueue()->height() << " remaining.");
+    if (gray_height != 0) assert(garbageQueue()->height() != 0);
+    /*
     int gray_height = garbageQueue()->specialHeight();
     if (gray_height > 0) {
       last_shatter_height *= gray_height + 1;
       MESSAGE("Gray mult: " << gray_height + 1);
       LOG("Gray mult: " << gray_height + 1);
     }
+    */
   } else {
     state = AI_WAITING;
     last_shatter_height = 0;
   }
   garbageQueue()->reset();
-  return q;
 }
 
 bool ComputerPlayerAI::determineLoss()

@@ -26,6 +26,29 @@ void GarbageQueue::reset () {
   cached_height = -1;
 }
 
+int GarbageQueue::removeToFirstGray ()
+{
+  int num_removed = 0;
+  GarbageQueueElement *e = NULL;
+  GSList *cur = NULL;
+  cur = garbage_queue;
+  while (cur) {
+    e = (GarbageQueueElement *) (cur->data);
+    if (e == NULL)
+      return num_removed;
+    if (e->flavor == GF_NORMAL) {
+      delete e;
+      garbage_queue = g_slist_delete_link(garbage_queue, cur);
+      cur = garbage_queue;
+      ++num_removed;
+      cached_height = -1;
+    } else {
+      break;
+    }
+  }
+  return num_removed;
+}
+
 void GarbageQueue::add ( int height, int width, int flavor)
 {
   GarbageQueueElement *e = new GarbageQueueElement();
@@ -60,6 +83,7 @@ int GarbageQueue::height ( )
   int garbage_height = 0;
   GarbageQueueElement *e = NULL;
   GSList *cur = NULL;
+  if (cached_height != -1) return cached_height;
   for (cur = garbage_queue; cur; cur = g_slist_next(cur)) {
     e = (GarbageQueueElement *) (cur->data);
     if (!e)

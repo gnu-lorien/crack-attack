@@ -14,9 +14,11 @@ public:
   void add ( GarbageQueueElement *element );
 
   int height ( );
-  int specialHeight();
+  int specialHeight ( );
 
-  void reset();
+  void reset ( );
+
+  int removeToFirstGray ( );
 
   void sendToGenerator ( );
 private:
