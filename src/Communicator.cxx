@@ -160,7 +160,7 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
 
     // check version id
     uint32 version_id = CO_TEST_INT;
-    for (char *c = GC_VERSION; *c; c++)
+    for (char *c = CO_VERSION; *c; c++)
       version_id += *c;
 #ifdef DEVELOPMENT
     cout << "Version id:  " << version_id << endl;
@@ -203,7 +203,7 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
 
     // check version id
     uint32 version_id = CO_TEST_INT;
-    for (char *c = GC_VERSION; *c; c++)
+    for (char *c = CO_VERSION; *c; c++)
       version_id += *c;
 #ifdef DEVELOPMENT
     cout << "Version id:  " << version_id << endl;

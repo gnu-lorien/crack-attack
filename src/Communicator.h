@@ -52,6 +52,9 @@ using namespace std;
 // test integer
 #define CO_TEST_INT                              (47)
 
+// protocol version number
+#define CO_VERSION                               (1.1.9)
+
 class BufferElement {
 public:
   uint32 time_stamp;

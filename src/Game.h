@@ -53,12 +53,10 @@ using namespace std;
 // the name
 #define GC_NAME                          "Crack Attack!"
 #define GC_BINARY                        "crack-attack"
-#define GC_VERSION                       "1.1.9"
+#define GC_VERSION                       "1.1.11"
 
 // startup message
-#define GC_MESSAGE                       GC_NAME " v" GC_VERSION "\n" \
-                                          "  by Daniel Nelson " \
-                                          "[aluminumangel.org], 2002"
+#define GC_MESSAGE                       GC_NAME " v" GC_VERSION "\n"
 
 // directory delimiter
 #ifndef _WIN32
