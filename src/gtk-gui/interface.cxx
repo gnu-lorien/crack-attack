@@ -34,6 +34,10 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
+#include <netdb.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
@@ -294,7 +298,17 @@ create_winCrackAttackSplash (void)
   gtk_widget_show (lblServerAddress);
   gtk_box_pack_start (GTK_BOX (vbox3), lblServerAddress, FALSE, FALSE, 0);
 
+  // Find the ip to display
+  struct hostent *h;
+  char host_name[256];
   lblServerIp = gtk_label_new ("");
+  if (0 == gethostname(host_name, 256)) {
+    if (NULL != (h = gethostbyname(host_name))) {
+      gtk_label_set_text(
+        GTK_LABEL(lblServerIp), 
+        inet_ntoa(*((struct in_addr *)h->h_addr)));
+    }
+  }
   gtk_widget_show (lblServerIp);
   gtk_box_pack_start (GTK_BOX (vbox3), lblServerIp, FALSE, FALSE, 0);
 
@@ -307,6 +321,9 @@ create_winCrackAttackSplash (void)
   gtk_box_pack_start (GTK_BOX (hbox5), lblPort, FALSE, FALSE, 0);
 
   entPort = gtk_entry_new ();
+  gtk_entry_set_text(
+    GTK_ENTRY(entPort),
+    "8080");
   gtk_widget_show (entPort);
   gtk_box_pack_start (GTK_BOX (hbox5), entPort, TRUE, TRUE, 0);
 
@@ -346,6 +363,9 @@ create_winCrackAttackSplash (void)
   gtk_box_pack_start (GTK_BOX (hbox6), label3, FALSE, FALSE, 0);
 
   entPort2 = gtk_entry_new ();
+  gtk_entry_set_text(
+    GTK_ENTRY(entPort2),
+    "8080");
   gtk_widget_show (entPort2);
   gtk_box_pack_start (GTK_BOX (hbox6), entPort2, TRUE, TRUE, 0);
 

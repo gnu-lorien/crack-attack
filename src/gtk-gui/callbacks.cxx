@@ -158,6 +158,19 @@ check_for_game_end (gpointer data) {
     return MS_RUNNING;
 }
 
+void 
+ca_error_dialog (const char *message)
+{
+    GtkWidget *dialog = NULL;
+    dialog = gtk_message_dialog_new (window,
+                              GTK_DIALOG_DESTROY_WITH_PARENT,
+                              GTK_MESSAGE_ERROR,
+                              GTK_BUTTONS_CLOSE,
+                              message);
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+}
+
 void
 on_btnStart_clicked                    (GtkButton       *button,
                                         gpointer         user_data)
@@ -165,7 +178,6 @@ on_btnStart_clicked                    (GtkButton       *button,
     GtkTextView *view;
     GtkTextBuffer *buffer;
     GtkWidget *dialog;
-    //GtkWindow *window;
     GtkEntry *entPlayerName, *entPort, *entServerAddress;
     GError **error = NULL;
     gchar **output = NULL, **errorput = NULL;
@@ -181,19 +193,12 @@ on_btnStart_clicked                    (GtkButton       *button,
     window = GTK_WINDOW(lookup_widget(GTK_WIDGET(button),"winCrackAttackSplash"));
     if (MS_RUNNING) {
         //Game is running, display an error message to the user
-        dialog = gtk_message_dialog_new (window,
-                                  GTK_DIALOG_DESTROY_WITH_PARENT,
-                                  GTK_MESSAGE_ERROR,
-                                  GTK_BUTTONS_CLOSE,
-                                  "Error: crack-attack is already running");
-        gtk_dialog_run (GTK_DIALOG (dialog));
-        gtk_widget_destroy (dialog);
+        ca_error_dialog("Error: crack-attack is already running");
         return;
     }
     if (GAME_SINGLE == TRUE) {
         host_name[0] = '\0';
     } else if (GAME_SERVER == TRUE) {
-        //command = g_strconcat(command, "--server ", NULL);
         host_name[0] = '\0';
         entPort = GTK_ENTRY(lookup_widget(GTK_WIDGET(button), "entPort"));
         if (entPort) {
@@ -219,12 +224,13 @@ on_btnStart_clicked                    (GtkButton       *button,
             tmp = (gchar *)gtk_entry_get_text(entServerAddress);
             g_strlcpy (host_name, tmp, 256);
         }
+#ifdef DEVELOPMENT
         cout << "Host name: " << host_name << endl;
+#endif
     }
 
     /* Make the game xtreme!! */
     if (GAME_EXTREME == TRUE) {
-        //command = g_strconcat(command, "-X ", NULL);
         mode |= CM_X;
     }
     
@@ -233,67 +239,37 @@ on_btnStart_clicked                    (GtkButton       *button,
     if (entPlayerName) {
         tmp = (gchar *)gtk_entry_get_text(entPlayerName);
         if (tmp) {
+            if (strlen(tmp) == 0) {
+                ca_error_dialog("Player's name isn't set.");
+                gtk_entry_set_text(entPlayerName, g_get_user_name());
+                return;
+            }
             g_strlcpy(player_name, tmp, 256);
+#ifdef DEVELOPMENT
             g_print ("Player name: %s tmp: %s",player_name,tmp);
+#endif 
         }
     }
-    
+#ifdef DEVELOPMENT
     g_print(command);
-    //error = g_new(GError, 1);
-    //g_spawn_command_line_async (command, error);
+#endif
     gtk_widget_hide(GTK_WIDGET(window));
-    g_print("Hiding window");
     fork_ret = fork();
     if (fork_ret == -1) {
-        g_error("Crack-attack cannot be run");
+        ca_error_dialog("Crack-Attack! cannot fork! Try again.");
         return;
     }
     g_timeout_add (250, check_for_game_end, (gpointer) &fork_ret);
     running_process = fork_ret;
     MS_RUNNING = TRUE;
-    if (fork_ret != 0) {
-        /*
-        int ret;
-        ret = waitpid(fork_ret, &status, 0);
-        g_print("%d", status);
-        if (ret != fork_ret) {
-            g_warning("The wrong process exited");
-        }
-        if (ret == -1) {
-            g_warning("Error in the child");
-        }
-        */
-    } else {
+    if (fork_ret == 0) {
         pid_t *process_id = (pid_t *)g_malloc0(sizeof (pid_t));
         *process_id = fork_ret;
-        g_print("Adding the in game check.");
         // Init glut here to prevent problems of glut never exiting
         glutInit(&glut_argc, glut_argv);
         run_crack_attack(mode, port, host_name, player_name, height, width);
-        g_print("Do I ever return from this?");
-        //kill (fork_ret, 9);
         return;
     }
-
-    /* We keep having a zombie process happening here... */
-    //wait(&status);
-    
-    /*
-    g_spawn_command_line_sync (
-            command,
-            output,
-            errorput,
-            exit,
-            error);
-    */
-
-    /*
-    g_print(*output);
-    view = lookup_widget(GTK_WIDGET(button),"txtGameOutput");
-    buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
-
-    gtk_text_buffer_set_text (buffer, *output, -1);
-    */
     g_free(command);
 }
 
@@ -370,43 +346,43 @@ on_1600by1200_activate                 (GtkMenuItem     *menuitem,
 
 static void undo_ai_settings() 
 {
-  mode &= ~CM_AI;
-  mode &= ~CM_AI_EASY;
-  mode &= ~CM_AI_MEDIUM;
-  mode &= ~CM_AI_HARD;
+    mode &= ~CM_AI;
+    mode &= ~CM_AI_EASY;
+    mode &= ~CM_AI_MEDIUM;
+    mode &= ~CM_AI_HARD;
 }
 
 void
 on_ai_none_activate                    (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-  undo_ai_settings();
+    undo_ai_settings();
 }
 
 void
 on_ai_easy_activate                    (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-  undo_ai_settings();
-  mode |= CM_AI;
-  mode |= CM_AI_EASY;
+    undo_ai_settings();
+    mode |= CM_AI;
+    mode |= CM_AI_EASY;
 }
 
 void
 on_ai_medium_activate                  (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-  undo_ai_settings();
-  mode |= CM_AI;
-  mode |= CM_AI_MEDIUM;
+    undo_ai_settings();
+    mode |= CM_AI;
+    mode |= CM_AI_MEDIUM;
 }
 
 void
 on_ai_hard_activate                    (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-  undo_ai_settings();
-  mode |= CM_AI;
-  mode |= CM_AI_HARD;
+    undo_ai_settings();
+    mode |= CM_AI;
+    mode |= CM_AI_HARD;
 }
 
