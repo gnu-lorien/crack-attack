@@ -313,14 +313,21 @@ void Game::idlePlay (   )
 {
   timeval now;
   double nowd;
+  static int ptime = glutGet((GLenum) GLUT_ELAPSED_TIME), tbn=0, tb=0;
   gettimeofday(&now,NULL);
   #define FPSDIFF (1.0f/30.0f)
-  nowd = now.tv_sec;
-  nowd += (double)now.tv_usec / 1000000.0f;
+  //printf("Time diff: %f step_period %f\n", FPSDIFF, GC_TIME_STEP_PERIOD);
+  MESSAGE("Time diff:" << FPSDIFF << "step_period " << GC_TIME_STEP_PERIOD << endl);
+  //nowd = now.tv_sec;
+  //nowd += (double)now.tv_usec / 1000000.0f;
+  nowd = glutGet((GLenum) GLUT_ELAPSED_TIME);
+  MESSAGE("nowd: " << nowd << "time " << glutGet((GLenum) GLUT_ELAPSED_TIME));
+  MESSAGE("nowd - lastframe" << (nowd-lastframe));
 
-  if ( (nowd - lastframe) > FPSDIFF ) {
+  if ( (nowd - lastframe) > GC_TIME_STEP_PERIOD) {//FPSDIFF ) {
     lastframe = nowd;
   } else {
+    MESSAGE("sleep");
     usleep(1000);
   }
 
