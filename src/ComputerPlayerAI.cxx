@@ -4,7 +4,19 @@
 #include "GarbageGenerator.h"
 #include "Game.h"
 
+#define loop(v,m) for(int v = 0; v<(m); v++)
+#define loopi(m) loop(i,m)
+
 /* Begin ComputerPlayerAI */
+ComputerPlayerAI::ComputerPlayerAI ()
+{ 
+  resetAlarm();
+  last_shatter_height = 0;
+  state = AI_WAITING;
+  queue = new GarbageQueue();
+  cout << "Creating a fucking generic" << endl;
+}
+
 int ComputerPlayerAI::baseSteps()
 {
   return GC_STEPS_PER_SECOND;
@@ -13,11 +25,17 @@ int ComputerPlayerAI::baseSteps()
 int ComputerPlayerAI::stateSteps()
 {
   if (state == AI_WAITING) {
-    return 0;
+    return (GC_CREEP_ADVANCE_VELOCITY * 5) // increase five lines
+      + (GC_DYING_DELAY * 5); // five combos
   }
   if (state == AI_SHATTERING) {
     return garbageShatterDelay();
   }
+}
+
+int ComputerPlayerAI::lossHeight()
+{
+  return 4;
 }
 
 void ComputerPlayerAI::resetAlarm() 
@@ -27,22 +45,13 @@ void ComputerPlayerAI::resetAlarm()
 
 int ComputerPlayerAI::alarm()
 {
-  //cout << "Comp AI" << endl;
   return last_time + baseSteps() + stateSteps();
 }
 
 int ComputerPlayerAI::garbageShatterDelay()
 {
-  if (queue) {
-    cout << "Given height on shatter calc: " << queue->height() << endl;
-    return GC_INITIAL_POP_DELAY * 3 * queue->height();
-  } else
-    return 0;
-}
-
-void ComputerPlayerAI::garbageQueue ( GarbageQueue *q )
-{
-  queue = q;
+  int delay = GC_INITIAL_POP_DELAY + (last_shatter_height * GC_PLAY_WIDTH * GC_INTERNAL_POP_DELAY) + GC_FINAL_POP_DELAY;
+  LOG("shatter delay " << delay << " for " << last_shatter_height);
 }
 
 GarbageQueue *ComputerPlayerAI::garbageQueue ()
@@ -62,77 +71,54 @@ GarbageQueue *ComputerPlayerAI::garbageAmount( )
   size_t const size = 20;
   size_t i = 0;
   BufferElement garbage;
-  if (Score::score > 500) {
-    for (i = 0; i < (2 % size); ++i) {
-      garbage.height = 3;
-      garbage.width  = 6;
-      garbage.flavor = GF_NORMAL;
-      q->add(garbage.height, garbage.width, garbage.flavor);
-    }
-    for (i = 0; i < (3 % size); ++i) {
-      garbage.height = 1;
-      garbage.width  = 3;
-      garbage.flavor = GF_GRAY;
-      q->add(garbage.height, garbage.width, garbage.flavor);
-    }
-    for (i = 0; i < (2 % size); ++i) {
-      garbage.height = 3;
-      garbage.width  = 6;
-      garbage.flavor = GF_NORMAL;
-      q->add(garbage.height, garbage.width, garbage.flavor);
-    }
-  } else 
-  if (Score::score > 300) {
-    for (i = 0; i < (2 % size); ++i) {
-      garbage.height = 2;
-      garbage.width  = 6;
-      garbage.flavor = GF_NORMAL;
-      q->add(garbage.height, garbage.width, garbage.flavor);
-    }
-    for (i = 0; i < (3 % size); ++i) {
-      garbage.height = 1;
-      garbage.width  = 3;
-      garbage.flavor = GF_GRAY;
-      q->add(garbage.height, garbage.width, garbage.flavor);
-    }
-  } else
-  if (Score::score > 100) {
-    for (i = 0; i < (3 % size); ++i) {
-      garbage.height = 1;
-      garbage.width  = 6;
-      garbage.flavor = GF_NORMAL;
-      q->add(garbage.height, garbage.width, garbage.flavor);
-    }
-    garbage.flavor = GF_GRAY;
-    q->add(garbage.height, garbage.width, garbage.flavor);
-  } else
-  if (Score::score > 50) {
-    for (i = 0; i < (3 % size); ++i) {
-      garbage.height = 1;
-      garbage.width  = 4;
-      garbage.flavor = GF_NORMAL;
-      q->add(garbage.height, garbage.width, garbage.flavor);
-    }
-  } else
-  for (i = 0; i < (3 % size); ++i) {
-    garbage.height = 1;
-    garbage.width  = 3;
-    garbage.flavor = GF_NORMAL;
-    q->add(garbage.height, garbage.width, garbage.flavor);
+  int working_height = GC_SAFE_HEIGHT - 1 - garbageQueue()->height();
+  int num_grays, num_normals;
+
+  MESSAGE("Hard garbageAmount");
+
+  if (working_height > 0) {
+    num_grays = working_height % 3;
+  } else {
+    num_grays = 0;
   }
+
+  num_normals = garbageQueue()->height() + working_height;
+
+  LOG("garbageQueue height " << garbageQueue()->height());
+  LOG("grays: " << num_grays << " normals: " << num_normals);
+  loopi(num_grays)
+    q->add(1, 6, GF_GRAY);
+
+  int norm_div = num_normals / 3;
+  int norm_mod = num_normals % 3;
+  int more_gray = norm_mod / 2;
+  LOG("div: " << norm_div << " mod: " << norm_mod << " gray: " << more_gray);
+  if (norm_div > 0) q->add(norm_div, 6, GF_NORMAL);
+  loopi(norm_mod) q->add(1, 6, GF_NORMAL);
+  //loopi(more_gray) q->add(1, 6, GF_GRAY);
+
+  MESSAGE("Resetting garbageQueue");
+  if (garbageQueue()->height() > 0) {
+    state = AI_SHATTERING; 
+    last_shatter_height = garbageQueue()->height();
+  } else {
+    state = AI_WAITING;
+    last_shatter_height = 0;
+  }
+  garbageQueue()->reset();
   return q;
 }
 
 bool ComputerPlayerAI::determineLoss()
 {
-  const unsigned int target = 4;
-  MESSAGE("Begin AI check for loss");
-  if (queue) {
-    MESSAGE("AI queue height " << queue->height() << " target " << target);
-    return queue->height() > target;
-  } else {
-    return true;
+  GarbageQueue *queue = garbageQueue();
+  static int height = queue->height();
+  int h = queue->height();
+  if (h != height) {
+    MESSAGE("Height change in determine loss old: " << height << " new: " << h);
+    height = h;
   }
+  return queue->height() > lossHeight();
 }
 
 /* End ComputerPlayerAI */
@@ -140,7 +126,7 @@ bool ComputerPlayerAI::determineLoss()
 int EasyAI::baseSteps()
 {
   //cout << "easy baseSteps" << endl;
-  int a = ComputerPlayerAI::baseSteps() * 20;
+  int a = ComputerPlayerAI::baseSteps() * 10;
   return a;
 }
 
@@ -149,7 +135,20 @@ int MediumAI::baseSteps()
   return ComputerPlayerAI::baseSteps() * 10;
 }
 
+int MediumAI::lossHeight()
+{
+  return 10;
+}
+
+/* Begin HardAI */
 int HardAI::baseSteps()
 {
   return ComputerPlayerAI::baseSteps() * 5;
 }
+
+int HardAI::lossHeight()
+{
+  return 20;
+}
+
+/* End HardAI */

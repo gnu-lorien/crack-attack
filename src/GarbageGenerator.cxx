@@ -158,7 +158,6 @@ void GarbageGenerator::addToQueue ( GarbageQueueElement *element )
   if (!element)
     return;
   GarbageQueueElement e = *element;
-  MESSAGE("h " << e.height << " w " << e.width << " a " << e.active << endl);
   assert(e.height <= GC_PLAY_HEIGHT);
   assert(e.width  <= GC_PLAY_WIDTH);
   if (!GarbageManager::isSpecialFlavor(e.flavor))
@@ -246,8 +245,6 @@ void GarbageGenerator::timeStep (   )
 
       // if this garbage's ready, let's try to drop it
       if (e.alarm < Game::time_step) {
-        MESSAGE("c: " << c);
-        MESSAGE("h " << e.height << " w " << e.width << " a " << e.active << endl);
         // if we successfully drop it, take it away
         if (GarbageManager::newFallingGarbage(e.height, e.width, e.flavor)) {
           waiting_count--;

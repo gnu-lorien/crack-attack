@@ -62,7 +62,6 @@ public:
     allocateId(id);
     Garbage *garbage = garbageStore + id;
 
-    MESSAGE("Calling initializeFalling x " << x << " y " << y << " height " << height << " width " << width);
     garbage->initializeFalling(x, y, height, width, flavor);
 
     GarbageFlavorImage::requestGarbageFlavorImage(*garbage);

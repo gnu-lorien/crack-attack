@@ -3,16 +3,18 @@
 
 #include <glib.h>
 
-using namespace std;
+//using namespace std;
 
 #include "Game.h"
-#include "ComputerPlayer.h"
+#include "GarbageQueue.h"
+//#include "ComputerPlayer.h"
 
 class GarbageQueue; 
 
 class ComputerPlayerAI {
 private:
   int last_time;
+  int last_shatter_height;
   
 protected:
   enum AI_STATE { AI_WAITING, AI_SHATTERING } state;
@@ -21,21 +23,16 @@ protected:
   virtual int baseSteps();
   virtual int stateSteps();
 
+  virtual int lossHeight();
+
 public:
 
-  ComputerPlayerAI(){ 
-    resetAlarm();
-    state = AI_WAITING;
-    queue = NULL;
-    cout << "Creating a fucking generic" << endl;
-  }
-
+  ComputerPlayerAI();
   ~ComputerPlayerAI(){}
 
   int alarm ( );
   void resetAlarm ( );
   virtual int garbageShatterDelay ( );
-  void garbageQueue ( GarbageQueue *queue );
   GarbageQueue *garbageQueue ( );
   virtual GarbageQueue *garbageAmount ( );
   virtual bool determineLoss ( );
@@ -56,14 +53,18 @@ public:
   ~MediumAI(){}
 protected:
   virtual int baseSteps();
+  virtual int lossHeight();
 };
 
 class HardAI :public ComputerPlayerAI { 
 public:
   HardAI(){}
   ~HardAI(){}
+
 protected:
   virtual int baseSteps();
+  virtual int lossHeight();
+
 };
 
 #endif
