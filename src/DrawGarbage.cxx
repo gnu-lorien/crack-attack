@@ -499,71 +499,73 @@ void Displayer::drawGarbage (   )
 
           glPopMatrix();
 
-          // draw flavor image; if any
-          if (GarbageFlavorImage::associated_garbage_id == garbage.id) {
+          if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) {
+            // draw flavor image; if any
+            if (GarbageFlavorImage::associated_garbage_id == garbage.id) {
 #ifndef NO_MULTITEXTURING
-            if (state & DS_MULTITEXTURING) {
-              glPushAttrib(GL_LIGHTING_BIT | GL_ENABLE_BIT);
+              if (state & DS_MULTITEXTURING) {
+                glPushAttrib(GL_LIGHTING_BIT | GL_ENABLE_BIT);
 
-                glMatrixMode(GL_TEXTURE);
-                glLoadIdentity();
+                  glMatrixMode(GL_TEXTURE);
+                  glLoadIdentity();
 
-                glBindTexture(GL_TEXTURE_2D, garbage_texture);
+                  glBindTexture(GL_TEXTURE_2D, garbage_texture);
 
-                glActiveTextureARB(GL_TEXTURE1_ARB);
-                glPushMatrix();
-                glTranslatef(0.5f + (x + 2.0f * GarbageFlavorImage::x)
-                 * DC_GARBAGE_LIGHTMAP_COORD_CONVERTER,
-                 0.5f + (y + 2.0f * GarbageFlavorImage::y)
-                 * DC_GARBAGE_LIGHTMAP_COORD_CONVERTER, 0.0f);
+                  glActiveTextureARB(GL_TEXTURE1_ARB);
+                  glPushMatrix();
+                  glTranslatef(0.5f + (x + 2.0f * GarbageFlavorImage::x)
+                   * DC_GARBAGE_LIGHTMAP_COORD_CONVERTER,
+                   0.5f + (y + 2.0f * GarbageFlavorImage::y)
+                   * DC_GARBAGE_LIGHTMAP_COORD_CONVERTER, 0.0f);
 
-                glEnable(GL_TEXTURE_2D);
-                glEnable(GL_BLEND);
+                  glEnable(GL_TEXTURE_2D);
+                  glEnable(GL_BLEND);
 
-                glColor3fv(white);
+                  glColor3fv(white);
 
-                glMatrixMode(GL_MODELVIEW);
-                glTranslatef(GarbageFlavorImage::x * DC_GRID_ELEMENT_LENGTH,
-                 GarbageFlavorImage::y * DC_GRID_ELEMENT_LENGTH,
-                 DC_GARBAGE_FLAVOR_TEX_OFFSET_Z);
+                  glMatrixMode(GL_MODELVIEW);
+                  glTranslatef(GarbageFlavorImage::x * DC_GRID_ELEMENT_LENGTH,
+                   GarbageFlavorImage::y * DC_GRID_ELEMENT_LENGTH,
+                   DC_GARBAGE_FLAVOR_TEX_OFFSET_Z);
 
-                glCallList(garbage_flavor_list);
+                  glCallList(garbage_flavor_list);
 
-                glMatrixMode(GL_TEXTURE);
-                glPopMatrix();
-                glActiveTextureARB(GL_TEXTURE0_ARB);
-                glMatrixMode(GL_MODELVIEW);
+                  glMatrixMode(GL_TEXTURE);
+                  glPopMatrix();
+                  glActiveTextureARB(GL_TEXTURE0_ARB);
+                  glMatrixMode(GL_MODELVIEW);
 
-              glPopAttrib();
-
-              glBindTexture(GL_TEXTURE_2D, garbage_lightmap);
-
-            } else {
-#endif
-              glPushAttrib(GL_LIGHTING_BIT | GL_ENABLE_BIT);
-
-                glMatrixMode(GL_TEXTURE);
-                glLoadIdentity();
-
-                glBindTexture(GL_TEXTURE_2D, garbage_texture);
-
-                glEnable(GL_BLEND);
-
-                glColor3fv(white);
-
-                glMatrixMode(GL_MODELVIEW);
-                glTranslatef(GarbageFlavorImage::x * DC_GRID_ELEMENT_LENGTH,
-                 GarbageFlavorImage::y * DC_GRID_ELEMENT_LENGTH,
-                 DC_GARBAGE_FLAVOR_TEX_OFFSET_Z);
-
-                glCallList(garbage_flavor_list);
+                glPopAttrib();
 
                 glBindTexture(GL_TEXTURE_2D, garbage_lightmap);
 
-              glPopAttrib();
-#ifndef NO_MULTITEXTURING
-            }
+              } else {
 #endif
+                glPushAttrib(GL_LIGHTING_BIT | GL_ENABLE_BIT);
+
+                  glMatrixMode(GL_TEXTURE);
+                  glLoadIdentity();
+
+                  glBindTexture(GL_TEXTURE_2D, garbage_texture);
+
+                  glEnable(GL_BLEND);
+
+                  glColor3fv(white);
+
+                  glMatrixMode(GL_MODELVIEW);
+                  glTranslatef(GarbageFlavorImage::x * DC_GRID_ELEMENT_LENGTH,
+                   GarbageFlavorImage::y * DC_GRID_ELEMENT_LENGTH,
+                   DC_GARBAGE_FLAVOR_TEX_OFFSET_Z);
+
+                  glCallList(garbage_flavor_list);
+
+                  glBindTexture(GL_TEXTURE_2D, garbage_lightmap);
+
+                glPopAttrib();
+#ifndef NO_MULTITEXTURING
+              }
+#endif
+            }
           }
         }
 

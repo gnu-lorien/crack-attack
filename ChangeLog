@@ -83,3 +83,7 @@ v 1.1.12cvs
 		 existed. As a result, there is less sleeping (it sleeps 7 times rather
 		 than 11), but it fits more with the current code setup. Dennis still gets
 		 the credit for this because his patch gave me the framework to do it.
+	 - Need to revert my above changes. They aren't as good.
+	- Really Low Graphics (Thanks Stephan Beyer)
+	 - FIXME: Displayer.cxx needs to unmask drawWinRecord and just make the win
+	   record less graphics intensive.

@@ -242,7 +242,8 @@ void Garbage::timeStep ( int &l_x, int &l_y )
           // if this is the end of our initial fall
           if (initial_fall) {
             initial_fall = false;
-            Spring::notifyImpact(height, width);
+            if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
+              Spring::notifyImpact(height, width);
             Grid::notifyImpact(y, height);
 
             X::notifyImpact(*this);

@@ -66,6 +66,10 @@ on_btnHelp_clicked                     (GtkButton       *button,
 void
 on_cbtnLowGraphics_toggled             (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
+
+void
+on_cbtnReallyLowGraphics_toggled       (GtkToggleButton *togglebutton,
+                                        gpointer         user_data);
 gboolean 
 on_winCrackAttackSplash_delete_event   (GtkWindow *window,
                                         gpointer  user_data);

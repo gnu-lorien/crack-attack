@@ -292,7 +292,8 @@ void Game::idleMeta (   )
     // update the pretty stuff too
     SparkleManager::timeStep();
     SignManager::timeStep();
-    WinRecord::timeStep();
+    if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
+      WinRecord::timeStep();
     LevelLights::timeStep();
 
     // advance the clock through its final tick fade
@@ -404,7 +405,8 @@ void Game::idlePlay (   )
         SignManager::timeStep();
 
         // update the impact spring
-        Spring::timeStep();
+        if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
+          Spring::timeStep();
 
         // update the clock
         Clock::timeStepPlay();

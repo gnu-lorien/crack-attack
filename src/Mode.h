@@ -30,8 +30,9 @@
 #define CM_X                             (1 << 4)
 #define CM_NO_TIME_OUT                   (1 << 5)
 #define CM_LOW_GRAPHICS                  (1 << 6)
-#define CM_AI_EASY                       (1 << 7)
-#define CM_AI_MEDIUM                     (1 << 8)
-#define CM_AI_HARD                       (1 << 9)
+#define CM_REALLY_LOW_GRAPHICS           (1 << 7)
+#define CM_AI_EASY                       (1 << 8)
+#define CM_AI_MEDIUM                     (1 << 9)
+#define CM_AI_HARD                       (1 << 10)
 
 #endif

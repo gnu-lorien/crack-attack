@@ -63,7 +63,7 @@ create_winCrackAttackSplash (void)
   GtkWidget *vbox5;
   GtkWidget *label4;
   GtkWidget *entPlayerName;
-  GtkWidget *cbtnLowGraphics;
+  GtkWidget *cbtnLowGraphics, *cbtnReallyLowGraphics;
   GtkWidget *alignment1;
   GtkWidget *vbox2;
   GtkWidget *hbox8;
@@ -150,8 +150,13 @@ create_winCrackAttackSplash (void)
   gtk_entry_set_text (GTK_ENTRY (entPlayerName), g_get_user_name());
 
   cbtnLowGraphics = gtk_check_button_new_with_mnemonic ("Reduced Graphics Mode");
+  cbtnReallyLowGraphics = gtk_check_button_new_with_mnemonic("Extremely Reduced Graphics Mode");
+
   gtk_widget_show (cbtnLowGraphics);
+  gtk_widget_show (cbtnReallyLowGraphics);
   gtk_box_pack_start (GTK_BOX (vbox5), cbtnLowGraphics, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox5), cbtnReallyLowGraphics, FALSE, FALSE, 0);
+
 
   alignment1 = gtk_alignment_new (0.5, 0.5, 1, 1);
   gtk_widget_show (alignment1);
@@ -402,6 +407,9 @@ create_winCrackAttackSplash (void)
   g_signal_connect ((gpointer) cbtnLowGraphics, "toggled",
                     G_CALLBACK (on_cbtnLowGraphics_toggled),
                     NULL);
+  g_signal_connect ((gpointer) cbtnReallyLowGraphics, "toggled",
+                    G_CALLBACK (on_cbtnReallyLowGraphics_toggled),
+                    NULL);
   g_signal_connect ((gpointer) _640by480, "activate",
                     G_CALLBACK (on_640by480_activate),
                     NULL);
@@ -463,6 +471,7 @@ create_winCrackAttackSplash (void)
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, label4, "label4");
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, entPlayerName, "entPlayerName");
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, cbtnLowGraphics, "cbtnLowGraphics");
+  GLADE_HOOKUP_OBJECT (winCrackAttackSplash, cbtnReallyLowGraphics, "cbtnReallyLowGraphics");
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, alignment1, "alignment1");
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, vbox2, "vbox2");
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, hbox8, "hbox8");

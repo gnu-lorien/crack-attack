@@ -88,52 +88,54 @@ void WinRecord::gameWon (   )
   games_won++;
   record[current_game] = GR_WON;
 
-  // The star will disappear and pop into existance in the play area.  After a
-  // few moments, it will fly to it's original location.
+  if (MetaState::mode & CM_REALLY_LOW_GRAPHICS) {
+    // The star will disappear and pop into existance in the play area.  After a
+    // few moments, it will fly to it's original location.
 
-  // record star's old location; for a time, two stars will be drawn, as one
-  // pops in and the other pops away
-  draw_old_star = true;
-  old_star_a = stars[current_game].a;
-  old_star_size = 5.0f;
+    // record star's old location; for a time, two stars will be drawn, as one
+    // pops in and the other pops away
+    draw_old_star = true;
+    old_star_a = stars[current_game].a;
+    old_star_size = 5.0f;
 
-  // displace the star into the play area and set it's starting parameters
-  displaced_star = current_game;
-  stars[current_game].a = DC_STAR_WIN_MIN_ANGULAR_DEVIATION
-   + DC_STAR_WIN_SPREAD_ANGULAR_DEVIATION * Random::number();
-  if (Random::chanceIn2(2))
-    stars[current_game].a = -stars[current_game].a;
-  stars[current_game].v_a = 0.0f;
-  stars[current_game].size = 0.0f;
-  stars[current_game].v_size = 0.0f;
-  win_star_x = (-DC_LEFT_EXTERNAL_CENTER + DC_STAR_DISPLACEMENT
-   * (GC_GAMES_PER_MATCH - 1) / 2.0f + DC_STAR_WIN_OFFSET_X)
-   - DC_STAR_DISPLACEMENT * current_game;
+    // displace the star into the play area and set it's starting parameters
+    displaced_star = current_game;
+    stars[current_game].a = DC_STAR_WIN_MIN_ANGULAR_DEVIATION
+     + DC_STAR_WIN_SPREAD_ANGULAR_DEVIATION * Random::number();
+    if (Random::chanceIn2(2))
+      stars[current_game].a = -stars[current_game].a;
+    stars[current_game].v_a = 0.0f;
+    stars[current_game].size = 0.0f;
+    stars[current_game].v_size = 0.0f;
+    win_star_x = (-DC_LEFT_EXTERNAL_CENTER + DC_STAR_DISPLACEMENT
+     * (GC_GAMES_PER_MATCH - 1) / 2.0f + DC_STAR_WIN_OFFSET_X)
+     - DC_STAR_DISPLACEMENT * current_game;
 
-  if (MetaState::mode & CM_SOLO)
-    win_star_y = -DC_STAR_OFFSET_Y + DC_STAR_WIN_SOLO_OFFSET_Y;
-  else
-    win_star_y = -DC_STAR_OFFSET_Y + DC_STAR_WIN_OFFSET_Y;
+    if (MetaState::mode & CM_SOLO)
+      win_star_y = -DC_STAR_OFFSET_Y + DC_STAR_WIN_SOLO_OFFSET_Y;
+    else
+      win_star_y = -DC_STAR_OFFSET_Y + DC_STAR_WIN_OFFSET_Y;
 
-  // set the kick velocity; choice of two aesthetically pleasing preset values
-  // or, for variety, a random 270 degree arc
-  switch (Random::number(3)) {
-  case 0:
-    win_star_v_x = DC_STAR_WIN_PRESET_1_VELOCITY_X;
-    win_star_v_y = DC_STAR_WIN_PRESET_1_VELOCITY_Y;
-    break;
-  case 1:
-    win_star_v_x = DC_STAR_WIN_PRESET_2_VELOCITY_X;
-    win_star_v_y = DC_STAR_WIN_PRESET_2_VELOCITY_Y;
-    break;
-  default:
-    // too infrequent to warrent a random direction table
-    float v = DC_STAR_WIN_MIN_VELOCITY
-     + DC_STAR_WIN_SPREAD_VELOCITY * Random::number();
-    float angle = Random::number() * (3.0f * PI / 2.0f) - (PI / 2.0f);
-    win_star_v_x = v * cos(angle);
-    win_star_v_y = v * sin(angle);
-    break;
+    // set the kick velocity; choice of two aesthetically pleasing preset values
+    // or, for variety, a random 270 degree arc
+    switch (Random::number(3)) {
+    case 0:
+      win_star_v_x = DC_STAR_WIN_PRESET_1_VELOCITY_X;
+      win_star_v_y = DC_STAR_WIN_PRESET_1_VELOCITY_Y;
+      break;
+    case 1:
+      win_star_v_x = DC_STAR_WIN_PRESET_2_VELOCITY_X;
+      win_star_v_y = DC_STAR_WIN_PRESET_2_VELOCITY_Y;
+      break;
+    default:
+      // too infrequent to warrent a random direction table
+      float v = DC_STAR_WIN_MIN_VELOCITY
+       + DC_STAR_WIN_SPREAD_VELOCITY * Random::number();
+      float angle = Random::number() * (3.0f * PI / 2.0f) - (PI / 2.0f);
+      win_star_v_x = v * cos(angle);
+      win_star_v_y = v * sin(angle);
+      break;
+    }
   }
 }
 

@@ -269,133 +269,136 @@ void Displayer::drawExternalCandy (   )
 
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-  // draw clock
-  if (MetaState::mode & (CM_SERVER | CM_CLIENT)) {
+  if ((!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) || (Game::state & GS_PAUSED) || (Game::state & GS_WON) || (Game::state & GS_LOST)) {
+    // draw clock
+    if (MetaState::mode & (CM_SERVER | CM_CLIENT)) {
 
-    glPushMatrix();
+      glPushMatrix();
 
-      glTranslatef(DC_LEFT_EXTERNAL_CENTER - DC_CLOCK_DIGIT_OFFSET / 2,
-       DC_CLOCK_OFFSET_Y, DC_EXTERNAL_OFFSET_Z);
+        glTranslatef(DC_LEFT_EXTERNAL_CENTER - DC_CLOCK_DIGIT_OFFSET / 2,
+         DC_CLOCK_OFFSET_Y, DC_EXTERNAL_OFFSET_Z);
 
-      glBindTexture(GL_TEXTURE_2D, clock_digit_textures[10]);
-      drawDigit(1.0f);
-      
-      glTranslatef(DC_CLOCK_CENTER_OFFSET / 2.0f
-       + 3.0f * DC_CLOCK_DIGIT_OFFSET / 2.0f, 0.0f, 0.0f);
-
-      GLfloat alpha = Clock::tick * (1.0f / (GLfloat) GC_STEPS_PER_SECOND);
-
-      glBindTexture(GL_TEXTURE_2D, clock_digit_textures[Clock::digits[0]]);
-      if (Clock::digits[0] != Clock::previous_digits[0]) {
-        drawDigit(alpha);
-        glBindTexture(GL_TEXTURE_2D,
-         clock_digit_textures[Clock::previous_digits[0]]);
-        drawDigit(1.0f - alpha);
-        texture_bound = Clock::previous_digits[0];
-      } else {
+        glBindTexture(GL_TEXTURE_2D, clock_digit_textures[10]);
         drawDigit(1.0f);
-        texture_bound = Clock::digits[0];
-      }
+        
+        glTranslatef(DC_CLOCK_CENTER_OFFSET / 2.0f
+         + 3.0f * DC_CLOCK_DIGIT_OFFSET / 2.0f, 0.0f, 0.0f);
 
-      glTranslatef(-DC_CLOCK_DIGIT_OFFSET, 0.0f, 0.0f);
+        GLfloat alpha = Clock::tick * (1.0f / (GLfloat) GC_STEPS_PER_SECOND);
 
-      if (Clock::digits[1] != texture_bound)
-        glBindTexture(GL_TEXTURE_2D, clock_digit_textures[Clock::digits[1]]);
-      if (Clock::digits[1] == Clock::previous_digits[1]) {
-        drawDigit(1.0f);
-        texture_bound = Clock::digits[1];
-      } else {
-        drawDigit(alpha);
-        glBindTexture(GL_TEXTURE_2D,
-         clock_digit_textures[Clock::previous_digits[1]]);
-        drawDigit(1.0f - alpha);
-        texture_bound = Clock::previous_digits[1];
-      }
+        glBindTexture(GL_TEXTURE_2D, clock_digit_textures[Clock::digits[0]]);
+        if (Clock::digits[0] != Clock::previous_digits[0]) {
+          drawDigit(alpha);
+          glBindTexture(GL_TEXTURE_2D,
+           clock_digit_textures[Clock::previous_digits[0]]);
+          drawDigit(1.0f - alpha);
+          texture_bound = Clock::previous_digits[0];
+        } else {
+          drawDigit(1.0f);
+          texture_bound = Clock::digits[0];
+        }
 
-      glTranslatef(-DC_CLOCK_DIGIT_OFFSET - DC_CLOCK_CENTER_OFFSET, 0.0f, 0.0f);
-
-      if (Clock::digits[2] != texture_bound)
-        glBindTexture(GL_TEXTURE_2D, clock_digit_textures[Clock::digits[2]]);
-      if (Clock::digits[2] == Clock::previous_digits[2]) {
-        drawDigit(1.0f);
-        texture_bound = Clock::digits[2];
-      } else {
-        drawDigit(alpha);
-        glBindTexture(GL_TEXTURE_2D,
-         clock_digit_textures[Clock::previous_digits[2]]);
-        drawDigit(1.0f - alpha);
-        texture_bound = Clock::previous_digits[2];
-      }
-
-      if (Clock::digits[3] || Clock::previous_digits[3]) {
         glTranslatef(-DC_CLOCK_DIGIT_OFFSET, 0.0f, 0.0f);
 
-        if (Clock::digits[3] == Clock::previous_digits[3]) {
-          if (texture_bound != Clock::digits[3])
-            glBindTexture(GL_TEXTURE_2D,
-             clock_digit_textures[Clock::digits[3]]);
+        if (Clock::digits[1] != texture_bound)
+          glBindTexture(GL_TEXTURE_2D, clock_digit_textures[Clock::digits[1]]);
+        if (Clock::digits[1] == Clock::previous_digits[1]) {
           drawDigit(1.0f);
+          texture_bound = Clock::digits[1];
         } else {
-          if (Clock::digits[3]) {
+          drawDigit(alpha);
+          glBindTexture(GL_TEXTURE_2D,
+           clock_digit_textures[Clock::previous_digits[1]]);
+          drawDigit(1.0f - alpha);
+          texture_bound = Clock::previous_digits[1];
+        }
+
+        glTranslatef(-DC_CLOCK_DIGIT_OFFSET - DC_CLOCK_CENTER_OFFSET, 0.0f, 0.0f);
+
+        if (Clock::digits[2] != texture_bound)
+          glBindTexture(GL_TEXTURE_2D, clock_digit_textures[Clock::digits[2]]);
+        if (Clock::digits[2] == Clock::previous_digits[2]) {
+          drawDigit(1.0f);
+          texture_bound = Clock::digits[2];
+        } else {
+          drawDigit(alpha);
+          glBindTexture(GL_TEXTURE_2D,
+           clock_digit_textures[Clock::previous_digits[2]]);
+          drawDigit(1.0f - alpha);
+          texture_bound = Clock::previous_digits[2];
+        }
+
+        if (Clock::digits[3] || Clock::previous_digits[3]) {
+          glTranslatef(-DC_CLOCK_DIGIT_OFFSET, 0.0f, 0.0f);
+
+          if (Clock::digits[3] == Clock::previous_digits[3]) {
             if (texture_bound != Clock::digits[3])
               glBindTexture(GL_TEXTURE_2D,
                clock_digit_textures[Clock::digits[3]]);
-            drawDigit(alpha);
-            texture_bound = Clock::digits[3];
-          }
-          if (Clock::previous_digits[3]) {
-            if (texture_bound != Clock::previous_digits[3])
-              glBindTexture(GL_TEXTURE_2D,
-               clock_digit_textures[Clock::previous_digits[3]]);
-            drawDigit(1.0f - alpha);
+            drawDigit(1.0f);
+          } else {
+            if (Clock::digits[3]) {
+              if (texture_bound != Clock::digits[3])
+                glBindTexture(GL_TEXTURE_2D,
+                 clock_digit_textures[Clock::digits[3]]);
+              drawDigit(alpha);
+              texture_bound = Clock::digits[3];
+            }
+            if (Clock::previous_digits[3]) {
+              if (texture_bound != Clock::previous_digits[3])
+                glBindTexture(GL_TEXTURE_2D,
+                 clock_digit_textures[Clock::previous_digits[3]]);
+              drawDigit(1.0f - alpha);
+            }
           }
         }
-      }
 
-    glPopMatrix();
+      glPopMatrix();
 
-  // draw score
-  } else {
+    // draw score
+    } else {
 
-    glPushMatrix();
+      glPushMatrix();
 
-      glTranslatef(DC_LEFT_EXTERNAL_CENTER + ((Score::n_digits_displayed - 1)
-       * DC_CLOCK_DIGIT_OFFSET) / 2, DC_CLOCK_OFFSET_Y, DC_EXTERNAL_OFFSET_Z);
+        glTranslatef(DC_LEFT_EXTERNAL_CENTER + ((Score::n_digits_displayed - 1)
+         * DC_CLOCK_DIGIT_OFFSET) / 2, DC_CLOCK_OFFSET_Y, DC_EXTERNAL_OFFSET_Z);
 
-      GLfloat alpha = 1.0f - (GLfloat) Score::fade_timer
-       * Score::inverse_timer_start;
+        GLfloat alpha = 1.0f - (GLfloat) Score::fade_timer
+         * Score::inverse_timer_start;
 
-      glBindTexture(GL_TEXTURE_2D,
-       clock_digit_textures[Score::digits[0]]);
-      texture_bound = Score::digits[0];
-      drawDigit(alpha);
-      if (Score::fade_timer && Score::previous_digits[0]
-       != Score::digits[0]) {
         glBindTexture(GL_TEXTURE_2D,
-         clock_digit_textures[Score::previous_digits[0]]);
-        texture_bound = Score::previous_digits[0];
-        drawDigit(1.0f - alpha);
-      }
-
-      for (int n = 1; n < Score::n_digits_displayed; n++) {
-        glTranslatef(-DC_CLOCK_DIGIT_OFFSET, 0.0f, 0.0f);
-        if (texture_bound != Score::digits[n]) {
-          glBindTexture(GL_TEXTURE_2D, clock_digit_textures[Score::digits[n]]);
-          texture_bound = Score::digits[n];
-        }
-        if (Score::fade_timer && Score::previous_digits[n]
-         != Score::digits[n]) {
-          drawDigit(alpha);
+         clock_digit_textures[Score::digits[0]]);
+        texture_bound = Score::digits[0];
+        drawDigit(alpha);
+        if (Score::fade_timer && Score::previous_digits[0]
+         != Score::digits[0]) {
           glBindTexture(GL_TEXTURE_2D,
-           clock_digit_textures[Score::previous_digits[n]]);
-          texture_bound = Score::previous_digits[n];
+           clock_digit_textures[Score::previous_digits[0]]);
+          texture_bound = Score::previous_digits[0];
           drawDigit(1.0f - alpha);
-        } else
-          drawDigit(1.0f);
-      }
+        }
 
-    glPopMatrix();
-  }
+        for (int n = 1; n < Score::n_digits_displayed; n++) {
+          glTranslatef(-DC_CLOCK_DIGIT_OFFSET, 0.0f, 0.0f);
+          if (texture_bound != Score::digits[n]) {
+            glBindTexture(GL_TEXTURE_2D, clock_digit_textures[Score::digits[n]]);
+            texture_bound = Score::digits[n];
+          }
+          if (Score::fade_timer && Score::previous_digits[n]
+           != Score::digits[n]) {
+            drawDigit(alpha);
+            glBindTexture(GL_TEXTURE_2D,
+             clock_digit_textures[Score::previous_digits[n]]);
+            texture_bound = Score::previous_digits[n];
+            drawDigit(1.0f - alpha);
+          } else
+            drawDigit(1.0f);
+        }
+
+      glPopMatrix();
+    }
+  } else
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
   glDisable(GL_BLEND);
 

@@ -287,12 +287,33 @@ void
 on_cbtnLowGraphics_toggled             (GtkToggleButton *togglebutton,
                                         gpointer         user_data)
 {
+    GtkWidget *lowButton = lookup_widget(GTK_WIDGET(togglebutton), "cbtnReallyLowGraphics");
     if (gtk_toggle_button_get_active(togglebutton)) {
         GRAPHICS_LOW = TRUE;
         mode |= CM_LOW_GRAPHICS;
     } else {
         GRAPHICS_LOW = FALSE;
         mode &= ~CM_LOW_GRAPHICS;
+        mode &= ~CM_REALLY_LOW_GRAPHICS;
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lowButton), FALSE);
+    }
+}
+
+void
+on_cbtnReallyLowGraphics_toggled       (GtkToggleButton *togglebutton,
+                                        gpointer         user_data)
+{
+    GtkWidget *lowButton = lookup_widget(GTK_WIDGET(togglebutton), "cbtnLowGraphics");
+    if (gtk_toggle_button_get_active(togglebutton)) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lowButton), TRUE);
+        GRAPHICS_LOW = TRUE;
+        mode |= CM_LOW_GRAPHICS;
+        mode |= CM_REALLY_LOW_GRAPHICS;
+    } else {
+        GRAPHICS_LOW = FALSE;
+        mode &= ~CM_REALLY_LOW_GRAPHICS;
+        mode &= ~CM_LOW_GRAPHICS;
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lowButton), FALSE);
     }
 }
 

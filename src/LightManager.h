@@ -64,33 +64,40 @@ public:
 
   static inline void setupHeadLightPlay (   )
   {
-    if (!(Game::state & GS_SYNC_WAIT) && CountDownManager::state == -1
-     && !X::crazyLights())
-      return;
-    setupHeadLightPlay_inline_split_();
+    if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) {
+
+      if (!(Game::state & GS_SYNC_WAIT) && CountDownManager::state == -1
+       && !X::crazyLights())
+        return;
+      setupHeadLightPlay_inline_split_();
+    }
   }
 
   static void setupHeadLightMeta (   );
 
   static inline void resetHeadLight (   )
   {
-    if (headlight_normal) return;
-    resetHeadLight_inline_split_();
+    if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) {
+      if (headlight_normal) return;
+      resetHeadLight_inline_split_();
+    }
   }
 
   static inline void timeStepInitialize (   )
   {
-    for (int n = DC_NUMBER_EXTRA_LIGHTS; n--; ) {
-      if (lights[n].enabled) {
-        glDisable((GLenum) (DC_EXTRA_LIGHT_BASE + n));
-        lights[n].enabled = false;
+    if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) {
+      for (int n = DC_NUMBER_EXTRA_LIGHTS; n--; ) {
+        if (lights[n].enabled) {
+          glDisable((GLenum) (DC_EXTRA_LIGHT_BASE + n));
+          lights[n].enabled = false;
+        }
+        lights[n].association = -1;
+        if (lights[n].attenuated)
+          unattenuateLight(lights[n], n);
       }
-      lights[n].association = -1;
-      if (lights[n].attenuated)
-        unattenuateLight(lights[n], n);
-    }
 
-    last_associated = 0;
+      last_associated = 0;
+    }
   }
 
 private:
@@ -99,89 +106,99 @@ private:
 
   static inline void associateLight ( Light &light, int a, Mote &mote, int m )
   {
-    light.association = m;
-    mote.associated_light = a;
+    if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) {
+      light.association = m;
+      mote.associated_light = a;
 
-    light.location[0] = mote.x;
-    light.location[1] = mote.y;
-    glLightfv((GLenum) (DC_EXTRA_LIGHT_BASE + a), GL_POSITION, light.location);
+      light.location[0] = mote.x;
+      light.location[1] = mote.y;
+      glLightfv((GLenum) (DC_EXTRA_LIGHT_BASE + a), GL_POSITION, light.location);
+    }
   }
 
   static inline void configureBlockBrightness ( Light &light, int a, Mote &mote,
    float r )
   {
-    assert(a >= 0);
-    assert(a < DC_NUMBER_EXTRA_LIGHTS);
+    if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) {
+      assert(a >= 0);
+      assert(a < DC_NUMBER_EXTRA_LIGHTS);
 
-    float brightness = (DC_MOTE_LIGHT_RANGE * DC_MOTE_LIGHT_RANGE - r)
-     * (1.0f / (DC_MOTE_LIGHT_RANGE * DC_MOTE_LIGHT_RANGE))
-     * mote.brightness;
+      float brightness = (DC_MOTE_LIGHT_RANGE * DC_MOTE_LIGHT_RANGE - r)
+       * (1.0f / (DC_MOTE_LIGHT_RANGE * DC_MOTE_LIGHT_RANGE))
+       * mote.brightness;
 
-    if (mote.light_color == 0) {
-      light.brightness[0] = brightness;
-      light.brightness[1] = brightness;
-      light.brightness[2] = brightness;
+      if (mote.light_color == 0) {
+        light.brightness[0] = brightness;
+        light.brightness[1] = brightness;
+        light.brightness[2] = brightness;
 
-    } else {
-      light.brightness[0] = brightness
-       * Displayer::mote_light_colors[mote.light_color][0];
-      light.brightness[1] = brightness
-       * Displayer::mote_light_colors[mote.light_color][1];
-      light.brightness[2] = brightness
-       * Displayer::mote_light_colors[mote.light_color][2];
+      } else {
+        light.brightness[0] = brightness
+         * Displayer::mote_light_colors[mote.light_color][0];
+        light.brightness[1] = brightness
+         * Displayer::mote_light_colors[mote.light_color][1];
+        light.brightness[2] = brightness
+         * Displayer::mote_light_colors[mote.light_color][2];
+      }
+
+      glLightfv((GLenum) (DC_EXTRA_LIGHT_BASE + a), GL_DIFFUSE,
+       light.brightness);
+      glLightfv((GLenum) (DC_EXTRA_LIGHT_BASE + a), GL_SPECULAR,
+       light.brightness);
     }
-
-    glLightfv((GLenum) (DC_EXTRA_LIGHT_BASE + a), GL_DIFFUSE,
-     light.brightness);
-    glLightfv((GLenum) (DC_EXTRA_LIGHT_BASE + a), GL_SPECULAR,
-     light.brightness);
   }
 
   static inline void configureGarbageBrightness ( Light &light, int a,
    Mote &mote, float r)
   {
-    assert(a >= 0);
-    assert(a < DC_NUMBER_EXTRA_LIGHTS);
+    if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) {
+      assert(a >= 0);
+      assert(a < DC_NUMBER_EXTRA_LIGHTS);
 
-    float brightness;
-    if (r > 0.0f)
-      brightness = (DC_MOTE_LIGHT_RANGE * DC_MOTE_LIGHT_RANGE - r)
-       * (1.0f / (DC_MOTE_LIGHT_RANGE * DC_MOTE_LIGHT_RANGE)) * mote.brightness;
-    else
-      brightness = mote.brightness;
+      float brightness;
+      if (r > 0.0f)
+        brightness = (DC_MOTE_LIGHT_RANGE * DC_MOTE_LIGHT_RANGE - r)
+         * (1.0f / (DC_MOTE_LIGHT_RANGE * DC_MOTE_LIGHT_RANGE)) * mote.brightness;
+      else
+        brightness = mote.brightness;
 
-    if (mote.light_color == 0) {
-      light.brightness[0] = brightness;
-      light.brightness[1] = brightness;
-      light.brightness[2] = brightness;
+      if (mote.light_color == 0) {
+        light.brightness[0] = brightness;
+        light.brightness[1] = brightness;
+        light.brightness[2] = brightness;
 
-    } else {
-      light.brightness[0] = brightness
-       * Displayer::mote_light_colors[mote.light_color][0];
-      light.brightness[1] = brightness
-       * Displayer::mote_light_colors[mote.light_color][1];
-      light.brightness[2] = brightness
-       * Displayer::mote_light_colors[mote.light_color][2];
+      } else {
+        light.brightness[0] = brightness
+         * Displayer::mote_light_colors[mote.light_color][0];
+        light.brightness[1] = brightness
+         * Displayer::mote_light_colors[mote.light_color][1];
+        light.brightness[2] = brightness
+         * Displayer::mote_light_colors[mote.light_color][2];
+      }
+
+      glLightfv((GLenum) (DC_EXTRA_LIGHT_BASE + a), GL_DIFFUSE,
+       light.brightness);
+      glLightfv((GLenum) (DC_EXTRA_LIGHT_BASE + a), GL_SPECULAR,
+       light.brightness);
     }
-
-    glLightfv((GLenum) (DC_EXTRA_LIGHT_BASE + a), GL_DIFFUSE,
-     light.brightness);
-    glLightfv((GLenum) (DC_EXTRA_LIGHT_BASE + a), GL_SPECULAR,
-     light.brightness);
   }
 
   static inline void attenuateLight ( Light &light, int a )
   {
-    glLightf((GLenum) (DC_EXTRA_LIGHT_BASE + a), GL_QUADRATIC_ATTENUATION,
-     DC_MOTE_LIGHT_ATTENUATION);
-    light.attenuated = true;
+    if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) {
+      glLightf((GLenum) (DC_EXTRA_LIGHT_BASE + a), GL_QUADRATIC_ATTENUATION,
+       DC_MOTE_LIGHT_ATTENUATION);
+      light.attenuated = true;
+    }
   }
 
   static inline void unattenuateLight ( Light &light, int a )
   {
-    glLightf((GLenum) (DC_EXTRA_LIGHT_BASE + a), GL_QUADRATIC_ATTENUATION,
-     0.0f);
-    light.attenuated = false;
+    if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) {
+      glLightf((GLenum) (DC_EXTRA_LIGHT_BASE + a), GL_QUADRATIC_ATTENUATION,
+       0.0f);
+      light.attenuated = false;
+    }
   }
 
   static Light lights[DC_NUMBER_EXTRA_LIGHTS];
