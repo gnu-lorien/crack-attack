@@ -51,6 +51,7 @@ int ComputerPlayerAI::alarm()
 int ComputerPlayerAI::garbageShatterDelay()
 {
   int delay = GC_INITIAL_POP_DELAY + (last_shatter_height * GC_PLAY_WIDTH * GC_INTERNAL_POP_DELAY) + GC_FINAL_POP_DELAY;
+  return delay;
 }
 
 GarbageQueue *ComputerPlayerAI::garbageQueue ()
@@ -100,6 +101,12 @@ GarbageQueue *ComputerPlayerAI::garbageAmount( )
   if (garbageQueue()->height() > 0) {
     state = AI_SHATTERING; 
     last_shatter_height = garbageQueue()->height();
+    int gray_height = garbageQueue()->specialHeight();
+    if (gray_height > 0) {
+      last_shatter_height *= gray_height + 1;
+      MESSAGE("Gray mult: " << gray_height + 1);
+      LOG("Gray mult: " << gray_height + 1);
+    }
   } else {
     state = AI_WAITING;
     last_shatter_height = 0;
@@ -125,7 +132,7 @@ bool ComputerPlayerAI::determineLoss()
 int EasyAI::baseSteps()
 {
   //cout << "easy baseSteps" << endl;
-  int a = ComputerPlayerAI::baseSteps() * 10;
+  int a = ComputerPlayerAI::baseSteps() * 15;
   return a;
 }
 

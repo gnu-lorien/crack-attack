@@ -12,6 +12,8 @@ ComputerPlayerAI *ComputerPlayer::ai;
 
 void ComputerPlayer::gameStart()
 {
+  if (!(MetaState::mode & CM_AI))
+    return;
   //queue = new GarbageQueue();
 
   if ((MetaState::mode & CM_AI_EASY))
@@ -49,10 +51,18 @@ int ComputerPlayer::gameFinish()
 
 void ComputerPlayer::timeStep()
 {
+  static bool first_time = true;
+  if (!(MetaState::mode & CM_AI))
+    return;
   if (!ai) {
     return;
   }
   ComputerPlayerAI &localAi = *ai;
+  if (first_time) {
+    MESSAGE("AI will drop again in " << ((localAi.alarm() - Game::time_step) / GC_STEPS_PER_SECOND) << " seconds");
+    LOG("AI will drop again in " << ((localAi.alarm() - Game::time_step) / GC_STEPS_PER_SECOND) << " seconds");
+    first_time = false;
+  }
   if (Game::time_step >= localAi.alarm()) {
     //localAi.garbageQueue(queue);
     GarbageQueue *tmp = localAi.garbageAmount();//garbage_queue);
