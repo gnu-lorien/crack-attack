@@ -319,8 +319,6 @@ on_cbtnReallyLowGraphics_toggled       (GtkToggleButton *togglebutton,
     } else {
         GRAPHICS_LOW = FALSE;
         mode &= ~CM_REALLY_LOW_GRAPHICS;
-        mode &= ~CM_LOW_GRAPHICS;
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lowButton), FALSE);
     }
 }
 
@@ -384,6 +382,8 @@ void
 on_ai_none_activate                    (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
+    GtkWidget *x = lookup_widget(GTK_WIDGET(menuitem), "cbtnXtreme");
+    gtk_widget_set_sensitive(x, TRUE);
     undo_ai_settings();
 }
 
@@ -391,6 +391,8 @@ void
 on_ai_easy_activate                    (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
+    GtkWidget *x = lookup_widget(GTK_WIDGET(menuitem), "cbtnXtreme");
+    gtk_widget_set_sensitive(x, FALSE);
     undo_ai_settings();
     mode |= CM_AI;
     mode |= CM_AI_EASY;
@@ -400,6 +402,8 @@ void
 on_ai_medium_activate                  (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
+    GtkWidget *x = lookup_widget(GTK_WIDGET(menuitem), "cbtnXtreme");
+    gtk_widget_set_sensitive(x, FALSE);
     undo_ai_settings();
     mode |= CM_AI;
     mode |= CM_AI_MEDIUM;
@@ -409,6 +413,8 @@ void
 on_ai_hard_activate                    (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
+    GtkWidget *x = lookup_widget(GTK_WIDGET(menuitem), "cbtnXtreme");
+    gtk_widget_set_sensitive(x, FALSE);
     undo_ai_settings();
     mode |= CM_AI;
     mode |= CM_AI_HARD;

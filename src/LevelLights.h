@@ -31,7 +31,6 @@ using namespace std;
 #include "Game.h"
 #include "Displayer.h"
 #include "Communicator.h"
-#include "ComputerPlayer.h"
 
 #define LL_NUMBER_LEVEL_LIGHTS       (GC_SAFE_HEIGHT - 1)
 
@@ -138,21 +137,7 @@ public:
     }
   }
 
-  static inline void handleAI ()
-  {
-    if (ComputerPlayer::checkLevelLightDying() && death_flash_alarm[LL_OPPONENT_LIGHTS] == -1)
-      death_flash_alarm[LL_OPPONENT_LIGHTS] = DC_LEVEL_LIGHT_DEATH_FLASH_TIME;
-    for (int n = LL_NUMBER_LEVEL_LIGHTS; n--; ) {
-      if (lights[LL_OPPONENT_LIGHTS][n].state & (LS_RED | LS_FADE_TO_RED)) {
-        if (ComputerPlayer::checkLevelLightBlue(n))
-          setBlue(lights[LL_OPPONENT_LIGHTS][n]);
-      } else {
-        if (!ComputerPlayer::checkLevelLightBlue(n))
-          setRed(lights[LL_OPPONENT_LIGHTS][n]);
-      }
-#warning Doesn't handle flashing!
-    }
-  }
+  static void handleAI ();
 
   // level light n corresponds to row n + 1 in the grid
   static LevelLight lights[2][LL_NUMBER_LEVEL_LIGHTS];

@@ -1,9 +1,11 @@
 #ifndef _GARBAGE_QUEUE_H
 #define _GARBAGE_QUEUE_H
 
-#include "GarbageGenerator.h"
+#include "GarbageQueueElement.h"
 
-class GarbageQueueElement;
+#include <vector>
+
+using namespace std;
 
 class GarbageQueue {
 public:
@@ -11,19 +13,23 @@ public:
   ~GarbageQueue();
 
   void add ( int height, int width, int flavor );
-  void add ( GarbageQueueElement *element );
+  void add ( GarbageQueueElement &element );
 
   int height ( );
   int specialHeight ( );
 
   void reset ( );
 
-  int removeToFirstGray ( );
+  int removeWithSpecials ( );
 
   void sendToGenerator ( );
+
 private:
-  GSList *garbage_queue;
+
   int cached_height;
+  std::vector<GarbageQueueElement> garbage_queue;
+
+  int removeToFirst ( int flavor );
 };
 
 #endif

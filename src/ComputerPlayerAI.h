@@ -1,13 +1,7 @@
 #ifndef cpai_h_
 #define cpai_h_
 
-#include <glib.h>
-
-//using namespace std;
-
-#include "Game.h"
 #include "GarbageQueue.h"
-//#include "ComputerPlayer.h"
 
 class GarbageQueue; 
 
@@ -42,7 +36,7 @@ public:
 
 class EasyAI :public ComputerPlayerAI { 
 public:
-  EasyAI() { cout << "Creating a fucking easy" << endl;}
+  EasyAI() { }
   ~EasyAI(){}
 
   virtual int lossHeight();

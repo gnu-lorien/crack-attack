@@ -32,21 +32,10 @@ using namespace std;
 #include "MetaState.h"
 #include "Communicator.h"
 #include "Random.h"
-#include "ComputerPlayer.h"
+#include "GarbageQueueElement.h"
 
 class ComboTabulator;
 class CommunicationBuffer;
-
-class GarbageQueueElement {
-public:
-  bool active;
-  int alarm;
-  int height;
-  int width;
-  int flavor;
-};
-
-class ComputerPlayer;
 
 /* static */ class GarbageGenerator {
 public:
@@ -55,7 +44,7 @@ public:
   static void comboElimination ( ComboTabulator &combo );
   static void comboComplete ( ComboTabulator &combo );
   static void timeStep (   );
-  static void addToQueue ( GarbageQueueElement *e );
+  static void addToQueue ( GarbageQueueElement &e );
   static void addToQueue ( CommunicationBuffer &buffer );
   static void addToQueue ( BufferElement garbage[], size_t size );
   static void addToQueue ( uint32 height, uint32 width, uint32 flavor, uint32 stamp );

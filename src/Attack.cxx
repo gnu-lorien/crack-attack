@@ -67,18 +67,18 @@ int main ( int argc, char **argv )
 {
   setupLocalDataDirectory();
 #ifdef WANT_GTK
-  return gui_main(argc, argv);
-#else
+  if (argc <= 1) return gui_main(argc, argv);
+#endif
   char player_name[GC_PLAYER_NAME_LENGTH];
   char host_name[GC_HOST_NAME_SIZE];
   int port;
   int mode = 0;
   
+  player_name[0] = '\0';
   parseCommandLine(argc, argv, mode, port, host_name, player_name);
   run_crack_attack(mode, port, host_name, player_name, -1, -1);
 
   return 0;
-#endif
 }
 
 inline void usage (   )
@@ -91,6 +91,9 @@ inline void usage (   )
    "       " GC_BINARY " --solo [[--really] --low] [-X] [--name 'NAME']\n"
    "        <or in short>\n"
    "       " GC_BINARY " -1 [[-r] -l] [-X] [-n 'NAME']\n"
+   "        <or with a computer opponent>\n"
+   "       " GC_BINARY " --solo [--hard] [--easy] [--medium] [[--really] --low]"
+   " [--name 'NAME']\n"
    "        <etc...>"
    << endl;
   exit(1);
@@ -177,7 +180,19 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
     else if (!strcmp(argv[n], "-w") || !strcmp(argv[n], "--wait"))
       mode |= CM_NO_TIME_OUT;
 
-    else {
+    else if (!strcmp(argv[n], "--hard")) {
+      mode |= CM_AI;
+      mode |= CM_AI_HARD;
+
+    } else if (!strcmp(argv[n], "--easy")) {
+      mode |= CM_AI;
+      mode |= CM_AI_EASY;
+
+    } else if (!strcmp(argv[n], "--medium")) {
+      mode |= CM_AI;
+      mode |= CM_AI_MEDIUM;
+
+    } else {
       if (mode & (CM_SERVER | CM_CLIENT | CM_SOLO)) usage();
 
       mode |= CM_CLIENT;

@@ -162,12 +162,10 @@ void GarbageGenerator::addToQueue (uint32 height, uint32 width, uint32 flavor, u
     dealSpecialLocalGarbage(flavor, stamp);
 }
 
-void GarbageGenerator::addToQueue ( GarbageQueueElement *element )
+void GarbageGenerator::addToQueue ( GarbageQueueElement &element )
 {
   int stamp = Game::time_step;
-  if (!element)
-    return;
-  GarbageQueueElement e = *element;
+  GarbageQueueElement e = element;
   addToQueue(e.height, e.width, e.flavor, stamp);
 }
 

@@ -70,7 +70,7 @@ public:
   void initializeAwaking ( int _x, int _y, int _height, int pop_delay,
    int awake_delay, ComboTabulator *combo, int _pop_color );
   void timeStep ( int &l_x, int &l_y );
-  void startFalling ( ComboTabulator *combo = null, bool no_hang = false,
+  void startFalling ( ComboTabulator *combo = NULL, bool no_hang = false,
    bool self_call = false );
   void startShattering ( int &s_x, int s_y, int &pop_delay, int awake_delay,
    ComboTabulator *combo );

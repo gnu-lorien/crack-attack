@@ -14,7 +14,6 @@ ComputerPlayerAI::ComputerPlayerAI ()
   last_shatter_height = 0;
   state = AI_WAITING;
   queue = new GarbageQueue();
-  cout << "Creating a fucking generic" << endl;
 }
 
 int ComputerPlayerAI::baseSteps()
@@ -59,12 +58,6 @@ GarbageQueue *ComputerPlayerAI::garbageQueue ()
   return queue;
 }
 
-void set_timestamp (gpointer element, gpointer time_stamp)
-{
-  BufferElement *e = (BufferElement *)element;
-  e->time_stamp = GPOINTER_TO_INT(time_stamp);
-}
-
 GarbageQueue *ComputerPlayerAI::garbageAmount( )
 {
   GarbageQueue *q = new GarbageQueue();
@@ -107,7 +100,7 @@ void ComputerPlayerAI::shatter()
   if (garbageQueue()->height() > 0) {
     state = AI_SHATTERING; 
     int gray_height = garbageQueue()->specialHeight();
-    last_shatter_height = garbageQueue()->removeToFirstGray();
+    last_shatter_height = garbageQueue()->removeWithSpecials();
     MESSAGE(last_shatter_height << " shattered and " << garbageQueue()->height() << " remaining.");
     if (gray_height != 0) assert(garbageQueue()->height() != 0);
     loopi(last_shatter_height) {

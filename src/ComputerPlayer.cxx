@@ -1,10 +1,8 @@
-using namespace std;
-
 #include "LevelLights.h"
 #include "ComputerPlayer.h"
 #include "Score.h"
-#include "GarbageQueue.h"
-#include "ComputerPlayerAI.h"
+
+using namespace std;
 
 //#define WAIT_TIME ( GC_STEPS_PER_SECOND * 10 )
 
@@ -33,16 +31,13 @@ void ComputerPlayer::gameStart()
 }
 
 static void show_element (GarbageQueueElement *e) {
+#ifndef NDEBUG
   printf("Element: %p h %d w %d f %d\n",
     e,
     e->height,
     e->width,
     e->flavor);
-}
-
-void show_element_foreach (gpointer e, gpointer unused) 
-{
-  show_element((GarbageQueueElement *)e);
+#endif
 }
 
 int ComputerPlayer::gameFinish()
@@ -70,11 +65,12 @@ void ComputerPlayer::timeStep()
   }
   if (Game::time_step >= localAi.alarm()) {
     //localAi.garbageQueue(queue);
-    GarbageQueue *tmp = localAi.garbageAmount();//garbage_queue);
-    tmp->sendToGenerator();
+    localAi.garbageAmount()->sendToGenerator();//garbage_queue);
+#ifndef NDEBUG
     cout << "init pop: " << GC_INITIAL_POP_DELAY << endl;
     cout << "steps per second: " << GC_STEPS_PER_SECOND << endl;
     cout << "Height: " << ai->garbageQueue()->height() << endl;
+#endif
     //delete tmp;
     //queue->reset();
     localAi.resetAlarm();

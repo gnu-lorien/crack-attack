@@ -1,18 +1,11 @@
 #ifndef COMP_PLAY_H
 #define COMP_PLAY_H
 
-using namespace std;
-
-#include <glib.h>
-
-#include "Score.h"
-#include "GarbageQueue.h"
 #include "ComputerPlayerAI.h"
 
-/*
-class GarbageQueueElement;
-*/
-class ComputerPlayerAI;
+//class ComputerPlayerAI;
+
+using namespace std;
 
 /* static */ class ComputerPlayer {
 private:

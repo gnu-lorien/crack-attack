@@ -76,7 +76,7 @@ v 1.1.11
     extensions. I'm sure this bug would come up other places, but NVidia seemed
     to be the driver that was causing the most problems
 
-v 1.1.12cvs
+v 1.1.12
   - idlePlay now sleeps to prevent 100% CPU usage. (Thanks Dennis Lubert)
    - Something about the way this works irks me. I'd like to see a way for
      this to work by using glut calls to get the elapsed time. My attempts at
@@ -91,4 +91,4 @@ v 1.1.12cvs
    - Fixes Debian bug #245157
   - Change protocol numbering to make this release compatible with Windows
     version which is still 1.1.8.
-  - Name and Resolution is now remembered by the GUI.
+  - Name, resolution, and graphics settings are now remembered by the GUI.

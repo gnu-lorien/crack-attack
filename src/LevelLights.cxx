@@ -32,6 +32,7 @@ using namespace std;
 #include "Grid.h"
 #include "Communicator.h"
 #include "MetaState.h"
+#include "ComputerPlayer.h"
 
 int LevelLights::death_flash_alarm[2];
 LevelLight LevelLights::lights[2][LL_NUMBER_LEVEL_LIGHTS];
@@ -96,4 +97,20 @@ void LevelLights::timeStep (   )
    && (MetaState::state & MS_GAME_PLAY)
    && Communicator::checkLevelLightRecvBit(LC_DEATH_FLASH_MASK))
     death_flash_alarm[LL_OPPONENT_LIGHTS] = DC_LEVEL_LIGHT_DEATH_FLASH_TIME;
+}
+
+void LevelLights::handleAI ()
+{
+  if (ComputerPlayer::checkLevelLightDying() && death_flash_alarm[LL_OPPONENT_LIGHTS] == -1)
+    death_flash_alarm[LL_OPPONENT_LIGHTS] = DC_LEVEL_LIGHT_DEATH_FLASH_TIME;
+  for (int n = LL_NUMBER_LEVEL_LIGHTS; n--; ) {
+    if (lights[LL_OPPONENT_LIGHTS][n].state & (LS_RED | LS_FADE_TO_RED)) {
+      if (ComputerPlayer::checkLevelLightBlue(n))
+        setBlue(lights[LL_OPPONENT_LIGHTS][n]);
+    } else {
+      if (!ComputerPlayer::checkLevelLightBlue(n))
+        setRed(lights[LL_OPPONENT_LIGHTS][n]);
+    }
+#warning Doesn't handle flashing!
+  }
 }
