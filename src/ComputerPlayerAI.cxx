@@ -120,7 +120,6 @@ void ComputerPlayerAI::shatter()
     state = AI_WAITING;
     last_shatter_height = 0;
   }
-  garbageQueue()->reset();
 }
 
 bool ComputerPlayerAI::determineLoss()
