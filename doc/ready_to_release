@@ -1,0 +1,29 @@
+== Criteria for Release ==
+
+Let's not repeat the mistakes of the past. This file will be used to accumulate advice and methods to fix common release errors before the release. Nothing in this project should be released if it hasn't been through at least the scrutiny outlined in this file.
+
+== Target Architectures ==
+
+x86, amd64
+
+== Compiling ==
+
+Ensure that the program compiles as-is with whichever compiler is stable for our target architectures. There shouldn't be any warnings, and C[XX]FLAGS passed in to the configure script should be the primary flags used in the compilation.
+
+== Installing ==
+
+make install <em>must</em> obey PREFIX! Potentially use a chroot to ensure that no files end up anywhere they shouldn't be. 
+
+Any autopackage files should be tested to ensure that all of the files that are installed are removed on uninstall.
+
+== Smoketests ==
+
+Ensure the game runs as expected from the install chroot using FreeGLUT.
+
+Note: The following tests should be performed without using any low graphics settings
+
+Play a single-player game to completion versus yourself.
+
+Play a single-player game to completion versus the computer player.
+
+Play a multi-player game with the current version, and the earliest version that this is expected to be compatible with and the most recent version.
