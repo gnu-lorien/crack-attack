@@ -35,6 +35,8 @@
 
 #include <sys/time.h>
 
+#include <cassert>
+
 using namespace std;
 
 #include "Game.h"

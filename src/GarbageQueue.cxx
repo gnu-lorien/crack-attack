@@ -23,6 +23,8 @@
 #include "GarbageGenerator.h"
 #include "GarbageManager.h"
 
+#include <cassert>
+
 GarbageQueue::GarbageQueue () {
   //garbage_queue// = new vector<GarbageQueueElement();
   cached_height = -1;

@@ -35,6 +35,8 @@
 #include "Random.h"
 #include "X.h"
 
+#include <cassert>
+
 using namespace std;
 
 void Garbage::initializeStatic ( int _x, int _y, int _height, int _width,

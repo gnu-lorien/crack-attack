@@ -26,7 +26,6 @@
  */
 
 #include <GL/glut.h>
-#include <cassert>
 
 #ifndef _WIN32
 #else

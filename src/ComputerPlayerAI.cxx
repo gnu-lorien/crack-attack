@@ -25,6 +25,8 @@
 #include "GarbageGenerator.h"
 #include "Game.h"
 
+#include <cassert>
+
 #define loop(v,m) for(int v = 0; v<(m); v++)
 #define loopi(m) loop(i,m)
 
