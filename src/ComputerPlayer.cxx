@@ -29,13 +29,13 @@ using namespace std;
 //#define WAIT_TIME ( GC_STEPS_PER_SECOND * 10 )
 
 bool ComputerPlayer::lost;
+bool ComputerPlayer::_impact;
 ComputerPlayerAI *ComputerPlayer::ai;
 
 void ComputerPlayer::gameStart()
 {
   if (!(MetaState::mode & CM_AI))
     return;
-  //queue = new GarbageQueue();
 
   if ((MetaState::mode & CM_AI_EASY))
     ai = new EasyAI();
@@ -43,10 +43,7 @@ void ComputerPlayer::gameStart()
     ai = new MediumAI();
   if ((MetaState::mode & CM_AI_HARD))
     ai = new HardAI();
-  /*
-  if (ai)
-    ai->garbageQueue(queue);
-  */
+
   assert(ai != NULL);
   
   lost = false;
@@ -86,15 +83,12 @@ void ComputerPlayer::timeStep()
     first_time = false;
   }
   if (Game::time_step >= localAi.alarm()) {
-    //localAi.garbageQueue(queue);
-    localAi.garbageAmount()->sendToGenerator();//garbage_queue);
+    localAi.garbageAmount()->sendToGenerator();
 #ifndef NDEBUG
     cout << "init pop: " << GC_INITIAL_POP_DELAY << endl;
     cout << "steps per second: " << GC_STEPS_PER_SECOND << endl;
     cout << "Height: " << ai->garbageQueue()->height() << endl;
 #endif
-    //delete tmp;
-    //queue->reset();
     localAi.resetAlarm();
     MESSAGE("AI will drop again in " << ((localAi.alarm() - Game::time_step) / GC_STEPS_PER_SECOND) << " seconds");
     LOG("AI will drop again in " << ((localAi.alarm() - Game::time_step) / GC_STEPS_PER_SECOND) << " seconds");
@@ -108,13 +102,13 @@ void ComputerPlayer::addGarbage ( int height, int width, int flavor ) {
   assert(ai != NULL);
   MESSAGE("Adding garbage to queue");
   ai->garbageQueue()->add(height, width, flavor);
+  _impact = true;
 }
 
 bool ComputerPlayer::checkLevelLightDying()
 {
   int height = ai->garbageQueue()->height();
   int ninety = ai->lossHeight() * .9;
-  //MESSAGE("ninety " << ninety);
   if (ninety == ai->lossHeight())
     ninety = ai->lossHeight() - 1;
   if (height >= ninety)
@@ -122,16 +116,40 @@ bool ComputerPlayer::checkLevelLightDying()
   return false;
 }
 
-bool ComputerPlayer::checkLevelLightBlue(int n)
+double ComputerPlayer::lightPartition (int n)
 {
-  double max = LL_NUMBER_LEVEL_LIGHTS;
+  static double max = LL_NUMBER_LEVEL_LIGHTS;
   double lh = ai->lossHeight();
-  //MESSAGE("lh " << lh << " max " << max);
   double partition = lh / max;
   double colorh = n * partition;
-  //MESSAGE("n " << n << " partition " << partition << " colorh " << colorh << " height " << ai->garbageQueue()->height());
-  if (colorh >= ai->garbageQueue()->height())
+  return colorh;
+}
+
+bool ComputerPlayer::checkLevelLightBlue(int n)
+{
+  if (lightPartition(n) >= ai->garbageQueue()->height())
     return true;
   else
     return false;
+}
+
+int ComputerPlayer::findTopRed()
+{
+  for (int i=0; i < LL_NUMBER_LEVEL_LIGHTS; ++i) {
+    if (lightPartition(i) >= ai->garbageQueue()->height())
+      return i;
+  }
+}
+
+int ComputerPlayer::levelLightImpact (  )
+{
+  if (impact(true))
+    return findTopRed();
+}
+
+bool ComputerPlayer::impact (bool reset)
+{
+  bool ret = _impact;
+  if (reset) _impact = false;
+  return ret;
 }

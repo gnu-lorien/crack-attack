@@ -30,7 +30,11 @@ using namespace std;
 /* static */ class ComputerPlayer {
 private:
   static bool lost;
+  static bool _impact;
   static ComputerPlayerAI *ai;
+
+  static int findTopRed (  );
+  static double lightPartition ( int block );
 
 public:
   static void gameStart (  );
@@ -42,6 +46,8 @@ public:
   // lights
   static bool checkLevelLightDying ( );
   static bool checkLevelLightBlue ( int block );
+  static bool impact ( bool reset = false );
+  static int levelLightImpact ( );
 };
 
 #endif

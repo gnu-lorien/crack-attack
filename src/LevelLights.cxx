@@ -111,6 +111,8 @@ void LevelLights::handleAI ()
       if (!ComputerPlayer::checkLevelLightBlue(n))
         setRed(lights[LL_OPPONENT_LIGHTS][n]);
     }
-#warning Doesn't handle flashing!
+    if (ComputerPlayer::impact()) {
+      setFlashing(lights[LL_OPPONENT_LIGHTS][ComputerPlayer::levelLightImpact()]);
+    }
   }
 }
