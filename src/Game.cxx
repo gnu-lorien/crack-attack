@@ -312,11 +312,15 @@ void Game::idleMeta (   )
 
 void Game::idlePlay (   )
 {
-  int time;
-  time = glutGet((GLenum) GLUT_ELAPSED_TIME);
+  timeval now;
+  double nowd;
+  gettimeofday(&now,NULL);
+  #define FPSDIFF (1.0f/30.0f)
+  nowd = now.tv_sec;
+  nowd += (double)now.tv_usec / 1000000.0f;
 
-  if ( (time - lastframe) > GC_TIME_STEP_PERIOD) {
-    lastframe = time;
+  if ( (nowd - lastframe) > FPSDIFF ) {
+    lastframe = nowd;
   } else {
     usleep(1000);
   }
