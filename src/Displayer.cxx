@@ -45,6 +45,8 @@
 #endif
 #endif
 
+#include <sys/time.h>
+
 using namespace std;
 
 #include "TextureLoader.h"

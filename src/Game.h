@@ -407,6 +407,7 @@ private:
   static bool button_down_pause;
   static bool step_play;
   static int sync_wait;
+  static double lastframe;
 };
 
 #endif

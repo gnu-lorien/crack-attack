@@ -75,3 +75,5 @@ v 1.1.11cvs
   - NVidia OpenGL build fixes. The error was in how we used deprecated
     extensions. I'm sure this bug would come up other places, but NVidia seemed
     to be the driver that was causing the most problems
+  - idlePlay now sleeps to prevent 100% CPU usage. FIXME: This uses time for
+    some things that we can easily use OpenGL for. (Thanks Dennis Lubert)

@@ -33,6 +33,8 @@
 #  include <glext.h>
 #endif
 
+#include <sys/time.h>
+
 using namespace std;
 
 #include "Game.h"
@@ -72,6 +74,7 @@ int Game::remaining_time;
 bool Game::button_down_pause;
 bool Game::step_play;
 int Game::sync_wait;
+double Game::lastframe = 0.0;
 
 void Game::initialize (   )
 {
@@ -308,6 +311,19 @@ void Game::idleMeta (   )
 
 void Game::idlePlay (   )
 {
+  timeval now;
+  double nowd;
+  gettimeofday(&now,NULL);
+  #define FPSDIFF (1.0f/30.0f)
+  nowd = now.tv_sec;
+  nowd += (double)now.tv_usec / 1000000.0f;
+
+  if ( (nowd - lastframe) > FPSDIFF ) {
+    lastframe = nowd;
+  } else {
+    usleep(1000);
+  }
+
   int modified_and_complete = false;
 
   do {
