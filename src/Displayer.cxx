@@ -267,10 +267,12 @@ void Displayer::displayMeta (   )
 
   glDisable(GL_TEXTURE_2D);
 
-  glEnable(GL_LIGHTING);
+  if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
+    glEnable(GL_LIGHTING);
   glEnable(GL_COLOR_MATERIAL);
 
-  drawLevelLights();
+  if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
+    drawLevelLights();
 
   if (CelebrationManager::draw_game) {
 
@@ -304,7 +306,8 @@ void Displayer::displayMeta (   )
     Game::time_step = hold_time_step;
   }
 
-  glDisable(GL_LIGHTING);
+  if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
+    glDisable(GL_LIGHTING);
   glDisable(GL_COLOR_MATERIAL);
 
   glEnable(GL_BLEND);
@@ -314,11 +317,12 @@ void Displayer::displayMeta (   )
 
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
 
-  drawWinRecord();
-
-  // calls glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE)
-  // internally
-  drawCandy();
+  if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) {
+    drawWinRecord();
+    // calls glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE)
+    // internally
+    drawCandy();
+  }
 
   drawScoreRecord();
 
@@ -336,10 +340,12 @@ void Displayer::displayPlay (   )
 
   glDisable(GL_TEXTURE_2D);
 
-  glEnable(GL_LIGHTING);
+  if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
+    glEnable(GL_LIGHTING);
   glEnable(GL_COLOR_MATERIAL);
 
-  drawLevelLights();
+  if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
+    drawLevelLights();
 
   if (!((Game::state & (GS_PAUSED | GS_SYNC_WAIT)) == GS_PAUSED)) {
 
@@ -368,7 +374,8 @@ void Displayer::displayPlay (   )
     LightManager::resetHeadLight();
   }
 
-  glDisable(GL_LIGHTING);
+  if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
+    glDisable(GL_LIGHTING);
   glDisable(GL_COLOR_MATERIAL);
 
   glEnable(GL_BLEND);
@@ -376,11 +383,12 @@ void Displayer::displayPlay (   )
 
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
 
-  drawWinRecord();
-
-  // calls glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE)
-  // internally
-  drawCandy();
+  if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) {
+    drawWinRecord();
+    // calls glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE)
+    // internally
+    drawCandy();
+  }
 
   if (!(Game::state & GS_PAUSED))
     drawCountDown();
