@@ -3,6 +3,7 @@
  * Daniel Nelson - 9/14/0
  *
  * Copyright (C) 2000  Daniel Nelson
+ * Copyright (C) 2004  Andrew Sayman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,8 +40,8 @@
 
 using namespace std;
 
-#include "Game.h"
 #include "TextureLoader.h"
+#include "Game.h"
 
 // the header of an uncompressed TGA file
 const GLubyte header_image[11] = { 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 };

@@ -3,6 +3,7 @@
  * Daniel Nelson - 8/26/0
  *
  * Copyright (C) 2000  Daniel Nelson
+ * Copyright (C) 2004  Andrew Sayman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,6 +29,7 @@
 #include <cstring>
 #include <cctype>
 #include <GL/glut.h>
+#include <GL/glext.h>
 
 #ifndef _WIN32
 #else
@@ -45,6 +47,7 @@
 
 using namespace std;
 
+#include "TextureLoader.h"
 #include "Game.h"
 #include "Displayer.h"
 #include "CelebrationManager.h"
@@ -53,7 +56,6 @@ using namespace std;
 #include "LightManager.h"
 #include "MetaState.h"
 #include "SparkleManager.h"
-#include "TextureLoader.h"
 #include "String.h"
 #include "ScoreRecordManager.h"
 #include "Score.h"

@@ -26,8 +26,10 @@
  */
 
 #define GL_GLEXT_LEGACY
+#define GL_GLEXT_PROTOTYPES
 
 #include <GL/glut.h>
+#include <GL/glext.h>
 
 #ifndef _WIN32
 #else

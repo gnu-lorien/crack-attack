@@ -3,6 +3,7 @@
  * Daniel Nelson - 10/27/0
  *
  * Copyright (C) 2000  Daniel Nelson
+ * Copyright (C) 2004  Andrew Sayman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,9 +39,9 @@
 
 using namespace std;
 
+#include "TextureLoader.h"
 #include "Game.h"
 #include "Displayer.h"
-#include "TextureLoader.h"
 #include "MessageManager.h"
 
 GLuint Displayer::message_1x1_list;

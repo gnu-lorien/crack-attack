@@ -3,6 +3,7 @@
  * Daniel Nelson - 11/2/0
  *
  * Copyright (C) 2000  Daniel Nelson
+ * Copyright (C) 2004  Andrew Sayman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,9 +35,9 @@
 
 using namespace std;
 
+#include "TextureLoader.h"
 #include "Game.h"
 #include "Displayer.h"
-#include "TextureLoader.h"
 
 GLuint Displayer::clock_digit_textures[11];
 

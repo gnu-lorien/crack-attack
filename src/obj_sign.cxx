@@ -3,6 +3,7 @@
  * Daniel Nelson - 9/14/0
  *
  * Copyright (C) 2000  Daniel Nelson
+ * Copyright (C) 2004  Andrew Sayman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,9 +35,9 @@
 
 using namespace std;
 
+#include "TextureLoader.h"
 #include "Game.h"
 #include "Displayer.h"
-#include "TextureLoader.h"
 
 GLuint Displayer::sign_small_list;
 GLuint Displayer::sign_large_list;

@@ -3,6 +3,7 @@
  * Daniel Nelson - 8/24/0
  *
  * Copyright (C) 2000  Daniel Nelson
+ * Copyright (C) 2004  Andrew Sayman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,6 +35,8 @@
 #  include <glext.h>
 #  include <strstrea.h>
 #endif
+
+#include "Game.h"
 
 using namespace std;
 

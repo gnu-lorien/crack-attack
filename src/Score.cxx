@@ -3,6 +3,7 @@
  * Daniel Nelson - 12/3/1
  *
  * Copyright (C) 2000  Daniel Nelson
+ * Copyright (C) 2004  Andrew Sayman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,9 +31,9 @@
 
 using namespace std;
 
+#include "TextureLoader.h"
 #include "Game.h"
 #include "MetaState.h"
-#include "TextureLoader.h"
 #include "Score.h"
 
 int Score::score;
