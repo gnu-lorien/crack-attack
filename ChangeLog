@@ -1,0 +1,69 @@
+v 1.1.0
+  - Fixed a bug which caused the loading of the logo as a garbage texture to
+    fail.
+  - Player name now defaults to username (thanks to Colin Walters).
+  - Fixed big/little-endian bug in communication code (thanks to Colin Walters).
+  - Moved dynamic data files to .crack-attack directory.
+
+v 1.1.1
+  - Added point system to solo play.
+  - Switched solo play to single game.
+  - Added score record storage and display.
+  - Improved creep speed algorithm.
+
+v 1.1.2
+  - Restructured and started using automake/autoconf.
+
+v 1.1.3
+  - Removed use of deprecated members of strstream.  Now compiles under
+    libstdc++-v3.
+
+v 1.1.4
+  - Compiles under Visual C++ 6.0 and runs under Windows.
+  - Created a Visual Basic front end for Windows.
+  - Created a Windows installation script using NSIS.
+  - Fixed several misuses of GL_BLEND texture blend mode, which caused wrongly
+    colored signs under certain drivers.
+  - Turned off lightmap texturing when rendering waking garbage, which caused
+    waking garbage to be dark under certain drivers.
+
+v 1.1.5
+  - Fixed a small combo management bug.
+  - Changed the point system of solo play to a more fun and intuitive algorithm.
+  - Changed the way arrays were being deleted, which was causing crashes under
+    Windows.
+
+v 1.1.6
+  - Fixed a bug which caused the tens and higher score digits to fade
+    improperly.
+  - Fixed a variable type problem which caused a compilation error with some
+    compilers.
+  - Modified the distribution of special blocks in X-treme mode.
+  - Improved communication and game code so that players know as soon as
+    possible that they have lost.
+  - Improved communication code, halving turn around time on state messages.
+  - Added a status bar which displays how close the player is to losing.
+
+v 1.1.7
+  - Some debug switches left on in 1.1.6.  Poor quality control!
+  - Added check for version compatibility in communication code.
+
+v 1.1.8
+  - Reduced network load by reducing garbage queue length and communication
+    frequency.
+  - Added workaround to GLUT bug which caused a crash when the Del-key was
+    pressed after the game in solo play (thanks to Stephen Thorne).
+  - Added a low resolution graphics mode (thanks to Stephen Thorne).
+  - Improved the window size algorithm.
+  - Improved the socket closing procedures.
+  - Modified the idle callback's behavior when behind in time steps.
+
+v 1.1.9
+  - Removed uses of deprecated ostrstream.
+  - Updated old C-style header file names.
+  - Defined GL_GLEXT_LEGACY to make multitexturing code compatable with modern
+    OpenGL (thanks to Mark Wilde).
+
+v 1.1.10
+  - Patch to prevent crash on Voodoo3 cards (thanks to Olivier Blin).
+  - Fix of busy-port bug after net games (thanks to Guillaume Cottenceau).

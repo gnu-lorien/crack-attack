@@ -1,0 +1,543 @@
+# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+CC = @CC@
+CXX = @CXX@
+MAKEINFO = @MAKEINFO@
+PACKAGE = @PACKAGE@
+VERSION = @VERSION@
+
+bin_PROGRAMS = crack-attack
+
+crack_attack_SOURCES = Attack.cxx Block.cxx BlockManager.cxx CelebrationManager.cxx Clock.cxx ComboManager.cxx ComboTabulator.cxx Communicator.cxx Controller.cxx CountDownManager.cxx Creep.cxx Displayer.cxx Game.cxx Garbage.cxx GarbageFlavorImage.cxx GarbageGenerator.cxx GarbageManager.cxx Grid.cxx LevelLights.cxx LightManager.cxx LoseBar.cxx MessageManager.cxx MetaState.cxx Random.cxx Sine.cxx Score.cxx ScoreRecordManager.cxx Swapper.cxx SparkleManager.cxx Spring.cxx SignManager.cxx String.cxx TextureLoader.cxx WinRecord.cxx X.cxx DrawBlocks.cxx DrawGarbage.cxx DrawCandy.cxx DrawScoreRecord.cxx DrawSwapper.cxx DrawExternalCandy.cxx DrawLevelLights.cxx DrawCountDown.cxx DrawMessages.cxx DrawWinRecord.cxx obj_block.cxx obj_garbage.cxx obj_garbage_thin_middle.cxx obj_garbage_thin_cap.cxx obj_garbage_thick_corner.cxx obj_garbage_thick_edge.cxx obj_garbage_thick_middle.cxx obj_garbage_small.cxx obj_sparkle.cxx obj_sign.cxx obj_swapper.cxx obj_external_candy.cxx obj_level_lights.cxx obj_messages.cxx obj_clock.cxx obj_name.cxx obj_score_record.cxx Attack.h Block.h BlockManager.h CelebrationManager.h Clock.h ComboManager.h ComboTabulator.h Communicator.h Controller.h CountDownManager.h Creep.h Displayer.h Game.h Garbage.h GarbageFlavorImage.h GarbageGenerator.h GarbageManager.h Grid.h LevelLights.h LightManager.h LoseBar.h MessageManager.h MetaState.h Random.h Sine.h Score.h ScoreRecordManager.h Swapper.h SparkleManager.h Spring.h SignManager.h String.h TextureLoader.h WinRecord.h X.h
+
+CXXFLAGS = -O6 -s
+INCLUDES = -DNDEBUG -DDATA_DIRECTORY='"${pkgdatadir}/"'
+
+LDFLAGS = ${all_libraries}
+LDADD = ${X_PRE_LIBS} ${X_LIBS} ${X_EXTRA_LIBS} -lGL -lGLU -lglut -lXi -lX11 -lXmu
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = config.h
+CONFIG_CLEAN_FILES = 
+PROGRAMS =  $(bin_PROGRAMS)
+
+
+DEFS = @DEFS@ -I. -I$(srcdir) -I.
+CPPFLAGS = @CPPFLAGS@
+LIBS = @LIBS@
+X_CFLAGS = @X_CFLAGS@
+X_LIBS = @X_LIBS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
+crack_attack_OBJECTS =  Attack.o Block.o BlockManager.o \
+CelebrationManager.o Clock.o ComboManager.o ComboTabulator.o \
+Communicator.o Controller.o CountDownManager.o Creep.o Displayer.o \
+Game.o Garbage.o GarbageFlavorImage.o GarbageGenerator.o \
+GarbageManager.o Grid.o LevelLights.o LightManager.o LoseBar.o \
+MessageManager.o MetaState.o Random.o Sine.o Score.o \
+ScoreRecordManager.o Swapper.o SparkleManager.o Spring.o SignManager.o \
+String.o TextureLoader.o WinRecord.o X.o DrawBlocks.o DrawGarbage.o \
+DrawCandy.o DrawScoreRecord.o DrawSwapper.o DrawExternalCandy.o \
+DrawLevelLights.o DrawCountDown.o DrawMessages.o DrawWinRecord.o \
+obj_block.o obj_garbage.o obj_garbage_thin_middle.o \
+obj_garbage_thin_cap.o obj_garbage_thick_corner.o \
+obj_garbage_thick_edge.o obj_garbage_thick_middle.o obj_garbage_small.o \
+obj_sparkle.o obj_sign.o obj_swapper.o obj_external_candy.o \
+obj_level_lights.o obj_messages.o obj_clock.o obj_name.o \
+obj_score_record.o
+crack_attack_LDADD = $(LDADD)
+crack_attack_DEPENDENCIES = 
+crack_attack_LDFLAGS = 
+CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+CXXLD = $(CXX)
+CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(LDFLAGS) -o $@
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+DIST_COMMON =  ./stamp-h.in Makefile.am Makefile.in config.h.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = gtar
+GZIP_ENV = --best
+SOURCES = $(crack_attack_SOURCES)
+OBJECTS = $(crack_attack_OBJECTS)
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .c .cxx .o .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps src/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+config.h: stamp-h
+	@if test ! -f $@; then \
+		rm -f stamp-h; \
+		$(MAKE) stamp-h; \
+	else :; fi
+stamp-h: $(srcdir)/config.h.in $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES= CONFIG_HEADERS=src/config.h \
+	     $(SHELL) ./config.status
+	@echo timestamp > stamp-h 2> /dev/null
+$(srcdir)/config.h.in: $(srcdir)/stamp-h.in
+	@if test ! -f $@; then \
+		rm -f $(srcdir)/stamp-h.in; \
+		$(MAKE) $(srcdir)/stamp-h.in; \
+	else :; fi
+$(srcdir)/stamp-h.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOHEADER)
+	@echo timestamp > $(srcdir)/stamp-h.in 2> /dev/null
+
+mostlyclean-hdr:
+
+clean-hdr:
+
+distclean-hdr:
+	-rm -f config.h
+
+maintainer-clean-hdr:
+
+mostlyclean-binPROGRAMS:
+
+clean-binPROGRAMS:
+	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+
+distclean-binPROGRAMS:
+
+maintainer-clean-binPROGRAMS:
+
+install-binPROGRAMS: $(bin_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(bindir)
+	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo "  $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`"; \
+	     $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
+	  else :; fi; \
+	done
+
+uninstall-binPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
+	done
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+crack-attack: $(crack_attack_OBJECTS) $(crack_attack_DEPENDENCIES)
+	@rm -f crack-attack
+	$(CXXLINK) $(crack_attack_LDFLAGS) $(crack_attack_OBJECTS) $(crack_attack_LDADD) $(LIBS)
+.cxx.o:
+	$(CXXCOMPILE) -c $<
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)config.h.in$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags config.h.in $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = src
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+Attack.o: Attack.cxx Game.h config.h Attack.h Communicator.h MetaState.h \
+	Random.h TextureLoader.h
+Block.o: Block.cxx Game.h config.h Block.h ComboTabulator.h \
+	BlockManager.h Random.h MetaState.h X.h Garbage.h Grid.h \
+	GarbageManager.h GarbageFlavorImage.h Displayer.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h LevelLights.h \
+	Communicator.h Swapper.h SparkleManager.h
+BlockManager.o: BlockManager.cxx Game.h config.h BlockManager.h Block.h \
+	ComboTabulator.h Random.h MetaState.h X.h Garbage.h
+CelebrationManager.o: CelebrationManager.cxx Game.h config.h MetaState.h \
+	Displayer.h Garbage.h CountDownManager.h Creep.h Spring.h \
+	WinRecord.h CelebrationManager.h SparkleManager.h \
+	MessageManager.h Random.h Score.h ComboTabulator.h
+Clock.o: Clock.cxx Game.h config.h Clock.h WinRecord.h MetaState.h
+ComboManager.o: ComboManager.cxx Game.h config.h ComboManager.h \
+	ComboTabulator.h BlockManager.h Block.h Random.h MetaState.h \
+	X.h Garbage.h GarbageGenerator.h Communicator.h Score.h
+ComboTabulator.o: ComboTabulator.cxx Game.h config.h Block.h \
+	ComboTabulator.h GarbageGenerator.h MetaState.h Communicator.h \
+	Random.h SparkleManager.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h SignManager.h \
+	BlockManager.h X.h Score.h
+Communicator.o: Communicator.cxx Game.h config.h Communicator.h \
+	Displayer.h Garbage.h CountDownManager.h Creep.h Spring.h \
+	WinRecord.h MetaState.h GarbageGenerator.h Random.h \
+	GarbageFlavorImage.h LevelLights.h
+Controller.o: Controller.cxx Game.h config.h Controller.h MetaState.h \
+	Grid.h BlockManager.h Block.h ComboTabulator.h Random.h X.h \
+	Garbage.h GarbageManager.h GarbageFlavorImage.h Displayer.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h LevelLights.h \
+	Communicator.h
+CountDownManager.o: CountDownManager.cxx Game.h config.h \
+	CountDownManager.h MessageManager.h Displayer.h Garbage.h \
+	Creep.h Spring.h WinRecord.h MetaState.h
+Creep.o: Creep.cxx Game.h config.h Creep.h Grid.h BlockManager.h Block.h \
+	ComboTabulator.h Random.h MetaState.h X.h Garbage.h \
+	GarbageManager.h GarbageFlavorImage.h Displayer.h \
+	CountDownManager.h Spring.h WinRecord.h LevelLights.h \
+	Communicator.h Controller.h ComboManager.h LoseBar.h
+Displayer.o: Displayer.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h \
+	CelebrationManager.h GarbageFlavorImage.h Random.h \
+	SignManager.h LightManager.h SparkleManager.h X.h Block.h \
+	ComboTabulator.h TextureLoader.h String.h ScoreRecordManager.h \
+	Score.h
+DrawBlocks.o: DrawBlocks.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h \
+	Block.h ComboTabulator.h BlockManager.h Random.h X.h \
+	LightManager.h SparkleManager.h Swapper.h
+DrawCandy.o: DrawCandy.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h \
+	SparkleManager.h SignManager.h
+DrawCountDown.o: DrawCountDown.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h \
+	MessageManager.h
+DrawExternalCandy.o: DrawExternalCandy.cxx Game.h config.h Displayer.h \
+	Garbage.h CountDownManager.h Creep.h Spring.h WinRecord.h \
+	MetaState.h Clock.h Score.h ComboTabulator.h LoseBar.h
+DrawGarbage.o: DrawGarbage.cxx Game.h config.h Block.h ComboTabulator.h \
+	Creep.h Displayer.h Garbage.h CountDownManager.h Spring.h \
+	WinRecord.h MetaState.h GarbageManager.h GarbageFlavorImage.h \
+	Random.h LightManager.h SparkleManager.h X.h
+DrawLevelLights.o: DrawLevelLights.cxx Game.h config.h Displayer.h \
+	Garbage.h CountDownManager.h Creep.h Spring.h WinRecord.h \
+	MetaState.h LevelLights.h Communicator.h
+DrawMessages.o: DrawMessages.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h \
+	Communicator.h CelebrationManager.h MessageManager.h
+DrawScoreRecord.o: DrawScoreRecord.cxx Game.h config.h Displayer.h \
+	Garbage.h CountDownManager.h Creep.h Spring.h WinRecord.h \
+	MetaState.h ScoreRecordManager.h Score.h ComboTabulator.h \
+	Sine.h
+DrawSwapper.o: DrawSwapper.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h \
+	Swapper.h BlockManager.h Block.h ComboTabulator.h Random.h X.h \
+	LightManager.h SparkleManager.h
+DrawWinRecord.o: DrawWinRecord.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h
+Game.o: Game.cxx Game.h config.h BlockManager.h Block.h ComboTabulator.h \
+	Random.h MetaState.h X.h Garbage.h CelebrationManager.h \
+	Displayer.h CountDownManager.h Creep.h Spring.h WinRecord.h \
+	Clock.h Controller.h Communicator.h ComboManager.h \
+	GarbageGenerator.h GarbageManager.h GarbageFlavorImage.h Grid.h \
+	LevelLights.h LoseBar.h MessageManager.h Score.h \
+	ScoreRecordManager.h SignManager.h Sine.h SparkleManager.h \
+	Swapper.h
+Garbage.o: Garbage.cxx Game.h config.h Grid.h BlockManager.h Block.h \
+	ComboTabulator.h Random.h MetaState.h X.h Garbage.h \
+	GarbageManager.h GarbageFlavorImage.h Displayer.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h LevelLights.h \
+	Communicator.h
+GarbageFlavorImage.o: GarbageFlavorImage.cxx Game.h config.h Displayer.h \
+	Garbage.h CountDownManager.h Creep.h Spring.h WinRecord.h \
+	MetaState.h GarbageFlavorImage.h Random.h TextureLoader.h
+GarbageGenerator.o: GarbageGenerator.cxx Game.h config.h \
+	GarbageGenerator.h MetaState.h Communicator.h Random.h Block.h \
+	ComboTabulator.h BlockManager.h X.h Garbage.h GarbageManager.h \
+	GarbageFlavorImage.h Displayer.h CountDownManager.h Creep.h \
+	Spring.h WinRecord.h SparkleManager.h SignManager.h
+GarbageManager.o: GarbageManager.cxx Game.h config.h GarbageManager.h \
+	Garbage.h GarbageFlavorImage.h Displayer.h CountDownManager.h \
+	Creep.h Spring.h WinRecord.h MetaState.h Random.h Grid.h \
+	BlockManager.h Block.h ComboTabulator.h X.h LevelLights.h \
+	Communicator.h
+Grid.o: Grid.cxx Game.h config.h Grid.h BlockManager.h Block.h \
+	ComboTabulator.h Random.h MetaState.h X.h Garbage.h \
+	GarbageManager.h GarbageFlavorImage.h Displayer.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h LevelLights.h \
+	Communicator.h ComboManager.h Swapper.h
+LevelLights.o: LevelLights.cxx Game.h config.h LevelLights.h Displayer.h \
+	Garbage.h CountDownManager.h Creep.h Spring.h WinRecord.h \
+	MetaState.h Communicator.h Grid.h BlockManager.h Block.h \
+	ComboTabulator.h Random.h X.h GarbageManager.h \
+	GarbageFlavorImage.h
+LightManager.o: LightManager.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h \
+	LightManager.h SparkleManager.h X.h Random.h Block.h \
+	ComboTabulator.h CelebrationManager.h
+LoseBar.o: LoseBar.cxx Game.h config.h Creep.h Displayer.h Garbage.h \
+	CountDownManager.h Spring.h WinRecord.h MetaState.h LoseBar.h
+MessageManager.o: MessageManager.cxx Game.h config.h MessageManager.h \
+	Displayer.h Garbage.h CountDownManager.h Creep.h Spring.h \
+	WinRecord.h MetaState.h
+MetaState.o: MetaState.cxx Game.h config.h MetaState.h Displayer.h \
+	Garbage.h CountDownManager.h Creep.h Spring.h WinRecord.h \
+	CelebrationManager.h Controller.h Communicator.h \
+	MessageManager.h
+obj_block.o: obj_block.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h
+obj_clock.o: obj_clock.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h \
+	TextureLoader.h
+obj_external_candy.o: obj_external_candy.cxx Game.h config.h Displayer.h \
+	Garbage.h CountDownManager.h Creep.h Spring.h WinRecord.h \
+	MetaState.h TextureLoader.h GarbageFlavorImage.h Random.h
+obj_garbage.o: obj_garbage.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h \
+	TextureLoader.h GarbageFlavorImage.h Random.h
+obj_garbage_small.o: obj_garbage_small.cxx Game.h config.h Displayer.h \
+	Garbage.h CountDownManager.h Creep.h Spring.h WinRecord.h \
+	MetaState.h
+obj_garbage_thick_corner.o: obj_garbage_thick_corner.cxx Game.h config.h \
+	Displayer.h Garbage.h CountDownManager.h Creep.h Spring.h \
+	WinRecord.h MetaState.h
+obj_garbage_thick_edge.o: obj_garbage_thick_edge.cxx Game.h config.h \
+	Displayer.h Garbage.h CountDownManager.h Creep.h Spring.h \
+	WinRecord.h MetaState.h
+obj_garbage_thick_middle.o: obj_garbage_thick_middle.cxx Game.h config.h \
+	Displayer.h Garbage.h CountDownManager.h Creep.h Spring.h \
+	WinRecord.h MetaState.h
+obj_garbage_thin_cap.o: obj_garbage_thin_cap.cxx Game.h config.h \
+	Displayer.h Garbage.h CountDownManager.h Creep.h Spring.h \
+	WinRecord.h MetaState.h
+obj_garbage_thin_middle.o: obj_garbage_thin_middle.cxx Game.h config.h \
+	Displayer.h Garbage.h CountDownManager.h Creep.h Spring.h \
+	WinRecord.h MetaState.h
+obj_level_lights.o: obj_level_lights.cxx Game.h config.h Displayer.h \
+	Garbage.h CountDownManager.h Creep.h Spring.h WinRecord.h \
+	MetaState.h
+obj_messages.o: obj_messages.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h \
+	TextureLoader.h MessageManager.h
+obj_name.o: obj_name.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h \
+	String.h Communicator.h
+obj_score_record.o: obj_score_record.cxx Game.h config.h Displayer.h \
+	Garbage.h CountDownManager.h Creep.h Spring.h WinRecord.h \
+	MetaState.h String.h Score.h ComboTabulator.h
+obj_sign.o: obj_sign.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h \
+	TextureLoader.h
+obj_sparkle.o: obj_sparkle.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h
+obj_swapper.o: obj_swapper.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h
+Random.o: Random.cxx Game.h config.h Random.h
+Score.o: Score.cxx Game.h config.h MetaState.h TextureLoader.h Score.h \
+	ComboTabulator.h
+ScoreRecordManager.o: ScoreRecordManager.cxx Game.h config.h Displayer.h \
+	Garbage.h CountDownManager.h Creep.h Spring.h WinRecord.h \
+	MetaState.h Score.h ComboTabulator.h Controller.h \
+	ScoreRecordManager.h
+SignManager.o: SignManager.cxx Game.h config.h SignManager.h Displayer.h \
+	Garbage.h CountDownManager.h Creep.h Spring.h WinRecord.h \
+	MetaState.h Random.h
+Sine.o: Sine.cxx Game.h config.h MetaState.h Sine.h
+SparkleManager.o: SparkleManager.cxx Game.h config.h Displayer.h \
+	Garbage.h CountDownManager.h Creep.h Spring.h WinRecord.h \
+	MetaState.h Random.h SparkleManager.h
+Spring.o: Spring.cxx Game.h config.h Spring.h
+String.o: String.cxx Game.h config.h Displayer.h Garbage.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h MetaState.h \
+	String.h TextureLoader.h
+Swapper.o: Swapper.cxx Game.h config.h Swapper.h BlockManager.h Block.h \
+	ComboTabulator.h Random.h MetaState.h X.h Garbage.h Grid.h \
+	GarbageManager.h GarbageFlavorImage.h Displayer.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h LevelLights.h \
+	Communicator.h Controller.h ComboManager.h
+TextureLoader.o: TextureLoader.cxx Game.h config.h TextureLoader.h
+WinRecord.o: WinRecord.cxx Game.h config.h WinRecord.h MetaState.h \
+	Displayer.h Garbage.h CountDownManager.h Creep.h Spring.h \
+	Random.h
+X.o: X.cxx Game.h config.h Grid.h BlockManager.h Block.h \
+	ComboTabulator.h Random.h MetaState.h X.h Garbage.h \
+	GarbageManager.h GarbageFlavorImage.h Displayer.h \
+	CountDownManager.h Creep.h Spring.h WinRecord.h LevelLights.h \
+	Communicator.h Swapper.h
+
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+all-recursive-am: config.h
+	$(MAKE) $(AM_MAKEFLAGS) all-recursive
+
+install-exec-am: install-binPROGRAMS
+install-exec: install-exec-am
+
+install-data-am:
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am: uninstall-binPROGRAMS
+uninstall: uninstall-am
+all-am: Makefile $(PROGRAMS) config.h
+all-redirect: all-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+	$(mkinstalldirs)  $(DESTDIR)$(bindir)
+
+
+mostlyclean-generic:
+
+clean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-hdr mostlyclean-binPROGRAMS \
+		mostlyclean-compile mostlyclean-tags \
+		mostlyclean-generic
+
+mostlyclean: mostlyclean-am
+
+clean-am:  clean-hdr clean-binPROGRAMS clean-compile clean-tags \
+		clean-generic mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-hdr distclean-binPROGRAMS distclean-compile \
+		distclean-tags distclean-generic clean-am
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-hdr maintainer-clean-binPROGRAMS \
+		maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-generic distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: mostlyclean-hdr distclean-hdr clean-hdr maintainer-clean-hdr \
+mostlyclean-binPROGRAMS distclean-binPROGRAMS clean-binPROGRAMS \
+maintainer-clean-binPROGRAMS uninstall-binPROGRAMS install-binPROGRAMS \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile tags mostlyclean-tags distclean-tags \
+clean-tags maintainer-clean-tags distdir info-am info dvi-am dvi check \
+check-am installcheck-am installcheck all-recursive-am install-exec-am \
+install-exec install-data-am install-data install-am install \
+uninstall-am uninstall all-redirect all-am all installdirs \
+mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

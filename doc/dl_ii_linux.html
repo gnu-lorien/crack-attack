@@ -1,0 +1,129 @@
+<html>
+<head>
+<title>Download and Installation of Crack Attack! for Linux</title>
+<meta name="keywords" content="crack attack free software game Linux OpenGL download instructions installation Daniel Nelson">
+<meta name="description" content="Linux download and installation instructions for the free OpenGL game Crack Attack! by Daniel Nelson.">
+</head>
+
+<body text="#c0c0c0" link="#cc00cc" vlink="#eeeeee" bgcolor="#000000">
+
+<table width=100%><tr>
+<td width=40% align=center valign=center>
+<img src="logo_big.jpg" border=0>
+<td width=60% align=center valign=center>
+<font size=+3>
+<br><br>
+Linux Installation
+<font size=+1>
+<p>
+<p><font size=-1>version 1.1.8</font>
+</tr></table>
+<br><br><center>
+<a href="#download">Download</a> |
+<a href="#installation">Installation</a> |
+<a href="#run modes">Run Modes</a> |
+<a href="#command-line options">Command-Line Options</a> |
+<a href="#game play">Game Play</a> <br><br>
+<a href="index.html">Main Page</a>
+</center><br>
+<hr>
+<br>
+
+<h1><a name="download">Download</a></h1>
+Download a <a href="http://aluminumangel.org/cgi-bin/download_counter.cgi?attack_linux+attack/crack-attack-1.1.8.tar.gz">tarball of the Crack Attack! source and documentation</a> here.</a>
+
+<h1><a name="installation">Installation</a></h1>
+<ol>
+<li><a href="http://aluminumangel.org/cgi-bin/download_counter.cgi?attack_linux+attack/crack-attack-1.1.8.tar.gz">Download</a>
+the tarball and untar.
+<li>Change to the newly expanded directory.
+<li>Type <code>configure</code>.
+<li>Type <code>make</code>.
+<li>Type <code>make install</code>.  You must be <code>root</code> for this
+to work.
+<li>You may have to type <code>rehash</code> at this point, so your shell can
+find the newly installed binary.
+<li>The binary will be <code>crack-attack</code>.  Type <code>crack-attack
+--solo</code> to play offline.  Type <code>crack-attack --server</code> to start
+an online game and have an opponent type <code>crack-attack <u>HOSTNAME</u></code> to
+connect to it.
+<li>Included in the documentation directory are three handy Crack Attack! icons,
+<code>cube_icon.xpm</code>, <code>logo_icon.xpm</code> and,
+<code>extreme_icon.xpm</code>, created by Angie Linn.
+<li>Something went wrong?  Let me know!  It's probably my fault.  I don't have
+access to a particularly diverse set of machines, so I need your input.
+</ol>
+
+<h1><a name="run modes">Run Modes</a></h1>
+Crack Attack! can be played both online against an opponent or offline.  It
+runs in one of three modes: client or server mode for online play and solo mode
+for offline play.
+
+<menu>
+<li> server mode<br>
+<br><code><b>crack-attack --server</b> [<u>PORT</u>] [<b>-X</b>] [<b>--wait</b>] [<b>--name</b> '<u>NAME</u>']</code><br><br><br>
+<li> client mode<br>
+<br><code><b>crack-attack</b> <u>SERVER</u>[:<u>PORT</u>] [<b>--name</b> '<u>NAME</u>']</code><br><br><br>
+<li> solo mode<br>
+<br><code><b>crack-attack --solo</b> [<b>-X</b>] [<b>--name</b> '<u>NAME</u>']</code><br><br><br>
+</menu>
+
+<h1><a name="command-line options">Command-Line Options</a></h1>
+
+<menu><dt><dd>
+<dt><code><b>--server</b> | <b>-s</b> [<u>PORT</u>]</code><br><br>
+<dd>Start a Crack Attack! server.  To play an opponent online, one person starts
+a server and the other connects to it as a client.  <code><u>PORT</u></code> is the
+port at which the server will listen, with 8080 being the
+default.  The server will wait for a client to connect or until it times
+out.
+<br><br><dt><code><b>--solo</b> | <b>-1</b></code><br><br>
+<dd>Play offline in solo mode.  Can you make the top thirty!?
+<br><br><dt><code><b>--low</b> | <b>-l</b></code><br><br>
+<dd>Low quality graphics.  Use this option if the normal graphics mode is too
+much for your poor computer.
+<br><br><dt><code><b>-X</b></code><br><br>
+<dd>Play in X-treme mode.  See below for details.  Please do not attempt X-treme
+mode if you are pregnant or have any sort of heart condition!
+<br><br><dt><code><b>--wait</b> | <b>-w</b></code><br><br>
+<dd>Causes a server to wait indefinitely for a connection, never timing out.
+<br><br><dt><code><b>--name</b> | <b>-n</b> '<u>NAME</u>'</code><br><br>
+<dd>Specifies your Crack Attack! persona.  Single quotes (<code>'</code>)
+surrounding <code><u>NAME</u></code> are recommended so as not to confuse the
+shell, especially if you're using strange characters.  If no name is specified,
+it defaults to your username.  Most standard keyboard characters are allowed.
+Those that are not are ignored.  Additionally, the tilde (<code>~</code>) acts
+as an escape character, with the following escape sequences available.
+<table width=100%><tr><td width=20%><td width=80%>
+<menu><dt><dd>
+<br><dt><code>~&gt;</code><br><br>
+<dd>Step forward half a space.
+<br><br><dt><code>~&lt;</code><br><br>
+<dd>Step backward half a space.
+<br><br><dt><code>
+<font color=3333FF>~0</font> | 
+<font color=FF1919>~1</font> |
+<font color=19FF19>~2</font> |
+<font color=C8C819>~3</font> |
+<font color=E100E1>~4</font> |
+<font color=19C8C8>~5</font> |
+<font color=E74B19>~6</font> |
+<font color=FF7D7D>~7</font> |
+<font color=8400CF>~8</font> |
+<font color=7D7D7D>~9</font>
+</code><br><br>
+<dd>Switch colors.  The default color is 0.
+<br><br><dt><code>~~</code><br><br>
+<dd>Just a tilde.
+</table>
+</menu>
+</menu>
+<br><br><br>
+
+<h1><a name="game play">Game Play</a></h1>
+
+Return to the <a href="index.html">main page</a> for game play instructions.
+<br> <br> <br> <br> <br>
+
+</body>
+</html>

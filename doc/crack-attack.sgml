@@ -1,0 +1,134 @@
+<!doctype refentry PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
+  <!ENTITY debian      "<productname>Debian GNU/Linux</productname>">
+  <!ENTITY package     "<productname>Crack Attack</productname>">
+
+  <!ENTITY dhfirstname "<firstname>Colin</firstname>">
+  <!ENTITY dhsurname   "<surname>Walters</surname>">
+  <!ENTITY dhdate      "<date>November 28, 2001</date>">
+  <!ENTITY dhsection   "<manvolnum>1</manvolnum>">
+  <!ENTITY dhemail     "<email>walters@debian.org</email>">
+  <!ENTITY dhusername  "Colin Walters">
+  <!ENTITY dhpackage   "crack-attack">
+
+  <!ENTITY debian      "<productname>Debian GNU/Linux</productname>">
+  <!ENTITY gnu         "<acronym>GNU</acronym>">
+
+]>
+
+<!--
+Manual page for crack-attack 1.0
+
+     (C) 2001 Colin Walters <walters@debian.org>
+
+Adapted from docbook-to-man.sgml which is:
+     (C) 1999 W. Borgert debacle@debian.org
+-->     
+
+<refentry>
+  <refentryinfo>
+    <address>
+      <email>nelson@aluminumangel.org</email>
+    </address>
+    <author>
+      <firstname>Daniel</firstname>
+      <surname>Nelson</surname>
+    </author>
+    <date>2000</date>
+  </refentryinfo>
+  <refmeta>
+    <refentrytitle>&dhpackage</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+  <refnamediv>
+    <refname>Crack Attack!</refname>
+    <refpurpose>multiplayer OpenGL puzzle game like "Tetris Attack"</refpurpose>
+  </refnamediv>
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>&dhpackage</command>
+      <group choice="REQ">
+        <group choice="REQ"><arg>--server <replaceable>PORT</replaceable></arg>
+	       <arg choice="OPT">-X</arg><arg choice="OPT">--wait</arg>
+	</group>
+        <group choice="REQ"><arg><replaceable>SERVER</replaceable></arg>
+	       <arg choice="OPT">-X</arg>
+	</group>
+	<group choice="REQ"><arg>--solo</arg><arg choice="OPT">-X</arg></group>
+      </group>
+      <arg choice="OPT">--name <replaceable>NAME</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+  <refsect1>
+    <title>Description</title>
+
+    <para>&package is roughly based on the Super Nintendo game
+ "Tetris Attack".  Slowly, your stack of colored blocks grows from the
+ bottom, and you've got to make sure it never reaches the top.  If it
+ does, you lose.  To eliminate blocks from the stack, line up at least
+ three of one color, horizontally or vertically.  Once you do, those
+ blocks disappear, and put off slightly your inevitable demise.</para>
+ 
+ <para>Crack Attack essentially requires hardware acceleration.  For
+ XFree users, this means you want <abbrev>DRI</abbrev>.</para>
+  </refsect1>
+  <refsect1>
+    <title>Copyright</title>
+
+    <para>Copyright (c) 2000 Daniel Nelson</para>
+
+    <para>This program is free software; you can redistribute it
+    and/or modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2 of
+    the License, or (at your option) any later version.</para>
+
+    <para>This program is distributed in the hope that it will be
+    useful, but WITHOUT ANY WARRANTY; without even the implied
+    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+    PURPOSE.  See the GNU General Public License for more details.</para>
+    
+    <para>The GNU General Public License can be found online at
+    http://www.gnu.org/copyleft/gpl.html.  Additionally, a copy can be
+    obtained by writing to the Free Software Foundation, Inc., 59
+    Temple Place - Suite 330, Boston, MA 02111-1307, USA.</para>
+    
+  </refsect1>
+  <refsect1>
+    <title>Disclaimer</title>
+    <para>It is important to realize that the name of Crack Attack!
+    X-treme play mode is meant to be humorous, and thus should not
+    itself be the subject of derision.  Thank you.</para>
+  </refsect1>
+
+  <refsect1>
+    <title>Author</title>
+    <para>Direct comments, questions, praise, flames, and job offers
+    to nelson@aluminumangel.org.  Visit my homepage at
+    aluminumangel.org.</para>
+
+    <para>This manual page was written by &dhusername; &dhemail; for
+    the &debian; system (but may be used by others).  Permission is
+    granted to copy, distribute and/or modify this document under the
+    terms of the <acronym>GNU</acronym> Free Documentation License,
+    Version 1.1 or any later version published by the Free Software
+    Foundation; with no Invariant Sections, no Front-Cover Texts and
+    no Back-Cover Texts.</para>
+  </refsect1>
+
+</refentry>
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-default-dtd-file:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

@@ -1,0 +1,2 @@
+man1_MANS = crack-attack.sgml
+EXTRA_DIST = $(man1_MANS) index.html dl_ii_linux.html dl_ii_windows.html screen_explanation.jpg logo_big.jpg cube_icon.xpm extreme_icon.xpm logo_icon.xpm tn_screen_shot_0.jpg tn_screen_shot_4.jpg tn_screen_shot_8.jpg tn_screen_shot_1.jpg tn_screen_shot_5.jpg tn_wallpaper_a.jpg tn_screen_shot_2.jpg tn_screen_shot_6.jpg tn_wallpaper_b.jpg tn_screen_shot_3.jpg tn_screen_shot_7.jpg
