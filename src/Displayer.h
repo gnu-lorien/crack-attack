@@ -3,6 +3,7 @@
  * Daniel Nelson - 8/24/0
  *
  * Copyright (C) 2000  Daniel Nelson
+ * Copyright (C) 2004  Andrew Sayman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -458,7 +459,7 @@ class Sign;
 
 /* static */ class Displayer {
 public:
-  static void initialize (   );
+  static void initialize ( int width, int height );
   static void gameStart (   );
   static void gameFinish (   );
   static void cleanUp (   );
@@ -608,6 +609,8 @@ private:
   static GLuint losebar_texture;
 
   static int state;
+
+  static int main_window;
 
   static bool opengl_version_1_2;
   static GLenum rescale_method;

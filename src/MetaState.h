@@ -3,6 +3,7 @@
  * Daniel Nelson - 8/24/0
  *
  * Copyright (C) 2000  Daniel Nelson
+ * Copyright (C) 2004  Andrew Sayman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -43,7 +44,9 @@ using namespace std;
 /* static */ class MetaState {
 public:
   static void programStart ( int _mode,
-   char player_name[GC_PLAYER_NAME_LENGTH] );
+   char player_name[GC_PLAYER_NAME_LENGTH],
+   int width,
+   int height);
   static void programEnd (   );
   static void gameStart (   );
   static void gameWon (   );

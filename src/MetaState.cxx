@@ -3,6 +3,7 @@
  * Daniel Nelson - 10/22/0
  *
  * Copyright (C) 2000  Daniel Nelson
+ * Copyright (C) 2004  Andrew Sayman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -50,14 +51,16 @@ int MetaState::final_time_step;
 char MetaState::player_name[GC_PLAYER_NAME_LENGTH];
 
 void MetaState::programStart ( int _mode,
- char _player_name[GC_PLAYER_NAME_LENGTH] )
+ char _player_name[GC_PLAYER_NAME_LENGTH],
+ int width,
+ int height)
 {
   state = MS_BOTH_KEY_WAIT;
   mode |= _mode;
   strncpy(player_name, _player_name, GC_PLAYER_NAME_LENGTH);
   
   Game::initialize();
-  Displayer::initialize();
+  Displayer::initialize(width, height);
 
   MessageManager::mode = MM_NORMAL;
   MessageManager::readyMessage(MS_ANYKEY);

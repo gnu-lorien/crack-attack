@@ -3,6 +3,7 @@
  * Daniel Nelson - 8/24/0
  *
  * Copyright (C) 2000  Daniel Nelson
+ * Copyright (C) 2004  Andrew Sayman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -37,6 +38,8 @@
 #else
 #  include <glext.h>
 #endif
+
+#include "Mode.h"
 
 using namespace std;
 
@@ -106,14 +109,6 @@ using namespace std;
 #define GC_X_REC_FILE_NAME               "score_record_x"
 #define GC_REC_FILE_NAME                 "score_record"
 #define GC_DEFAULT_REC_FILE_NAME         GC_DATA_DIRECTORY "default_record"
-
-// meta game modes
-#define CM_SERVER                        (1 << 0)
-#define CM_CLIENT                        (1 << 1)
-#define CM_SOLO                          (1 << 2)
-#define CM_X                             (1 << 3)
-#define CM_NO_TIME_OUT                   (1 << 4)
-#define CM_LOW_GRAPHICS                  (1 << 5)
 
 // random angle tables' size; must be power of two
 #define GC_SIZE_RANDOM_ANGLE_TABLE       (256)

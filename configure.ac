@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.59)
 AC_INIT(crack-attack,1.1.10,lorien420@myrealbox.com)
-AC_CONFIG_SRCDIR(src/main.c)
+AC_CONFIG_SRCDIR(src/Attack.cxx)
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(src/config.h)
 
@@ -9,6 +9,7 @@ dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_INSTALL
+AC_PROG_RANLIB
 
 dnl Checks for libraries.
 # FIXME: Replace `main' with a function in `-lGL':
@@ -60,6 +61,11 @@ AC_FUNC_MEMCMP
 AC_FUNC_STAT
 AC_CHECK_FUNCS([atexit gethostbyname inet_ntoa mkdir pow socket sqrt strchr strcspn strstr poll])
 
-AC_CONFIG_FILES(Makefile src/Makefile data/Makefile doc/Makefile)
+AC_CONFIG_FILES(
+  Makefile 
+  src/Makefile 
+  src/gtk-gui/Makefile
+  data/Makefile 
+  doc/Makefile)
 
 AC_OUTPUT

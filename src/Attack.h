@@ -3,6 +3,7 @@
  * Daniel Nelson - 8/29/0
  *
  * Copyright (C) 2000  Daniel Nelson
+ * Copyright (C) 2004  Andrew Sayman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,6 +31,7 @@
 
 using namespace std;
 
+void run_crack_attack (int mode, int port, char *host_name, char *player_name, int width, int height);
 void usage (   );
 void parseCommandLine ( int argc, char **argv, int &mode, int &port,
  char *host_name, char player_name[GC_PLAYER_NAME_LENGTH] );

@@ -24,7 +24,6 @@
  * Columbus, OH  43210
  */
      
-#include <GL/glut.h>
 #include <cstring>
 #include <cctype>
 #include <sys/stat.h>
@@ -45,6 +44,12 @@ using namespace std;
 #include "MetaState.h"
 #include "Random.h"
 
+#ifdef WANT_GTK
+#include "gtk-gui/gui_main.h"
+#endif
+
+#define GC_HOST_NAME_SIZE (256)
+
 /*
  * Documentation
  *   html tables don't work right in explorer
@@ -60,15 +65,45 @@ using namespace std;
 
 int main ( int argc, char **argv )
 {
+#ifdef WANT_GTK
+  return gui_main(argc, argv);
+#else
   char player_name[GC_PLAYER_NAME_LENGTH];
-  char host_name[256];
+  char host_name[GC_HOST_NAME_SIZE];
   int port;
   int mode = 0;
-
-  glutInit(&argc, argv);
-
-  player_name[0] = '\0';
+  GtkWidget *winCrackAttackSplash = NULL;
+  
   parseCommandLine(argc, argv, mode, port, host_name, player_name);
+  run_crack_attack(mode, port, host_name, player_name, -1, -1);
+
+  return 0;
+#endif
+}
+
+inline void usage (   )
+{
+  cerr << "Usage: " GC_BINARY " --server [PORT] [--low] [-X] [--wait] "
+   "[--name 'NAME']\n"
+   "        <or>\n"
+   "       " GC_BINARY " SERVER[:PORT] [--low] [--name 'NAME']\n"
+   "        <or>\n"
+   "       " GC_BINARY " --solo [--low] [-X] [--name 'NAME']"
+   << endl;
+  exit(1);
+}
+
+void run_crack_attack (
+    int mode, 
+    int port, 
+    char *host_name, 
+    char *player_name,
+    int width,
+    int height) {
+  if (!player_name) {
+    cerr << "Player name not properly allocated" << endl;
+    return;
+  }
 
   if (player_name[0] == '\0') {
 #ifndef _WIN32
@@ -93,23 +128,9 @@ int main ( int argc, char **argv )
   else
     Random::seed(Random::generateSeed());
 
-  MetaState::programStart(mode, player_name);
+  MetaState::programStart(mode, player_name, width, height);
 
   glutMainLoop();
-
-  return 0;
-}
-
-inline void usage (   )
-{
-  cerr << "Usage: " GC_BINARY " --server [PORT] [--low] [-X] [--wait] "
-   "[--name 'NAME']\n"
-   "        <or>\n"
-   "       " GC_BINARY " SERVER[:PORT] [--low] [--name 'NAME']\n"
-   "        <or>\n"
-   "       " GC_BINARY " --solo [--low] [-X] [--name 'NAME']"
-   << endl;
-  exit(1);
 }
 
 void parseCommandLine ( int argc, char **argv, int &mode, int &port,
@@ -154,7 +175,7 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
       if (mode & (CM_SERVER | CM_CLIENT | CM_SOLO)) usage();
 
       mode |= CM_CLIENT;
-      strcpy(host_name, argv[n]);
+      strncpy(host_name, argv[n], GC_HOST_NAME_SIZE);
       char *ptr = strchr(host_name, ':');
       if (ptr) {
         port = atoi(ptr + 1);

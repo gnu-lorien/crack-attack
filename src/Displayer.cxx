@@ -29,9 +29,9 @@
 #include <cstring>
 #include <cctype>
 #include <GL/glut.h>
-#include <GL/glext.h>
 
 #ifndef _WIN32
+#  include <GL/glext.h>
 #else
 #  include <glext.h>
 #endif
@@ -64,6 +64,7 @@ GLenum Displayer::rescale_method;
 bool Displayer::opengl_version_1_2;
 
 int Displayer::state;
+int Displayer::main_window;
 GLfloat Displayer::play_offset_y;
 
 #ifndef NO_MULTITEXTURING
@@ -78,12 +79,16 @@ PFNGLCLIENTACTIVETEXTUREARBPROC Displayer::glClientActiveTextureARB;
 GLint Displayer::screen_length;
 #endif
 
-void Displayer::initialize (   )
+void Displayer::initialize ( int width, int height  )
 {
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-  glutInitWindowSize(DC_WINDOW_PIXEL_STARTING_WIDTH,
-   DC_WINDOW_PIXEL_STARTING_HEIGHT);
-  glutCreateWindow(GC_NAME);
+  if (width != -1 && height != -1) {
+    glutInitWindowSize(width, height);
+  } else {
+    glutInitWindowSize(DC_WINDOW_PIXEL_STARTING_WIDTH,
+     DC_WINDOW_PIXEL_STARTING_HEIGHT);
+  }
+  main_window = glutCreateWindow(GC_NAME);
 
   state = 0;
 
@@ -203,6 +208,7 @@ void Displayer::gameFinish (   )
 
 void Displayer::cleanUp (   )
 {
+  glutDestroyWindow(main_window);
   for (int n = DC_NUMBER_USE_GARBAGE_TEX; n--; )
     if (garbage_texture_data[n] != null) {
       delete [] garbage_texture_data[n];
