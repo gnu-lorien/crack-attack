@@ -1,10 +1,3 @@
-v 1.1.11cvs
-  - Networking component sends a different version number now. This version numb    will only increase when we change the networking code.
-  - gtk+-2.0 front-end
-  - gcc-3.4 build fixes
-  - NVidia OpenGL build fixes. The error was in how we used deprecated
-    extensions. I'm sure this bug would come up other places, but NVidia seemed
-    to be the driver that was causing the most problems
 v 1.1.0
   - Fixed a bug which caused the loading of the logo as a garbage texture to
     fail.
@@ -74,3 +67,11 @@ v 1.1.9
 v 1.1.10
   - Patch to prevent crash on Voodoo3 cards (thanks to Olivier Blin).
   - Fix of busy-port bug after net games (thanks to Guillaume Cottenceau).
+
+v 1.1.11cvs
+  - Networking component sends a different version number now. This version numb    will only increase when we change the networking code.
+  - gtk+-2.0 front-end
+  - gcc-3.4 build fixes
+  - NVidia OpenGL build fixes. The error was in how we used deprecated
+    extensions. I'm sure this bug would come up other places, but NVidia seemed
+    to be the driver that was causing the most problems
