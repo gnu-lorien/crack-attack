@@ -214,6 +214,9 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
 
   if ((mode & CM_REALLY_LOW_GRAPHICS) && !(mode & CM_LOW_GRAPHICS))
     usage();
+
+  if ((mode & CM_AI && (mode & CM_X)))
+      usage();
 }
 
 void setupLocalDataDirectory (   )
