@@ -46,6 +46,22 @@ else
 fi
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
+AM_CONDITIONAL([WANT_GTK], [test "$enable_gtk" = yes])
+
+dnl Check for debugging
+AC_ARG_ENABLE(debug,
+  AC_HELP_STRING([--enable-debug=[no/yes]],[Compile extra debugging info [default=no]]),
+  enable_debug="$enableval",
+  enable_debug=no)
+if test "$enable_debug" = "yes"; then
+  DEBUG_INCLUDES=
+  DEBUG_CFLAGS="-g"
+else
+  DEBUG_INCLUDES=-DNDEBUG
+  DEBUG_CFLAGS=
+fi
+AC_SUBST(DEBUG_INCLUDES)
+AC_SUBST(DEBUG_CFLAGS)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL

@@ -72,7 +72,6 @@ int main ( int argc, char **argv )
   char host_name[GC_HOST_NAME_SIZE];
   int port;
   int mode = 0;
-  GtkWidget *winCrackAttackSplash = NULL;
   
   parseCommandLine(argc, argv, mode, port, host_name, player_name);
   run_crack_attack(mode, port, host_name, player_name, -1, -1);
