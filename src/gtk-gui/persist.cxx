@@ -2,8 +2,7 @@
  * persist.cxx
  * Kevin Webb - 3/21/05
  *
- * Copyright (C) 2000  Daniel Nelson
- * Copyright (C) 2004  Andrew Sayman
+ * Copyright (C) 2005  Kevin Webb
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,11 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * Daniel Nelson - aluminumangel.org
- * 174 W. 18th Ave.
- * Columbus, OH  43210
- *
  */
 #include <gtk/gtk.h>
 #include <fstream>
