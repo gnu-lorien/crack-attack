@@ -53,7 +53,7 @@ using namespace std;
 #define CO_TEST_INT                              (47)
 
 // protocol version number
-#define CO_VERSION                               (1.1.9)
+#define CO_VERSION                               "1.1.9"
 
 class BufferElement {
 public:
