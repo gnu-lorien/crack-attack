@@ -126,6 +126,8 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
     int connection_socket = socket(AF_INET, SOCK_STREAM, 0);
 
     sockaddr_in address;
+    int val = 1;
+    setsockopt (connection_socket, SOL_SOCKET, SO_REUSEADDR, &val, sizeof (int));
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = htonl(INADDR_ANY);
     address.sin_port = htons(port);
