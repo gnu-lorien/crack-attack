@@ -51,7 +51,8 @@ GLuint Displayer::special_block_lightmap;
 void Displayer::generateBlockDisplayList (   )
 {
   glEnableClientState(GL_VERTEX_ARRAY);
-  glEnableClientState(GL_NORMAL_ARRAY);
+  if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
+    glEnableClientState(GL_NORMAL_ARRAY);
 
   block_list = glGenLists(1);
   glNewList(block_list, GL_COMPILE);
@@ -1378,10 +1379,23 @@ void Displayer::generateBlockDisplayList (   )
       0.000000, -1.000000, 0.000000,
     };
 #endif
+    GLfloat vertices_rlow[18] = 
+    {
+      -0.85f,-0.85f,1.0f, // bottom left
+      0.85f,-0.85f,1.0f, // bottom right
+      0.85f,0.85f,1.0f, // upper right
+      -0.85f,0.85f,1.0f, // upper left
+      -0.85f,-0.85f,1.0f, // bottom left
+      0.85f,0.85f,1.0f  // upper right
+    };
 
     GLfloat *vertices, *normals;
     int n_vertices;
-    if (MetaState::mode & CM_LOW_GRAPHICS) {
+
+    if (MetaState::mode & CM_REALLY_LOW_GRAPHICS) {
+      vertices = vertices_rlow;
+      n_vertices = 6;
+    } else if (MetaState::mode & CM_LOW_GRAPHICS) {
       vertices = vertices_low;
       normals = normals_low;
       n_vertices = 72;
@@ -1392,7 +1406,8 @@ void Displayer::generateBlockDisplayList (   )
     }
 
     glVertexPointer(3, GL_FLOAT, 0, vertices);
-    glNormalPointer(GL_FLOAT, 0, normals);
+    if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
+      glNormalPointer(GL_FLOAT, 0, normals);
 
     glDrawArrays(GL_TRIANGLES, 0, n_vertices);
 
@@ -1402,7 +1417,7 @@ void Displayer::generateBlockDisplayList (   )
 
   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-  GLfloat tex_coords[3 * 504];
+  GLfloat tex_coords[3 * n_vertices];
   for (int n = 3 * n_vertices; n--; )
     tex_coords[n] = vertices[n] * 0.5f;
 
@@ -1433,28 +1448,32 @@ void Displayer::generateBlockDisplayList (   )
     vertices[n + 0] = 0.5 * (M[0] * v[0] + M[4] * v[1] + M[8] * v[2]);
     vertices[n + 1] = 0.5 * (M[1] * v[0] + M[5] * v[1] + M[9] * v[2]);
     vertices[n + 2] = 0.5 * (M[2] * v[0] + M[6] * v[1] + M[10] * v[2]);
-    
-    v[0] = normals[n + 0];
-    v[1] = normals[n + 1];
-    v[2] = normals[n + 2];
 
-    normals[n + 0] = M[0] * v[0] + M[4] * v[1] + M[8] * v[2];
-    normals[n + 1] = M[1] * v[0] + M[5] * v[1] + M[9] * v[2];
-    normals[n + 2] = M[2] * v[0] + M[6] * v[1] + M[10] * v[2];
+    if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) {
+      v[0] = normals[n + 0];
+      v[1] = normals[n + 1];
+      v[2] = normals[n + 2];
+
+      normals[n + 0] = M[0] * v[0] + M[4] * v[1] + M[8] * v[2];
+      normals[n + 1] = M[1] * v[0] + M[5] * v[1] + M[9] * v[2];
+      normals[n + 2] = M[2] * v[0] + M[6] * v[1] + M[10] * v[2];
+    }
   }
 
   small_block_list = glGenLists(1);
   glNewList(small_block_list, GL_COMPILE);
 
     glVertexPointer(3, GL_FLOAT, 0, vertices);
-    glNormalPointer(GL_FLOAT, 0, normals);
+    if  (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
+      glNormalPointer(GL_FLOAT, 0, normals);
 
     glDrawArrays(GL_TRIANGLES, 0, n_vertices);
 
   glEndList();
 
   glDisableClientState(GL_VERTEX_ARRAY);
-  glDisableClientState(GL_NORMAL_ARRAY);
+  if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
+    glDisableClientState(GL_NORMAL_ARRAY);
 
   // Now we build the special color blocks' gleam texture.  A texture value of
   // 0.6f seems to cause the special color blocks to match their standard
