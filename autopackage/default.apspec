@@ -9,7 +9,7 @@ Packager: Andrew Sayman <lorien420@myrealbox.com>
 Summary: Crack Attack! is a fast paced 3D puzzle game
 URL: http://savannah.nongnu.org/projects/crack-attack
 License: GNU General Public License, Version 2
-SoftwareVersion: 1.1.12-2
+SoftwareVersion: 1.1.12-r1
 AutopackageTarget: 1.0
 
 # Only uncomment InterfaceVersion if your package exposes interfaces to other software,
@@ -19,7 +19,7 @@ AutopackageTarget: 1.0
 # InterfaceVersion: 0.0
 
 [Description]
-Put long & detailed description here.
+Crack-Attack! is a fast-paced puzzle game inspired by the classic Super NES title Tetris Attack!
 
 [BuildPrepare]
 prepareBuild --enable-gtk --enable-binreloc
@@ -40,8 +40,9 @@ require @opengl.org/glut 3
 [Install]
 # Put your installation script here
 installExe bin/*
-copyFiles share/crack-attack "$PREFIX/share/crack-attack"
-installIcon crackattack.xpm
+copyFiles share/crack-attack "$PREFIX/share"
+installDesktop "Applications/Games" share/crack-attack/crack-attack.desktop
+installIcon share/crack-attack/crack-attack.xpm
 
 [Uninstall]
 # Usually just the following line is enough to uninstall everything

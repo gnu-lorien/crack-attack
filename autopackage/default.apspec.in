@@ -40,8 +40,8 @@ require @opengl.org/glut 3
 [Install]
 # Put your installation script here
 installExe bin/*
-copyFiles share/crack-attack "$PREFIX/share/crack-attack"
-installDesktop "Games" crack-attack.desktop
+copyFiles share/crack-attack "$PREFIX/share"
+installDesktop "Applications/Games" share/crack-attack/crack-attack.desktop
 installIcon share/crack-attack/crack-attack.xpm
 
 [Uninstall]
