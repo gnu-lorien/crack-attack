@@ -122,7 +122,7 @@ create_winCrackAttackSplash (void)
 
   winCrackAttackSplash = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (winCrackAttackSplash), "Crack-Attack!");
-  gtk_window_set_destroy_with_parent (GTK_WINDOW (winCrackAttackSplash), TRUE);
+  //gtk_window_set_destroy_with_parent (GTK_WINDOW (winCrackAttackSplash), TRUE);
 
   hbox1 = gtk_hbox_new (FALSE, 0);
   gtk_widget_show (hbox1);
@@ -402,7 +402,7 @@ create_winCrackAttackSplash (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow1), txtGameOutput);
 
   g_signal_connect ((gpointer) winCrackAttackSplash, "destroy",
-                    G_CALLBACK (gtk_main_quit),
+                    G_CALLBACK (on_destroy_main),
                     NULL);
   g_signal_connect ((gpointer) cbtnLowGraphics, "toggled",
                     G_CALLBACK (on_cbtnLowGraphics_toggled),
@@ -456,7 +456,7 @@ create_winCrackAttackSplash (void)
                     G_CALLBACK (on_btnStart_clicked),
                     NULL);
   g_signal_connect ((gpointer) btnExit, "clicked",
-                    G_CALLBACK (gtk_main_quit),
+                    G_CALLBACK (on_destroy_main),
                     NULL);
   g_signal_connect ((gpointer) btnHelp, "clicked",
                     G_CALLBACK (on_btnHelp_clicked),

@@ -78,12 +78,17 @@ v 1.1.11
 
 v 1.1.12cvs
   - idlePlay now sleeps to prevent 100% CPU usage. (Thanks Dennis Lubert)
-	 - Dennis' patch has been altered to use the GLUT time rather than
-	   gettimeofday. It also uses the time-step-period variables which already
-		 existed. As a result, there is less sleeping (it sleeps 7 times rather
-		 than 11), but it fits more with the current code setup. Dennis still gets
-		 the credit for this because his patch gave me the framework to do it.
-	 - Need to revert my above changes. They aren't as good.
-	- Really Low Graphics (Thanks Stephan Beyer)
-	 - FIXME: Displayer.cxx needs to unmask drawWinRecord and just make the win
-	   record less graphics intensive.
+   - Something about the way this works irks me. I'd like to see a way for
+     this to work by using glut calls to get the elapsed time. My attempts at
+     this were incorrect, so I'll stick with what Dennis wrote.
+   - Fixes Debian bug #159241
+  - Really Low Graphics (Thanks Stephan Beyer)
+   - FIXME: Displayer.cxx needs to unmask drawWinRecord and just make the win
+     record less graphics intensive.
+  - Fix for a crasher when using high quality graphics on certain boards. This
+    fix has been in some distros for a while, but is new to this patchset.
+   - Fixes Gentoo bug #53320
+   - Fixes Debian bug #245157
+  - Change protocol numbering to make this release compatible with Windows
+    version which is still 1.1.8.
+  - Name and Resolution is now remembered by the GUI.

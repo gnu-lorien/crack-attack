@@ -107,3 +107,7 @@ on_ai_medium_activate                  (GtkMenuItem     *menuitem,
 void
 on_ai_hard_activate                    (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
+
+void
+on_destroy_main                        (GtkWidget       *menuitem,
+                                        gpointer         user_data);

@@ -65,6 +65,7 @@ using namespace std;
 
 int main ( int argc, char **argv )
 {
+  setupLocalDataDirectory();
 #ifdef WANT_GTK
   return gui_main(argc, argv);
 #else
@@ -122,8 +123,6 @@ void run_crack_attack (
   }
 
   cout << GC_MESSAGE << endl;
-
-  setupLocalDataDirectory();
 
   if (!(mode & CM_SOLO))
     Communicator::initialize(mode, port, host_name, player_name);

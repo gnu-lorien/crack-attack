@@ -31,8 +31,9 @@
 #include <gtk/gtk.h>
 #include <sys/wait.h>
 
-#include "../Mode.h"
-#include "../Attack.h"
+#include "TextureLoader.h"
+#include "Mode.h"
+#include "Attack.h"
 #include "callbacks.h"
 #include "interface.h"
 #include "support.h"
@@ -334,7 +335,7 @@ void
 on_640by480_activate                   (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-	height = width = 400;
+  height = width = 400;
 }
 
 void
@@ -348,21 +349,21 @@ void
 on_1024by768_activate                  (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-	height = width = 680;	
+  height = width = 680;	
 }
 
 void
 on_1280by1024_activate                 (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-	height = width = 970;	
+  height = width = 970;	
 }
 
 void
 on_1600by1200_activate                 (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-	height = width = 1170;
+  height = width = 1170;
 }
 
 static void undo_ai_settings() 
@@ -407,3 +408,45 @@ on_ai_hard_activate                    (GtkMenuItem     *menuitem,
     mode |= CM_AI_HARD;
 }
 
+static void store_defaults (GtkWidget *win)
+{
+  const unsigned int n = 256;
+  char base_name[] = "gui_prefs";
+  char file_name[256], buf[n]; // file_name is 256 because TL requires 256
+
+  TextureLoader::buildLocalDataFileName(base_name, file_name);
+  ofstream file(file_name);
+  if (file.fail()) {
+    cerr << "Error opening defaults file " << file_name << endl;
+    return;
+  }
+
+  // store name
+  GtkEntry *name_ent = GTK_ENTRY(lookup_widget(GTK_WIDGET(win), "entPlayerName"));
+  file << "name=" << gtk_entry_get_text(name_ent) << endl;
+
+  // store resolution
+  GtkWidget *w = lookup_widget(GTK_WIDGET(win), "optResolutions");
+  file << "resolution=" << gtk_option_menu_get_history(GTK_OPTION_MENU(w)) << endl;
+
+  // store graphics
+  file << "graphics=";
+  if (mode & CM_LOW_GRAPHICS) {
+    file << "l";
+  } else if (mode & CM_REALLY_LOW_GRAPHICS) {
+    file << "r";
+  } else {
+    file << "h";
+  }
+  file << endl;
+
+  file.close();
+}
+
+void
+on_destroy_main                        (GtkWidget       *menuitem,
+                                        gpointer         user_data)
+{
+  store_defaults(menuitem);
+  gtk_main_quit();
+}
