@@ -236,6 +236,13 @@ using namespace std;
 #define GC_ADVANCE_KEY                   ('l')
 #define GC_PAUSE_KEY                     ('p')
 
+// Constants for the game window height and width.
+#define GC_RESOLUTION_0                  (400)
+#define GC_RESOLUTION_1                  (570)
+#define GC_RESOLUTION_2                  (680)
+#define GC_RESOLUTION_3                  (970)
+#define GC_RESOLUTION_4                  (1170)
+
 // other crap
 #ifndef max
 #  define max(a, b)                      ((a) > (b) ? (a) : (b))

@@ -70,7 +70,6 @@ void toggle_sensitive (GtkToggleButton* gtb, gint selector) {
     gtk_widget_set_sensitive (fraSingle, FALSE);
     gtk_widget_set_sensitive (fraServer, FALSE);
     switch (selector) {
-                break;
         case 1: gtk_widget_set_sensitive (fraClient, TRUE);
                 break;
         case 2: gtk_widget_set_sensitive (fraServer, TRUE);
@@ -342,35 +341,35 @@ void
 on_640by480_activate                   (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-	height = width = 400;
+	height = width = GC_RESOLUTION_0;
 }
 
 void
 on_800by600_activate                   (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-  height = width = 570;
+  height = width = GC_RESOLUTION_1;
 }
 
 void
 on_1024by768_activate                  (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-	height = width = 680;	
+	height = width = GC_RESOLUTION_2;	
 }
 
 void
 on_1280by1024_activate                 (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-	height = width = 970;	
+	height = width = GC_RESOLUTION_3;	
 }
 
 void
 on_1600by1200_activate                 (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-	height = width = 1170;
+	height = width = GC_RESOLUTION_4;
 }
 
 static void undo_ai_settings() 

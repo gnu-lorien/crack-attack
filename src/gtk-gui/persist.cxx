@@ -51,15 +51,15 @@ gui_get_dimensions               (GtkButton *button)
 	// than hardcoding them in two places...
 	switch(resolution) {
 		case 1:
-			return 570;
+			return GC_RESOLUTION_1;
 		case 2:
-			return 680;
+			return GC_RESOLUTION_2;
 		case 3:
-			return 970;
+			return GC_RESOLUTION_3;
 		case 4:
-			return 1170;
+			return GC_RESOLUTION_4;
 		default:
-			return 400;
+			return GC_RESOLUTION_0;
 	}
 }
 
