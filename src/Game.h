@@ -366,6 +366,7 @@ public:
 
   static void loss (   );
   static void lossConfirmation (   );
+  static void aiPlayerLoss (   );
   static void won (   );
   static void netSignalPause (   );
   static void netSignalUnpause (   );

@@ -157,12 +157,18 @@ public:
 
   static inline void addGarbage ( int x, int y, Garbage *resident, int state )
   {
+    //MESSAGE("Begin x " << x << " y " << y << " state " << state);
+    //MESSAGE("Assert position is empty...");
     assert(grid[x][y].state & GR_EMPTY);
+    //MESSAGE("Assert x is in width... " << GC_PLAY_WIDTH);
     assert(x < GC_PLAY_WIDTH);
+    //MESSAGE("Assert y is in height... " << GC_PLAY_HEIGHT);
     assert(y < GC_PLAY_HEIGHT);
+    //MESSAGE("Asserts completed");
     grid[x][y].resident = resident;
     grid[x][y].resident_type = GR_GARBAGE;
     grid[x][y].state = state;
+    //MESSAGE("End");
   }
 
   static inline void remove ( int x, int y, void *resident )

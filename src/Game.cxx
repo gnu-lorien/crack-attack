@@ -63,6 +63,7 @@ using namespace std;
 #include "Swapper.h"
 #include "WinRecord.h"
 #include "X.h"
+#include "ComputerPlayer.h"
 
 int Game::time_step;
 int Game::state;
@@ -111,6 +112,7 @@ void Game::gameStart (   )
   CountDownManager::gameStart();
   Clock::gameStart();
   LoseBar::gameStart();
+	ComputerPlayer::gameStart();
 
   button_down_pause = false;
 
@@ -154,6 +156,12 @@ void Game::lossConfirmation (   )
  */
 {
   state = GS_LOST | GS_END_PLAY;
+}
+
+void Game::aiPlayerLoss (   )
+{
+  if (!(state & GS_WON) && !(state & GS_END_PLAY))
+    state = GS_WON | GS_END_PLAY;
 }
 
 void Game::won (   )
@@ -374,6 +382,9 @@ void Game::idlePlay (   )
           continue;
         }
 
+				if (MetaState::mode & CM_AI) 
+					ComputerPlayer::timeStep();
+
         // loop over the grid, bottom to top; garbage will advance x and y
         for (int y = 1; y < GC_PLAY_HEIGHT; y++)
           for (int x = 0; x < GC_PLAY_WIDTH; x++) {
@@ -444,11 +455,22 @@ void Game::idlePlay (   )
       step_play = false;
 
     if (state & GS_END_PLAY) {
+      // step_play = false;
       if (state & GS_PAUSED)
         MessageManager::freeMessage();
 
       if (MetaState::mode & CM_SOLO)
         state = Score::gameFinish();
+
+      cerr << "Past game finish... " << endl;
+      fprintf(stderr, "%x\n", state);
+      if (MetaState::mode & CM_AI) {
+        cerr << "In CM_AI" << endl;
+        cerr << "Won? " << (state & GS_WON) << endl;
+        step_play = false;
+        //state = ComputerPlayer::gameFinish();
+        cerr << "Won? " << (state & GS_WON) << endl;
+      }
 
       if (state & GS_LOST)
         MetaState::gameLoss();

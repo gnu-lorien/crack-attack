@@ -32,6 +32,7 @@ using namespace std;
 #include "MetaState.h"
 #include "Communicator.h"
 #include "Random.h"
+#include "ComputerPlayer.h"
 
 class ComboTabulator;
 class CommunicationBuffer;
@@ -45,6 +46,8 @@ public:
   int flavor;
 };
 
+class ComputerPlayer;
+
 /* static */ class GarbageGenerator {
 public:
   static void gameStart (   );
@@ -52,24 +55,13 @@ public:
   static void comboElimination ( ComboTabulator &combo );
   static void comboComplete ( ComboTabulator &combo );
   static void timeStep (   );
+  static void addToQueue ( GarbageQueueElement *e );
   static void addToQueue ( CommunicationBuffer &buffer );
+  static void addToQueue ( BufferElement garbage[], size_t size );
 
 private:
-  static inline void sendGarbage ( int height, int width, int flavor )
-  {
-    if (!(MetaState::mode & CM_SOLO))
-      Communicator::sendGarbage(height, width, flavor);
-    else
-      dealLocalGarbage(height, width, flavor, Game::time_step);
-  }
-
-  static inline void sendSpecialGarbage ( int flavor )
-  {
-    if (!(MetaState::mode & CM_SOLO))
-      Communicator::sendGarbage(0, 0, flavor);
-    else
-      dealSpecialLocalGarbage(flavor, Game::time_step);
-  }
+  static void sendGarbage ( int height, int width, int flavor );
+  static void sendSpecialGarbage ( int flavor );
 
   static inline int determineDropTime ( int time_stamp )
   {

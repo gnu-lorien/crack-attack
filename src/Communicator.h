@@ -61,6 +61,8 @@ public:
   uint32 height;
   uint32 width;
   uint32 flavor;
+
+  BufferElement (): time_stamp(0), height(0), width(0), flavor(0) { };
 };
 
 class CommunicationBuffer {

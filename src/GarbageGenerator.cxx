@@ -39,6 +39,7 @@ using namespace std;
 #include "Communicator.h"
 #include "SparkleManager.h"
 #include "SignManager.h"
+#include "ComputerPlayer.h"
 
 GarbageQueueElement GarbageGenerator::garbage_queue[GC_GARBAGE_QUEUE_SIZE];
 int GarbageGenerator::waiting_count;
@@ -148,9 +149,30 @@ void GarbageGenerator::comboComplete ( ComboTabulator &combo )
 
 void GarbageGenerator::addToQueue ( CommunicationBuffer &buffer )
 {
-  for (unsigned int n = 0; n < buffer.count; n++) {
-    BufferElement &e = buffer.garbage[n];
+	addToQueue(buffer.garbage, buffer.count);
+}
 
+void GarbageGenerator::addToQueue ( GarbageQueueElement *element )
+{
+  int stamp = Game::time_step;
+  if (!element)
+    return;
+  GarbageQueueElement e = *element;
+  MESSAGE("h " << e.height << " w " << e.width << " a " << e.active << endl);
+  assert(e.height <= GC_PLAY_HEIGHT);
+  assert(e.width  <= GC_PLAY_WIDTH);
+  if (!GarbageManager::isSpecialFlavor(e.flavor))
+    dealLocalGarbage(e.height, e.width, e.flavor, stamp);
+  else
+    dealSpecialLocalGarbage(e.flavor, stamp);
+}
+
+void GarbageGenerator::addToQueue ( BufferElement *garbage, size_t size ) {
+	for (size_t n = 0; n < size; n++) {
+    BufferElement e = garbage[n];
+    MESSAGE("h " << e.height << " w " << e.width << " stamp " << e.time_stamp << endl);
+    assert(e.height < GC_PLAY_HEIGHT);
+    assert(e.width  < GC_PLAY_WIDTH);
     if (!GarbageManager::isSpecialFlavor(e.flavor))
       dealLocalGarbage(e.height, e.width, e.flavor, e.time_stamp);
     else
@@ -224,7 +246,8 @@ void GarbageGenerator::timeStep (   )
 
       // if this garbage's ready, let's try to drop it
       if (e.alarm < Game::time_step) {
-
+        MESSAGE("c: " << c);
+        MESSAGE("h " << e.height << " w " << e.width << " a " << e.active << endl);
         // if we successfully drop it, take it away
         if (GarbageManager::newFallingGarbage(e.height, e.width, e.flavor)) {
           waiting_count--;
@@ -235,4 +258,26 @@ void GarbageGenerator::timeStep (   )
           e.alarm = Game::time_step + GC_AVERAGE_GARBAGE_DROP_DELAY;
       }
     }
+}
+
+void GarbageGenerator::sendGarbage ( int height, int width, int flavor )
+{
+  if (!(MetaState::mode & CM_SOLO))
+    Communicator::sendGarbage(height, width, flavor);
+  else
+    if (MetaState::mode & CM_AI)
+      ComputerPlayer::addGarbage(height, width, flavor);
+    else 
+      dealLocalGarbage(height, width, flavor, Game::time_step);
+}
+
+void GarbageGenerator::sendSpecialGarbage ( int flavor )
+{
+  if (!(MetaState::mode & CM_SOLO))
+    Communicator::sendGarbage(0, 0, flavor);
+  else
+    if (MetaState::mode & CM_AI)
+      ComputerPlayer::addGarbage(1, GC_PLAY_WIDTH, flavor);
+    else 
+      dealSpecialLocalGarbage(flavor, Game::time_step);
 }

@@ -63,6 +63,7 @@ void Garbage::initializeStatic ( int _x, int _y, int _height, int _width,
 void Garbage::initializeFalling ( int _x, int _y, int _height, int _width,
  int _flavor )
 {
+  //MESSAGE("Entering initialize Falling _x " << _x << " _y " << _y << " _height " << _height << " _width " << _width);
   x = _x;
   y = _y;
   height = _height;
@@ -70,17 +71,20 @@ void Garbage::initializeFalling ( int _x, int _y, int _height, int _width,
   flavor = _flavor;
   f_y = 0;
 
+  //MESSAGE("Second block start");
   state = GS_FALLING;
   alarm = Game::time_step + GC_HANG_DELAY;
   pop_alarm = 0;
   sections_popped = 0;
   initial_fall = true;
-  awaking_combo = null;
+  awaking_combo = NULL;
 
+  //MESSAGE("Add us to the grid height: " << height << " width " << width);
   // add ourselves to the grid
   for (int h = height; h--; )
     for (int w = width; w--; )
       Grid::addGarbage(x + w, y + h, this, GR_FALLING);
+  //MESSAGE("Out and alive!");
 }
 
 void Garbage::initializeAwaking ( int _x, int _y, int _height, int pop_delay,
