@@ -329,7 +329,7 @@ void Game::idlePlay (   )
 
   do {
 
-    //int time = glutGet((GLenum) GLUT_ELAPSED_TIME);
+    int time = glutGet((GLenum) GLUT_ELAPSED_TIME);
     remaining_time += time - previous_time;
     previous_time = time;
 
