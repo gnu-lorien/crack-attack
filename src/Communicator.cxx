@@ -3,6 +3,7 @@
  * Daniel Nelson - 8/30/0
  *
  * Copyright (C) 2000  Daniel Nelson
+ * Copyright (C) 2004  Andrew Sayman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -182,10 +183,14 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
     cout << "Connection made by " << inet_ntoa(address.sin_addr) << '.' << endl;
     break;
 
-  } case CM_CLIENT: {
+  } 
+  case CM_CLIENT: {
     comm_link = socket(AF_INET, SOCK_STREAM, 0);
     comm_link_active = true;
 
+#ifdef DEVELOPMENT
+    cout << "Hostname: " << host_name << endl;
+#endif
     hostent *host = gethostbyname(host_name);
     if (!host) {
       cerr << "Host '" << host_name << "' not found." << endl;
@@ -197,7 +202,7 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
     address.sin_addr = *(struct in_addr *) host->h_addr;
     address.sin_port = htons((short) port);
     if (connect(comm_link, (sockaddr *) &address, sizeof(address)) < 0) {
-      cerr << "Connection failed." << endl;
+      cerr << "Connection failed. Unable to connect to address." << endl;
       exit(1);
     }
 
@@ -211,7 +216,7 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
     uint32 server_version_id;
     if (recv(comm_link, (char *) &server_version_id, sizeof(server_version_id),
      0) != sizeof(server_version_id)) {
-      cerr << "Connection failed." << endl;
+      cerr << "Connection failed. Unable to read version information." << endl;
       exit(1);
     }
     if (ntohl(server_version_id) != version_id) {

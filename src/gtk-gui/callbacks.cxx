@@ -216,9 +216,10 @@ on_btnStart_clicked                    (GtkButton       *button,
         }
         entServerAddress = GTK_ENTRY(lookup_widget(GTK_WIDGET(button), "entServerAddress"));
         if (entServerAddress) {
-            tmp = (gchar *)gtk_entry_get_text(entPort);
+            tmp = (gchar *)gtk_entry_get_text(entServerAddress);
             g_strlcpy (host_name, tmp, 256);
         }
+        cout << "Host name: " << host_name << endl;
     }
 
     /* Make the game xtreme!! */

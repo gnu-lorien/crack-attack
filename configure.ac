@@ -54,7 +54,7 @@ AC_ARG_ENABLE(debug,
   enable_debug="$enableval",
   enable_debug=no)
 if test "$enable_debug" = "yes"; then
-  DEBUG_INCLUDES=
+  DEBUG_INCLUDES=-DDEVELOPMENT
   DEBUG_CFLAGS="-g"
 else
   DEBUG_INCLUDES=-DNDEBUG
