@@ -48,9 +48,7 @@ using namespace std;
 #include "Random.h"
 #include "gtk-gui/support.h"
 #include "gtk-gui/interface.h"
-#include "gtk-gui/callbacks.h"
-
-static void setup_defaults ( GtkWidget *win );
+#include "gtk-gui/persist.h"
 
 #define GC_HOST_NAME_SIZE (256)
 int glut_argc;
@@ -87,7 +85,7 @@ int gui_main ( int argc, char **argv )
   if (gtk_init_check (&argc, &argv)) {
     add_pixmap_directory (PACKAGE_DATA_DIR "/" PACKAGE);
     winCrackAttackSplash = create_winCrackAttackSplash ();
-    setup_defaults(winCrackAttackSplash);
+		gui_data_read(winCrackAttackSplash);
     gtk_widget_show (winCrackAttackSplash);
     gtk_main ();
   } else {
@@ -96,50 +94,4 @@ int gui_main ( int argc, char **argv )
   }
 
   return 0;
-}
-
-static void setup_defaults ( GtkWidget *win )
-{
-  const unsigned int n = 256;
-  char base_name[] = "gui_prefs";
-  char file_name[256], buf[n]; // file_name is 256 because TL requires 256
-
-  TextureLoader::buildLocalDataFileName(base_name, file_name);
-  ifstream file(file_name);
-  if (file.fail()) {
-    cerr << "Error opening defaults file " << file_name << endl;
-    return;
-  }
-
-  // get name
-  file.get(buf, n, '=');
-  g_return_if_fail(!strncmp(buf, "name", 5));
-  file.get(); // drop delim
-  file.get(buf,n);
-  GtkEntry *name_ent = GTK_ENTRY(lookup_widget(GTK_WIDGET(win), "entPlayerName"));
-  gtk_entry_set_text(name_ent, buf);
-  file.get(); // read off newline
-
-  // get resolution
-  cout << "'" <<  buf << "'" << endl;
-  file.get(buf, n, '=');
-  cout << "'" << buf << "'" << endl;
-  g_return_if_fail(!strncmp(buf, "resolution", n));
-  file.get(); // drop delim
-  file.get(buf,n);
-  GtkWidget *w = lookup_widget(GTK_WIDGET(win), "optResolutions");
-  gtk_option_menu_set_history(GTK_OPTION_MENU(w), atoi(buf));
-  file.get(); // read off newline
-
-  /*
-  // get graphics settings
-  file.get(buf, n, '=');
-  g_return_if_fail(!strncmp(buf, "graphics", 9));
-  file.get(); // drop delim
-  file.get(buf,n);
-  GtkWidget *w = lookup_widget(GTK_WIDGET(win), "optResolutions");
-  gtk_option_menu_set_history(GTK_OPTION_MENU(w), atoi(buf));
-  */
-
-  file.close();
 }

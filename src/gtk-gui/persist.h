@@ -1,0 +1,41 @@
+/*
+ * persist.h
+ * Kevin Webb - 3/21/05
+ *
+ * Copyright (C) 2000  Daniel Nelson
+ * Copyright (C) 2004  Andrew Sayman
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * Daniel Nelson - aluminumangel.org
+ * 174 W. 18th Ave.
+ * Columbus, OH  43210
+ *
+ */
+#include <gtk/gtk.h>
+
+#define GC_GUI_FILE_NAME                 "gui_record"
+
+
+void
+gui_data_save                 (GtkButton *);
+
+
+void
+gui_data_read                 (GtkWidget *);
+
+
+int
+gui_get_dimensions            (GtkButton *);
