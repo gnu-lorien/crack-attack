@@ -1379,14 +1379,21 @@ void Displayer::generateBlockDisplayList (   )
       0.000000, -1.000000, 0.000000,
     };
 #endif
-    GLfloat vertices_rlow[18] = 
+    GLfloat vertices_rlow[36] = 
     {
       -0.85f,-0.85f,1.0f, // bottom left
       0.85f,-0.85f,1.0f, // bottom right
       0.85f,0.85f,1.0f, // upper right
       -0.85f,0.85f,1.0f, // upper left
       -0.85f,-0.85f,1.0f, // bottom left
-      0.85f,0.85f,1.0f  // upper right
+      0.85f,0.85f,1.0f,  // upper right
+        
+      0.85f,-0.85f,1.0f, // bottom right
+      -0.85f,-0.85f,1.0f, // bottom left
+      -0.85f,0.85f,1.0f, // upper left
+      0.85f,0.85f,1.0f,  // upper right
+      0.85f,-0.85f,1.0f, // bottom right
+      -0.85f,0.85f,1.0f // upper left
     };
 
     GLfloat *vertices, *normals;
@@ -1394,7 +1401,7 @@ void Displayer::generateBlockDisplayList (   )
 
     if (MetaState::mode & CM_REALLY_LOW_GRAPHICS) {
       vertices = vertices_rlow;
-      n_vertices = 6;
+      n_vertices = 12;
     } else if (MetaState::mode & CM_LOW_GRAPHICS) {
       vertices = vertices_low;
       normals = normals_low;
@@ -1440,16 +1447,16 @@ void Displayer::generateBlockDisplayList (   )
        0.707107f, -0.5f, 0.5f, 0.0f,
        0.0f, 0.0f, 0.0f, 1.0f };
 
-  for (int n = 3 * n_vertices; n -=3; ) {
-    v[0] = vertices[n + 0];
-    v[1] = vertices[n + 1];
-    v[2] = vertices[n + 2];
+  if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) {
+    for (int n = 3 * n_vertices; n -=3; ) {
+      v[0] = vertices[n + 0];
+      v[1] = vertices[n + 1];
+      v[2] = vertices[n + 2];
 
-    vertices[n + 0] = 0.5 * (M[0] * v[0] + M[4] * v[1] + M[8] * v[2]);
-    vertices[n + 1] = 0.5 * (M[1] * v[0] + M[5] * v[1] + M[9] * v[2]);
-    vertices[n + 2] = 0.5 * (M[2] * v[0] + M[6] * v[1] + M[10] * v[2]);
+      vertices[n + 0] = 0.5 * (M[0] * v[0] + M[4] * v[1] + M[8] * v[2]);
+      vertices[n + 1] = 0.5 * (M[1] * v[0] + M[5] * v[1] + M[9] * v[2]);
+      vertices[n + 2] = 0.5 * (M[2] * v[0] + M[6] * v[1] + M[10] * v[2]);
 
-    if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) {
       v[0] = normals[n + 0];
       v[1] = normals[n + 1];
       v[2] = normals[n + 2];
@@ -1457,6 +1464,10 @@ void Displayer::generateBlockDisplayList (   )
       normals[n + 0] = M[0] * v[0] + M[4] * v[1] + M[8] * v[2];
       normals[n + 1] = M[1] * v[0] + M[5] * v[1] + M[9] * v[2];
       normals[n + 2] = M[2] * v[0] + M[6] * v[1] + M[10] * v[2];
+    }
+  } else {
+    for (int n = 0; n < 3 * n_vertices; ++n) {
+      vertices[n] *= 0.5;
     }
   }
 
