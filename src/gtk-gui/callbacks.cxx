@@ -87,6 +87,8 @@ void
 on_rbtnSingle_toggled                  (GtkToggleButton *togglebutton,
                                         gpointer         user_data)
 {
+    GtkWidget *x = lookup_widget(GTK_WIDGET(togglebutton), "cbtnXtreme2");
+		gtk_toggle_button_set_active((GtkToggleButton *) x, FALSE);
     if (gtk_toggle_button_get_active(togglebutton)) {
         prepare_for_actions(togglebutton);
         gtk_widget_set_sensitive (fraSingle, TRUE);
@@ -102,6 +104,8 @@ void
 on_rbtnServer_toggled                  (GtkToggleButton *togglebutton,
                                         gpointer         user_data)
 {
+    GtkWidget *x = lookup_widget(GTK_WIDGET(togglebutton), "cbtnXtreme");
+		gtk_toggle_button_set_active((GtkToggleButton *) x, FALSE);
     if (gtk_toggle_button_get_active(togglebutton)) {
         prepare_for_actions(togglebutton);
         gtk_widget_set_sensitive (fraServer, TRUE);
@@ -392,6 +396,7 @@ on_ai_easy_activate                    (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
     GtkWidget *x = lookup_widget(GTK_WIDGET(menuitem), "cbtnXtreme");
+		gtk_toggle_button_set_active((GtkToggleButton *) x, FALSE);
     gtk_widget_set_sensitive(x, FALSE);
     undo_ai_settings();
     mode |= CM_AI;
@@ -403,6 +408,7 @@ on_ai_medium_activate                  (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
     GtkWidget *x = lookup_widget(GTK_WIDGET(menuitem), "cbtnXtreme");
+		gtk_toggle_button_set_active((GtkToggleButton *) x, FALSE);
     gtk_widget_set_sensitive(x, FALSE);
     undo_ai_settings();
     mode |= CM_AI;
@@ -414,6 +420,7 @@ on_ai_hard_activate                    (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
     GtkWidget *x = lookup_widget(GTK_WIDGET(menuitem), "cbtnXtreme");
+		gtk_toggle_button_set_active((GtkToggleButton *) x, FALSE);
     gtk_widget_set_sensitive(x, FALSE);
     undo_ai_settings();
     mode |= CM_AI;
