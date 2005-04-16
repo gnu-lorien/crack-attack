@@ -28,10 +28,7 @@
 #include <GL/glut.h>
 #include <cmath>
 
-#ifndef _WIN32
-#else
-#  include <glext.h>
-#endif
+#include "glext.h"
 
 using namespace std;
 

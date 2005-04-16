@@ -32,10 +32,7 @@
 #include <GL/glut.h>
 #include <GL/glext.h>
 
-#ifndef _WIN32
-#else
-#  include <glext.h>
-#endif
+#include "glext.h"
 
 using namespace std;
 
