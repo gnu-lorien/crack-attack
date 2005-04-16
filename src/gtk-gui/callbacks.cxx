@@ -38,6 +38,7 @@
 #include "support.h"
 #include "prefs.h"
 #include "persist.h"
+#include "modeparser.h"
 
 static GtkWidget *fraClient, *fraSingle, *fraServer;
 static GtkWindow *window = NULL;
@@ -278,6 +279,9 @@ on_btnStart_clicked                    (GtkButton       *button,
         *process_id = fork_ret;
         // Init glut here to prevent problems of glut never exiting
         glutInit(&glut_argc, glut_argv);
+#ifdef DEVELOPMENT
+				printf("Arguments would be: %s", generate_arguments(mode, (GtkWidget *) button));
+#endif
         run_crack_attack(mode, port, host_name, player_name, height, width);
         return;
     }

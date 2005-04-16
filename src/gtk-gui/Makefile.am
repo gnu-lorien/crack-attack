@@ -1,8 +1,8 @@
 noinst_LIBRARIES = libgtkgui.a
 
 libgtkgui_a_SOURCES = \
-  interface.cxx callbacks.cxx support.cxx gui_main.cxx persist.cxx \
-  interface.h   callbacks.h   support.h   gui_main.h   persist.h
+  interface.cxx callbacks.cxx support.cxx gui_main.cxx persist.cxx modeparser.cxx \
+  interface.h   callbacks.h   support.h   gui_main.h   persist.h   modeparser.h
 
 AM_CXXFLAGS = -O2
 INCLUDES = -DDATA_DIRECTORY='"${pkgdatadir}/"'	\
