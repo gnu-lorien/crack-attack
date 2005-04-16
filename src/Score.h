@@ -103,6 +103,10 @@ public:
 
   static inline void reportMultiplier ( ComboTabulator &combo )
   {
+    // check for highest multiplier
+    if (combo.multiplier > top_combo_multiplier)
+      top_combo_multiplier = combo.multiplier;
+
     if (!(MetaState::mode & CM_SOLO)) return;
 
     // multiply this step's score
@@ -114,10 +118,6 @@ public:
      * combo.n_multipliers_this_step;
 
     combo.n_multipliers_this_step = 0;
-
-    // check for highest multiplier
-    if (combo.multiplier > top_combo_multiplier)
-      top_combo_multiplier = combo.multiplier;
   }
 
   static inline int reportElimination ( ComboTabulator &combo )
