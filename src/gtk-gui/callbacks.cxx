@@ -266,25 +266,15 @@ on_btnStart_clicked                    (GtkButton       *button,
 		height = width = gui_get_dimensions(button);
 
     gtk_widget_hide(GTK_WIDGET(window));
-    fork_ret = fork();
-    if (fork_ret == -1) {
-        ca_error_dialog("Crack-Attack! cannot fork! Try again.");
-        return;
+    int exit_status;
+    GError *err;
+    gchar *c = generate_arguments(mode, "crack-attack", GTK_WIDGET(button));
+    gboolean ret = g_spawn_command_line_sync(c, NULL, NULL, &exit_status, &err);
+    g_free(c);
+    if (!ret) {
+      if (err) ca_error_dialog(err->message);
     }
-    g_timeout_add (250, check_for_game_end, (gpointer) &fork_ret);
-    running_process = fork_ret;
-    MS_RUNNING = TRUE;
-    if (fork_ret == 0) {
-        pid_t *process_id = (pid_t *)g_malloc0(sizeof (pid_t));
-        *process_id = fork_ret;
-        // Init glut here to prevent problems of glut never exiting
-        glutInit(&glut_argc, glut_argv);
-#ifdef DEVELOPMENT
-				printf("Arguments would be: %s", generate_arguments(mode, (GtkWidget *) button));
-#endif
-        run_crack_attack(mode, port, host_name, player_name, height, width);
-        return;
-    }
+    gtk_widget_show(GTK_WIDGET(window));
     g_free(command);
 }
 

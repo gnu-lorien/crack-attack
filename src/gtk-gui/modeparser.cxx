@@ -46,9 +46,10 @@ static const gchar *space         = " ";
 static const gchar *colon         = ":";
 
 gchar*
-generate_arguments(int mode, GtkWidget *widget) {
+generate_arguments(int mode, const gchar *start, GtkWidget *widget) {
 	
-	gchar *args = "";
+	gchar *args = g_strdup(start);
+  args = args_cat(args, space);
 	
 	if (mode & CM_SOLO) {  /* Solo */
 		args = args_cat(args, single_player);

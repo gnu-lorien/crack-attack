@@ -21,7 +21,7 @@
 #include <gtk/gtk.h>
 
 gchar*
-generate_arguments(int, GtkWidget *);
+generate_arguments(int, const gchar *, GtkWidget *);
 
 
 gchar*
