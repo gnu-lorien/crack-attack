@@ -38,6 +38,9 @@ using namespace std;
 
 int Score::score;
 int Score::backlog;
+int Score::top_combo_multiplier;
+int Score::top_combo_score;
+ComboRank Score::combo_record[GC_SCORE_MULT_LENGTH];
 short Score::digits[GC_NUMBER_DIGITS];
 short Score::previous_digits[GC_NUMBER_DIGITS];
 int Score::fade_timer;
@@ -59,7 +62,7 @@ void Score::initialize (   )
 {
   if (!(MetaState::mode & CM_SOLO)) return;
 
-  score = backlog = 0;
+  score = backlog = top_combo_multiplier = top_combo_score = 0;
   n_digits_displayed = GC_MIN_NUMBER_DIGITS_DISPLAYED;
   for (int n = GC_NUMBER_DIGITS; n--; ) {
     digits[n] = previous_digits[n] = 0;
@@ -69,6 +72,7 @@ void Score::initialize (   )
   player_rank = -1;
 
   if (!readScoreRecord()) setupDefaultScoreRecord();
+  if (!readMultRecord()) setupDefaultMultRecord();
 }
 
 void Score::cleanUp (   )
@@ -79,6 +83,23 @@ void Score::cleanUp (   )
 
 int Score::gameFinish (   )
 {
+  // first do non-victory deciding scores
+  for (int n = GC_SCORE_MULT_LENGTH; n--; )
+    if (top_combo_multiplier > combo_record[n].multiplier) {
+      player_rank = n;
+
+      // insert player
+      for (int n = 0; n < player_rank; n++) {
+        strncpy(combo_record[n].name, combo_record[n + 1].name, GC_PLAYER_NAME_LENGTH);
+        combo_record[n].multiplier = combo_record[n + 1].multiplier;
+      }
+      strncpy(combo_record[player_rank].name, MetaState::player_name,
+       GC_PLAYER_NAME_LENGTH);
+      combo_record[player_rank].multiplier = top_combo_multiplier;
+      break;
+    }
+
+  // now decide the winner
   for (int n = GC_SCORE_REC_LENGTH; n--; )
     if (score > record[n].score) {
       player_rank = n;
@@ -95,6 +116,23 @@ int Score::gameFinish (   )
       return GS_WON;
     }
   return GS_LOST;
+}
+
+bool Score::readMultRecord (   )
+{
+  char file_name[256];
+  char buffer[256];
+  TextureLoader::buildLocalDataFileName(GC_MULT_FILE_NAME, file_name);
+  ifstream new_file(file_name);
+  if (new_file.fail()) return false;
+
+  for (int n = GC_SCORE_MULT_LENGTH; n--; ) {
+    new_file.getline(combo_record[n].name, GC_PLAYER_NAME_LENGTH);
+    new_file.getline(buffer, 256);
+    combo_record[n].multiplier = atoi(buffer);
+    if (new_file.fail()) return false;
+  }
+  return true;
 }
 
 bool Score::readScoreRecord (   )
@@ -128,6 +166,37 @@ void Score::writeScoreRecord (   )
 
   for (int n = GC_SCORE_REC_LENGTH; n--; )
     file << record[n].name << '\n' << record[n].score << '\n';
+  file.close();
+
+  // mult record
+  TextureLoader::buildLocalDataFileName(GC_MULT_FILE_NAME, file_name);
+  ofstream mult(file_name);
+  if (mult.fail()) {
+    cerr << "Error writing to score record file '" << file_name << "'." << endl;
+    exit(1);
+  }
+  for (int n = GC_SCORE_MULT_LENGTH; n--; )
+    mult << combo_record[n].name << '\n' << combo_record[n].multiplier << '\n';
+  mult.close();
+}
+
+
+void Score::setupDefaultMultRecord (   )
+{
+  ifstream new_file(GC_DEFAULT_MULT_FILE_NAME);
+  if (new_file.fail()) {
+    cerr << "Error opening data file '" << GC_DEFAULT_MULT_FILE_NAME << "'." << endl;
+    exit(1);
+  }
+
+  char buffer[256];
+  for (int n = GC_SCORE_MULT_LENGTH; n--; ) {
+    new_file.getline(combo_record[n].name, GC_PLAYER_NAME_LENGTH);
+    new_file.getline(buffer, 256);
+    combo_record[n].multiplier = atoi(buffer);
+    if (new_file.fail()) break;
+  }
+  writeScoreRecord();
 }
 
 void Score::setupDefaultScoreRecord (   )

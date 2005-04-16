@@ -118,7 +118,9 @@ using namespace std;
                                           "message_game_over.tga")
 #define GC_X_REC_FILE_NAME               "score_record_x"
 #define GC_REC_FILE_NAME                 "score_record"
+#define GC_MULT_FILE_NAME                "multiplier_record"
 #define GC_DEFAULT_REC_FILE_NAME         GC_DATA_DIRECTORY("default_record")
+#define GC_DEFAULT_MULT_FILE_NAME        GC_DATA_DIRECTORY("default_multiplier")
 
 // random angle tables' size; must be power of two
 #define GC_SIZE_RANDOM_ANGLE_TABLE       (256)
@@ -216,6 +218,7 @@ using namespace std;
 #define GC_SCORE_REC_LENGTH              (30)
 #define GC_SCORE_DEFAULT_TOP_SCORE       (600)
 #define GC_SCORE_REC_DEFAULT_NAME        "-----"
+#define GC_SCORE_MULT_LENGTH             (10)
 
 // sine constants
 #define GC_SINE_TABLE_LENGTH             (100)

@@ -38,6 +38,13 @@ public:
   int score;
 };
 
+class ComboRank {
+public:
+  char name[GC_PLAYER_NAME_LENGTH];
+  int multiplier;
+  int score;
+};
+
 /* static */ class Score {
 public:
   static void initialize (   );
@@ -45,8 +52,10 @@ public:
   static int gameFinish (   );
 
   static bool readScoreRecord (   );
+  static bool readMultRecord (   );
   static void writeScoreRecord (   );
   static void setupDefaultScoreRecord (   );
+  static void setupDefaultMultRecord (   );
 
   static inline void timeStepMeta (   )
   {
@@ -105,6 +114,10 @@ public:
      * combo.n_multipliers_this_step;
 
     combo.n_multipliers_this_step = 0;
+
+    // check for highest multiplier
+    if (combo.multiplier > top_combo_multiplier)
+      top_combo_multiplier = combo.multiplier;
   }
 
   static inline int reportElimination ( ComboTabulator &combo )
@@ -152,6 +165,10 @@ public:
   static Rank record[GC_SCORE_REC_LENGTH];
 
   static int special_block_scores[BF_NUMBER_SPECIAL];
+
+  static int top_combo_multiplier;
+  static int top_combo_score;
+  static ComboRank combo_record[GC_SCORE_MULT_LENGTH];
 };
 
 #endif
