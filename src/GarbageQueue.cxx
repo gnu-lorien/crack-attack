@@ -61,8 +61,12 @@ int GarbageQueue::removeToFirst ( int flavor )
     ++num_removed;
   }
   if (num_removed == 0) return 0;
+  cached_height = -1;
+  MESSAGE("Removing " << num_removed);
+  MESSAGE("Height before erase " << height());
   garbage_queue.erase(garbage_queue.begin(), iter);
   cached_height = -1;
+  MESSAGE("Height after erase " << height());
   return num_removed;
 }
 
@@ -78,8 +82,7 @@ void GarbageQueue::add ( int height, int width, int flavor)
 
 static void show_element (GarbageQueueElement &e) {
 #ifndef NDEBUG
-  printf("Element: %p h %d w %d f %d\n",
-    e,
+  printf("Element: h %d w %d f %d\n",+
     e.height,
     e.width,
     e.flavor);
@@ -89,12 +92,14 @@ static void show_element (GarbageQueueElement &e) {
 void GarbageQueue::add ( GarbageQueueElement &element )
 {
   element.active = true;
-  MESSAGE("Adding garbage " << element.active);
+  MESSAGE("Adding garbage with height " << element.height);
   show_element(element);
   assert(element.height <= GC_PLAY_HEIGHT);
   assert(element.width  <= GC_PLAY_WIDTH);
   garbage_queue.push_back(element);
+  int old_height = cached_height;
   cached_height = -1;
+  //assert(height()-element.height == old_height);
 }
 
 int GarbageQueue::height ( )

@@ -124,8 +124,10 @@ void ComputerPlayerAI::shatter()
     state = AI_SHATTERING; 
     int gray_height = garbageQueue()->specialHeight();
     last_shatter_height = garbageQueue()->removeWithSpecials();
-    MESSAGE(last_shatter_height << " shattered and " << garbageQueue()->height() << " remaining.");
+    MESSAGE(last_shatter_height << " shattered and " << garbageQueue()->height() << " remaining grays:" << gray_height);
+#ifndef _WIN32
     if (gray_height != 0) assert(garbageQueue()->height() != 0);
+#endif
     loopi(last_shatter_height) {
       if (Random::chanceIn(GC_GARBAGE_TO_GARBAGE_SHATTER)) {
         garbageQueue()->add(1, 6, GF_NORMAL);

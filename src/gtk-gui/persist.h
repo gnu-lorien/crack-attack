@@ -32,4 +32,4 @@ gui_data_read                 (GtkWidget *);
 
 
 int
-gui_get_dimensions            (GtkButton *);
+gui_get_dimensions            (GtkWidget *);

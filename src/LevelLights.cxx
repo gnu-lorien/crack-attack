@@ -101,6 +101,7 @@ void LevelLights::timeStep (   )
 
 void LevelLights::handleAI ()
 {
+#ifndef _WIN32
   if (ComputerPlayer::checkLevelLightDying() && death_flash_alarm[LL_OPPONENT_LIGHTS] == -1)
     death_flash_alarm[LL_OPPONENT_LIGHTS] = DC_LEVEL_LIGHT_DEATH_FLASH_TIME;
   for (int n = LL_NUMBER_LEVEL_LIGHTS; n--; ) {
@@ -115,4 +116,5 @@ void LevelLights::handleAI ()
       setFlashing(lights[LL_OPPONENT_LIGHTS][ComputerPlayer::levelLightImpact()]);
     }
   }
+#endif
 }

@@ -17,9 +17,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * vim: set noet ts=2 sw=2:
  */
 #include <gtk/gtk.h>
-#include "../Mode.h"
+#include "Mode.h"
+#include "persist.h"
 #include "modeparser.h"
 #include "support.h"
 
@@ -44,6 +46,9 @@ static const gchar *xtreme        = "--extreme ";
 static const gchar *name          = "--name ";
 static const gchar *space         = " ";
 static const gchar *colon         = ":";
+
+/* Resolution */
+static const gchar *resolution    = "-m ";
 
 gchar*
 generate_arguments(int mode, const gchar *start, GtkWidget *widget) {
@@ -81,6 +86,16 @@ generate_arguments(int mode, const gchar *start, GtkWidget *widget) {
 	if (mode & CM_X) {
 		args = args_cat(args, xtreme);
 	}
+
+
+	/* Resolution */
+	int max_len = 6;
+	gchar num_string[max_len];
+	int num = gui_get_dimensions(GTK_WIDGET(widget));
+	g_snprintf(num_string, max_len, "%d", num);
+	args = args_cat(args, resolution);
+	args = args_cat(args, num_string);
+	args = args_cat(args, space);
 
 	/* Add the name to the end, without a trailing space. */
 	args = args_cat(args, name);

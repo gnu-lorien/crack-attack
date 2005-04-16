@@ -33,8 +33,9 @@
 #  include <pwd.h>
 #else
 #  include <direct.h>
-#  include <glext.h>
 #endif
+
+#include "glext.h"
 
 #include <gtk/gtk.h>
 
@@ -81,17 +82,12 @@ int gui_main ( int argc, char **argv )
 
   player_name[0] = '\0';
 
-  gtk_set_locale ();
-  if (gtk_init_check (&argc, &argv)) {
+    gtk_init(&argc, &argv);
     add_pixmap_directory (GC_DATA_DIRECTORY(""));
     winCrackAttackSplash = create_winCrackAttackSplash ();
 		gui_data_read(winCrackAttackSplash);
     gtk_widget_show (winCrackAttackSplash);
     gtk_main ();
-  } else {
-    parseCommandLine(argc, argv, mode, port, host_name, player_name);
-    run_crack_attack(mode, port, host_name, player_name, -1, -1);
-  }
 
   return 0;
 }

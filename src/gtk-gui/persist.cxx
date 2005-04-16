@@ -22,7 +22,7 @@
 #include <fstream>
 #include <cstring>
 
-#include "../TextureLoader.h"
+#include "TextureLoader.h"
 #include "persist.h"
 #include "callbacks.h"
 #include "interface.h"
@@ -30,7 +30,7 @@
 
 
 int
-gui_get_dimensions               (GtkButton *button)
+gui_get_dimensions               (GtkWidget *button)
 
 {
 	GtkWidget *optResolutions;

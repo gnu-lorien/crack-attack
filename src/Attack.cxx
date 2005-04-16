@@ -75,10 +75,11 @@ int main ( int argc, char **argv )
   char host_name[GC_HOST_NAME_SIZE];
   int port;
   int mode = 0;
+  int height = -1, width = -1;
   
   player_name[0] = '\0';
-  parseCommandLine(argc, argv, mode, port, host_name, player_name);
-  run_crack_attack(mode, port, host_name, player_name, -1, -1);
+  parseCommandLine(argc, argv, mode, port, host_name, player_name, height, width);
+  run_crack_attack(mode, port, host_name, player_name, height, width);
 
   return 0;
 }
@@ -140,7 +141,7 @@ void run_crack_attack (
 }
 
 void parseCommandLine ( int argc, char **argv, int &mode, int &port,
- char *host_name, char *player_name )
+ char *host_name, char *player_name , int &height, int &width )
 {
   for (int n = 1; argv[n]; n++) {
 
@@ -193,6 +194,12 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
     } else if (!strcmp(argv[n], "--medium")) {
       mode |= CM_AI;
       mode |= CM_AI_MEDIUM;
+
+    } else if (!strcmp(argv[n], "-m")) {
+      if (argv[n + 1] && argv[n + 1][0] != '-')
+        height = width = atoi(argv[++n]);
+      else
+        height = width = -1;
 
     } else {
       if (mode & (CM_SERVER | CM_CLIENT | CM_SOLO)) usage();

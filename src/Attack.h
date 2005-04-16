@@ -34,7 +34,8 @@ using namespace std;
 void run_crack_attack (int mode, int port, char *host_name, char *player_name, int width, int height);
 void usage (   );
 void parseCommandLine ( int argc, char **argv, int &mode, int &port,
- char *host_name, char player_name[GC_PLAYER_NAME_LENGTH] );
+ char *host_name, char player_name[GC_PLAYER_NAME_LENGTH], int &height,
+ int &width);
 void setupLocalDataDirectory (   );
 
 #endif

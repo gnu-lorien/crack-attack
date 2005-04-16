@@ -34,10 +34,12 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
-#include <netdb.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+#ifndef _WIN32
+#  include <netdb.h>
+#  include <sys/socket.h>
+#  include <netinet/in.h>
+#  include <arpa/inet.h>
+#endif
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
@@ -304,9 +306,10 @@ create_winCrackAttackSplash (void)
   gtk_box_pack_start (GTK_BOX (vbox3), lblServerAddress, FALSE, FALSE, 0);
 
   // Find the ip to display
+  lblServerIp = gtk_label_new ("");
+#ifndef _WIN32
   struct hostent *h;
   char host_name[256];
-  lblServerIp = gtk_label_new ("");
   if (0 == gethostname(host_name, 256)) {
     if (NULL != (h = gethostbyname(host_name))) {
       gtk_label_set_text(
@@ -314,6 +317,7 @@ create_winCrackAttackSplash (void)
         inet_ntoa(*((struct in_addr *)h->h_addr)));
     }
   }
+#endif
   gtk_widget_show (lblServerIp);
   gtk_box_pack_start (GTK_BOX (vbox3), lblServerIp, FALSE, FALSE, 0);
 

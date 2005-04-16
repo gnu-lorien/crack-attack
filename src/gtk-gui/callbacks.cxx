@@ -244,12 +244,15 @@ on_btnStart_clicked                    (GtkButton       *button,
 		gui_data_save(button);
 
 		// Set the height and width to the selected value.
-		height = width = gui_get_dimensions(button);
+		height = width = gui_get_dimensions(GTK_WIDGET(button));
 
     gtk_widget_hide(GTK_WIDGET(window));
     int exit_status;
     GError *err;
-    gchar *c = generate_arguments(mode, "crack-attack", GTK_WIDGET(button));
+    gchar *c = generate_arguments(mode, br_strcat(BINDIR, GC_DD GC_BINARY), GTK_WIDGET(button));
+#ifdef DEVELOPMENT
+    g_print("Command line: %s\n", c);
+#endif
     gboolean ret = g_spawn_command_line_sync(c, NULL, NULL, &exit_status, &err);
     g_free(c);
     if (!ret) {
