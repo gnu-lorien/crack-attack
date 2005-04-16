@@ -30,11 +30,8 @@
 #include <cctype>
 #include <GL/glut.h>
 
-#ifndef _WIN32
-#  include <GL/glext.h>
-#else
-#  include <glext.h>
-#endif
+//FIXME: This file may need GL/glext.h
+#include "glext.h"
 
 #ifdef DEVELOPMENT
 #include <iomanip>

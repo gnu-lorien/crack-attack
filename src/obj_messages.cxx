@@ -30,12 +30,8 @@
 #include <GL/glut.h>
 #include <cmath>
 
-#ifndef _WIN32
-#  include <sstream>
-#else
-#  include <glext.h>
-#  include <strstrea.h>
-#endif
+#include "glext.h"
+#include "sstream.h"
 
 using namespace std;
 

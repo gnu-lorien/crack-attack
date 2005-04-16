@@ -28,11 +28,7 @@
 #define DISPLAYER_H
 
 #include <GL/glut.h>
-
-#ifndef _WIN32
-#else
-#  include <glext.h>
-#endif
+#include "glext.h"
 
 using namespace std;
 
@@ -49,9 +45,11 @@ using namespace std;
 // values as their OpenGL 1.2 partiners.  So, here is the work around.
 #ifndef _WIN32
 #else
+#ifndef __MINGW32__
 #  define GL_LIGHT_MODEL_COLOR_CONTROL       GL_LIGHT_MODEL_COLOR_CONTROL_EXT
 #  define GL_SEPARATE_SPECULAR_COLOR         GL_SEPARATE_SPECULAR_COLOR_EXT
 #  define GL_SINGLE_COLOR                    GL_SINGLE_COLOR_EXT
+#endif
 #endif
 
 // displayer states
@@ -627,8 +625,10 @@ private:
 #ifndef NO_MULTITEXTURING
 #  ifndef _WIN32
 #  else
+#    ifndef __MINGW32__
   static PFNGLACTIVETEXTUREARBPROC glActiveTextureARB;
   static PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB;
+#    endif
 #  endif
 #endif
 

@@ -29,12 +29,8 @@
 
 #include <GL/glut.h>
 
-#ifndef _WIN32
-#  include <sstream>
-#else
-#  include <glext.h>
-#  include <strstrea.h>
-#endif
+#include "glext.h"
+#include "sstream.h"
 
 #include "Game.h"
 

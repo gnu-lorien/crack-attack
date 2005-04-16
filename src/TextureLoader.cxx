@@ -34,9 +34,9 @@
 
 #ifndef _WIN32
 #  include <unistd.h>
-#else
-#  include <glext.h>
 #endif
+
+#include "glext.h"
 
 using namespace std;
 

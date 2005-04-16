@@ -26,12 +26,8 @@
 #include <GL/glut.h>
 #include <cmath>
 
-#ifndef _WIN32
-#  include <sstream>
-#else
-#  include <glext.h>
-#  include <strstrea.h>
-#endif
+#include "sstream.h"
+#include "glext.h"
 
 using namespace std;
 

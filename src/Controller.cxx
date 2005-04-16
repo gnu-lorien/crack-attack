@@ -28,10 +28,7 @@
 #include <GL/glut.h>
 #include <cassert>
 
-#ifndef _WIN32
-#else
-#  include <glext.h>
-#endif
+#include "glext.h"
 
 #include "Game.h"
 #include "Controller.h"

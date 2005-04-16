@@ -28,11 +28,7 @@
 
 #include <iomanip>
 
-#ifndef _WIN32
-#  include <sstream>
-#else
-#  include <strstrea.h>
-#endif
+#include "sstream.h"
 
 using namespace std;
 

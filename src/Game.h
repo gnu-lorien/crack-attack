@@ -27,18 +27,23 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <iostream>
+#include <vector>
 #include <climits>
 #include <cstdlib>
 #include <cmath>
-#include <iostream>
-#include <vector>
-#include <GL/glut.h>
 
-#ifndef _WIN32
+#ifdef __MINGW32__
+#  include <windows.h>
+#endif 
+
+#include <GL/gl.h>
+#include <GL/glut.h>
+#include "glext.h"
+
+#ifdef HAVE_CONFIG_H
 #  include <config.h>
-#else
-#  include <glext.h>
-#endif
+#endif 
 
 #include "Mode.h"
 

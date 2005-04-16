@@ -31,8 +31,10 @@
 #ifndef _WIN32
 #  include <pwd.h>
 #else
-#  include <direct.h>
-#  include <glext.h>
+#  ifndef __MINGW32__
+#    include <direct.h>
+#    include <glext.h>
+#  endif
 #endif
 
 using namespace std;
@@ -227,7 +229,9 @@ void setupLocalDataDirectory (   )
 #ifndef _WIN32
    && mkdir(local_directory, 0777)
 #else
+#ifndef __MINGW32__
    && _mkdir(local_directory)
+#endif
 #endif
    ) {
    cerr << "Error creating local data directory '" << local_directory

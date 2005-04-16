@@ -28,10 +28,7 @@
 
 #include <GL/glut.h>
 
-#ifndef _WIN32
-#else
-#  include <glext.h>
-#endif
+#include "glext.h"
 
 #include <sys/time.h>
 
@@ -335,6 +332,7 @@ void Game::idleMeta (   )
 
 void Game::idlePlay (   )
 {
+#ifndef _WIN32
   timeval now;
   double nowd;
   gettimeofday(&now,NULL);
@@ -347,6 +345,7 @@ void Game::idlePlay (   )
   } else {
     usleep(1000);
   }
+#endif
 
   int modified_and_complete = false;
 

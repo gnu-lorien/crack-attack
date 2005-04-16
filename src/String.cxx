@@ -30,10 +30,7 @@
 #include <cstring>
 #include <GL/glut.h>
 
-#ifndef _WIN32
-#else
-#  include <glext.h>
-#endif
+#include "glext.h"
 
 using namespace std;
 

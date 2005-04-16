@@ -25,12 +25,11 @@
  * Handle's the displaying of the blocks.
  */
 
+#include <GL/gl.h>
 #include <GL/glut.h>
 
-#ifndef _WIN32
-#else
-#  include <glext.h>
-#endif
+// FIXME: may actually need GL/glext.h
+#include "glext.h"
 
 using namespace std;
 
