@@ -29,7 +29,6 @@
 #endif
 
 #include <gtk/gtk.h>
-#include <sys/wait.h>
 
 #include "../Mode.h"
 #include "../Attack.h"
@@ -143,24 +142,6 @@ on_Xtreme_toggled                      (GtkToggleButton *togglebutton,
         GAME_EXTREME = FALSE;
         mode &= ~CM_X;
     }
-}
-
-gboolean
-check_for_game_end (gpointer data) {
-    pid_t process_id = *((pid_t *)data);
-    pid_t ret_pid;
-    ret_pid = waitpid (0, NULL, WNOHANG);
-    if (ret_pid == process_id) {
-        // Game finished
-        MS_RUNNING = FALSE;
-        running_process = 0;
-        if (window) {
-            gtk_widget_show(GTK_WIDGET(window));
-        }
-    } else {
-        MS_RUNNING = TRUE;
-    }
-    return MS_RUNNING;
 }
 
 void 
@@ -324,12 +305,6 @@ gboolean
 on_winCrackAttackSplash_delete_event   (GtkWindow *window,
                                         gpointer  user_data)
 {
-    if (MS_RUNNING = TRUE) {
-        /* The game is still running, so we need to kill it before
-         * we can exit
-         */
-        kill(running_process, 9);
-    }
     return FALSE;
 }
 
