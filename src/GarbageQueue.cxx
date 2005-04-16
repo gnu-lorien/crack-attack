@@ -61,12 +61,19 @@ int GarbageQueue::removeToFirst ( int flavor )
     ++num_removed;
   }
   if (num_removed == 0) return 0;
+#ifdef DEVELOPMENT
+  int prev_height = height();
   cached_height = -1;
   MESSAGE("Removing " << num_removed);
   MESSAGE("Height before erase " << height());
+#endif
   garbage_queue.erase(garbage_queue.begin(), iter);
   cached_height = -1;
-  MESSAGE("Height after erase " << height());
+#ifdef DEVELOPMENT
+  int current_height = height();
+  MESSAGE("Height after erase " << current_height);
+  assert((prev_height - num_removed)==current_height);
+#endif
   return num_removed;
 }
 
