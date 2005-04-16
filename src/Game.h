@@ -81,7 +81,7 @@ using namespace std;
 #  define GC_LOCAL_DATA_DIRECTORY        GC_DD "." GC_BINARY GC_DD
 #else
 #  define GC_DATA_DIRECTORY(x)              ".." GC_DD "data" GC_DD x
-#  define GC_LOCAL_DATA_DIRECTORY(x)        ".." GC_DD "localdata" GC_DD x
+#  define GC_LOCAL_DATA_DIRECTORY           ".." GC_DD "localdata" GC_DD
 #endif
 #ifdef ENABLE_BINRELOC
 #  undef GC_DATA_DIRECTORY               

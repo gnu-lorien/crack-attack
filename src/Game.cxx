@@ -263,6 +263,7 @@ void Game::syncUnpause (   )
 
 void Game::idleMeta (   )
 {
+#ifndef _WIN32
   timeval now;
   double nowd;
   gettimeofday(&now,NULL);
@@ -275,6 +276,7 @@ void Game::idleMeta (   )
   } else {
     usleep(1000);
   }
+#endif 
 
   int modified_and_complete = false;
 

@@ -24,9 +24,12 @@
 #define _GLEXT_H_
 
 #ifndef _WIN32
+#  include <GL/glext.h>
 #else
 #  ifndef __MINGW32__
 #    include <glext.h>
+#  else
+#    include <GL/glext.h>
 #  endif
 #endif
 
