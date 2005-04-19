@@ -45,7 +45,6 @@ static const gchar *veryreduced   = "--really";
 static const gchar *xtreme        = "--extreme";
 static const gchar *name          = "--name";
 static const gchar *space         = " ";
-static const gchar *colon         = ":";
 
 /* Resolution */
 static const gchar *resolution    = "--res";
@@ -71,7 +70,7 @@ generate_arguments(int mode, const gchar *start, GtkWidget *widget) {
 		args = args_cat(args, space);
 	} else if (mode & CM_CLIENT) {  /* Client */
 		args = args_cat(args, gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entServerAddress")));
-		args = args_cat(args, colon);
+		args = args_cat(args, space);
 		args = args_cat(args, gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entPort2")));
 		args = args_cat(args, space);
 	}
@@ -135,13 +134,11 @@ generate_array(int mode, const gchar *start, GtkWidget *widget) {
 		++i;
 		result[i] = gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entPort"));
 		++i;
-	} else if (mode & CM_CLIENT) {  /* Client FIXME Can't handle the colon right now...*/
-		/*
-		args = args_cat(args, gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entServerAddress")));
-		args = args_cat(args, colon);
-		args = args_cat(args, gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entPort2")));
-		args = args_cat(args, space);
-		*/
+	} else if (mode & CM_CLIENT) {  /* Client */
+		result[i] = gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entServerAddress"));
+		++i;
+		result[i] = gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entPort2"));
+		++i;
 	}
 
 	/* Global */

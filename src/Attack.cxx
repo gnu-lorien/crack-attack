@@ -89,7 +89,7 @@ inline void usage (   )
   cerr << "Usage: " GC_BINARY " --server [PORT] [--low] [--extreme] [--wait] "
    "[--name 'NAME']\n"
    "        <or>\n"
-   "       " GC_BINARY " SERVER[:PORT] [[--really] --low] [--name 'NAME']\n"
+   "       " GC_BINARY " SERVER PORT [[--really] --low] [--name 'NAME']\n"
    "        <or>\n"
    "       " GC_BINARY " --solo [[--really] --low] [-X] [--name 'NAME']\n"
    "        <or in short>\n"
@@ -206,12 +206,14 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
 
       mode |= CM_CLIENT;
       strncpy(host_name, argv[n], GC_HOST_NAME_SIZE);
-      char *ptr = strchr(host_name, ':');
-      if (ptr) {
-        port = atoi(ptr + 1);
-        *ptr = '\0';
-      } else
-        port = 0;
+			++n;
+			if (n < argc) {
+				port = atoi(argv[n]);
+			} else {
+				port = 0;
+				cerr << "No port specified.\n";
+				usage();
+			}		
     }
   }
 
