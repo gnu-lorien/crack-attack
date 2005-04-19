@@ -117,20 +117,6 @@ void Displayer::initialize ( int width, int height  )
   }
 #  endif
 #endif
-
-#ifdef DEVELOPMENT
-  string = (char *) glGetString(GL_EXTENSIONS);
-  cout << "OpenGL version:  " << glGetString(GL_VERSION)
-   << "\nOpenGL extensions:\n  " << *string;
-  for (char *p = string + 1; *p; p++) {
-    if (isspace(*p)) continue;
-    if (isspace(*(p - 1)))
-      cout << "\n  ";
-    cout << *p;
-  }
-  cout << endl;
-#endif
-
   SparkleManager::initialize();
   SignManager::initialize();
   LightManager::initialize();
