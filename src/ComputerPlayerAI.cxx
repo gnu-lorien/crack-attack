@@ -53,6 +53,7 @@ int ComputerPlayerAI::stateSteps()
   if (state == AI_SHATTERING) {
     return garbageShatterDelay();
   }
+	return GC_DYING_DELAY * 5;
 }
 
 int ComputerPlayerAI::lossHeight()
