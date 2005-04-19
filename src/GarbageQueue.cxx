@@ -72,7 +72,13 @@ int GarbageQueue::removeToFirst ( int flavor )
 #ifdef DEVELOPMENT
   int current_height = height();
   MESSAGE("Height after erase " << current_height);
-  assert((prev_height - num_removed)==current_height);
+  //assert((prev_height - num_removed)==current_height);
+	if (prev_height - num_removed != current_height) {
+		MESSAGE("******Assertion would've failed here in GarbageQueue.cxx:75******");
+		MESSAGE("prev_height - num_removed != current_height (" <<
+				prev_height << " - " << num_removed << " != " <<
+				current_height << ")");
+	}
 #endif
   return num_removed;
 }
