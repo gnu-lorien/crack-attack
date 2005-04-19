@@ -93,5 +93,10 @@ v 1.1.12
     version which is still 1.1.8.
   - Name, resolution, and graphics settings are now remembered by the GUI.
 
-v 1.1.13cvs
+v 1.1.13-cvs
 	- Implemented binary relocatability
+	- Changed the way the game process is spawned to g_spawn_async.
+  - Added a function to check for the game's completion.
+  - Added a function in modeparser to generate the game's arguments as an
+    array of strings.
+  - Changed the resolution switch to --res instead of -m.
