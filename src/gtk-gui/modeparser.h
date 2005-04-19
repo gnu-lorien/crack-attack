@@ -30,3 +30,6 @@ args_cat(gchar *, const gchar *);
 
 gboolean
 validate_mode(int);
+
+gchar**
+generate_array(int, const gchar *, GtkWidget *);

@@ -195,7 +195,7 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
       mode |= CM_AI;
       mode |= CM_AI_MEDIUM;
 
-    } else if (!strcmp(argv[n], "-m")) {
+    } else if (!strcmp(argv[n], "--res")) {
       if (argv[n + 1] && argv[n + 1][0] != '-')
         height = width = atoi(argv[++n]);
       else

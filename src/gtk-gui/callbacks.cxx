@@ -29,6 +29,7 @@
 #endif
 
 #include <gtk/gtk.h>
+#include <sys/wait.h>
 
 #include "../Mode.h"
 #include "../Attack.h"
@@ -81,6 +82,28 @@ void prepare_for_actions (GtkToggleButton *gtb) {
     lookup_widgets(gtb);
     turn_game_prefs_off();
     turn_sensitive_off();
+}
+
+gboolean
+check_for_game_end (gpointer data) {
+	int status;
+    pid_t process_id = *((pid_t *)data);
+    pid_t ret_pid;
+    ret_pid = waitpid (process_id, &status, 0);
+#ifdef DEVELOPMENT
+		printf("process_id is %d and ret_pid is %d\n", process_id, ret_pid);
+#endif
+    if (ret_pid == process_id) {
+        // Game finished
+        MS_RUNNING = FALSE;
+        running_process = 0;
+        if (window) {
+            gtk_widget_show(GTK_WIDGET(window));
+        }
+    } else {
+        MS_RUNNING = TRUE;
+    }
+    return MS_RUNNING;
 }
 
 void
@@ -248,17 +271,17 @@ on_btnStart_clicked                    (GtkButton       *button,
 
     gtk_widget_hide(GTK_WIDGET(window));
     int exit_status;
-    GError *err;
-    gchar *c = generate_arguments(mode, br_strcat(BINDIR, GC_DD GC_BINARY), GTK_WIDGET(button));
-#ifdef DEVELOPMENT
-    g_print("Command line: %s\n", c);
-#endif
-    gboolean ret = g_spawn_command_line_sync(c, NULL, NULL, &exit_status, &err);
-    g_free(c);
+    GError *err = NULL;
+		GPid pid;
+		gtk_widget_hide(GTK_WIDGET(window));
+		GSpawnFlags flags = (GSpawnFlags) (G_SPAWN_LEAVE_DESCRIPTORS_OPEN | G_SPAWN_DO_NOT_REAP_CHILD);
+		gchar **args = generate_array(mode, br_strcat(BINDIR, GC_DD GC_BINARY), GTK_WIDGET(button));
+		gboolean ret = g_spawn_async(NULL, args, NULL, flags, NULL, NULL, &pid, &err);
+		g_timeout_add (500, check_for_game_end, (gpointer) &pid);
+		g_free(args);
     if (!ret) {
       if (err) ca_error_dialog(err->message);
     }
-    gtk_widget_show(GTK_WIDGET(window));
     g_free(command);
 }
 
@@ -398,4 +421,5 @@ on_ai_hard_activate                    (GtkMenuItem     *menuitem,
     mode |= CM_AI;
     mode |= CM_AI_HARD;
 }
+
 
