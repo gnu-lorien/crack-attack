@@ -33,3 +33,7 @@ gui_data_read                 (GtkWidget *);
 
 int
 gui_get_dimensions            (GtkWidget *);
+
+
+int
+gui_get_difficulty            (int, GtkWidget *);

@@ -269,6 +269,9 @@ on_btnStart_clicked                    (GtkButton       *button,
 		// Set the height and width to the selected value.
 		height = width = gui_get_dimensions(GTK_WIDGET(button));
 
+		// Set the AI difficulty to the correct setting.
+		mode = gui_get_difficulty(mode, GTK_WIDGET(button));
+
     gtk_widget_hide(GTK_WIDGET(window));
     int exit_status;
     GError *err = NULL;
