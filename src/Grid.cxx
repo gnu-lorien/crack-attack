@@ -312,8 +312,8 @@ void Grid::shatterGarbage_inline_split_ ( int x, int y, Garbage *due_to )
   // keep track of the bounds on the shattered area
   if (y + garbage.height > shatter_top)
     shatter_top = y + garbage.height;
-  if (y < shatter_bottom)
-    shatter_bottom = y;
+  if (y - garbage.height < shatter_bottom)
+    shatter_bottom = y - garbage.height;
 
   shatter_count += garbage.width * garbage.height;
 
