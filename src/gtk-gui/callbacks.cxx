@@ -29,7 +29,12 @@
 #endif
 
 #include <gtk/gtk.h>
+#include <glib.h>
+#ifndef _WIN32
 #include <sys/wait.h>
+#else
+typedef int GPid;
+#endif
 
 #include "../Mode.h"
 #include "../Attack.h"
@@ -84,6 +89,7 @@ void prepare_for_actions (GtkToggleButton *gtb) {
     turn_sensitive_off();
 }
 
+#ifndef _WIN32
 gboolean
 check_for_game_end (gpointer data) {
 	int status;
@@ -105,6 +111,7 @@ check_for_game_end (gpointer data) {
     }
     return MS_RUNNING;
 }
+#endif
 
 void
 on_rbtnSingle_toggled                  (GtkToggleButton *togglebutton,
@@ -255,7 +262,7 @@ on_btnStart_clicked                    (GtkButton       *button,
             }
             g_strlcpy(player_name, tmp, 256);
 #ifdef DEVELOPMENT
-            g_print ("Player name: %s tmp: %s",player_name,tmp);
+            g_print ("Player name: %s tmp: %s", player_name,tmp);
 #endif 
         }
     }
@@ -272,15 +279,22 @@ on_btnStart_clicked                    (GtkButton       *button,
 		// Set the AI difficulty to the correct setting.
 		mode = gui_get_difficulty(mode, GTK_WIDGET(button));
 
+#ifdef DEVELOPMENT
+    g_print("Looking for location: %s\n", GC_BINARY_LOCATION);
+#endif
     gtk_widget_hide(GTK_WIDGET(window));
     int exit_status;
     GError *err = NULL;
 		GPid pid;
 		gtk_widget_hide(GTK_WIDGET(window));
-		GSpawnFlags flags = (GSpawnFlags) (G_SPAWN_LEAVE_DESCRIPTORS_OPEN | G_SPAWN_DO_NOT_REAP_CHILD);
-		gchar **args = generate_array(mode, br_strcat(BINDIR, GC_DD GC_BINARY), GTK_WIDGET(button));
+		GSpawnFlags flags = (GSpawnFlags) (G_SPAWN_LEAVE_DESCRIPTORS_OPEN | G_SPAWN_DO_NOT_REAP_CHILD);		
+		gchar **args = generate_array(mode, GC_BINARY_LOCATION, GTK_WIDGET(button));
 		gboolean ret = g_spawn_async(NULL, args, NULL, flags, NULL, NULL, &pid, &err);
+#ifndef _WIN32
 		g_timeout_add (500, check_for_game_end, (gpointer) &pid);
+#else
+        gtk_widget_show(GTK_WIDGET(window));
+#endif
 		g_free(args);
     if (!ret) {
       if (err) ca_error_dialog(err->message);

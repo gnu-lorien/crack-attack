@@ -80,15 +80,19 @@ using namespace std;
 #    define GC_DATA_DIRECTORY(x)          DATA_DIRECTORY x
 #  endif
 #  define GC_LOCAL_DATA_DIRECTORY        GC_DD "." GC_BINARY GC_DD
+#  define GC_BINARY_LOCATION             DATA_DIRECTORY ".." GC_DD ".."
 #else
 #  define GC_DATA_DIRECTORY(x)              ".." GC_DD "data" GC_DD x
 #  define GC_LOCAL_DATA_DIRECTORY           ".." GC_DD "localdata" GC_DD
+#  define GC_BINARY_LOCATION                GC_BINARY
 #endif
 #ifdef ENABLE_BINRELOC
-#  undef GC_DATA_DIRECTORY               
+#  undef GC_DATA_DIRECTORY
+#  undef GC_BINARY_LOCATION
 #  include "prefix.h"
 #  define GC_DATA_DIRECTORY_INTER        br_strcat(DATADIR, GC_DD GC_BINARY GC_DD)
 #  define GC_DATA_DIRECTORY(x)           br_strcat(GC_DATA_DIRECTORY_INTER, x)
+#  define GC_BINARY_LOCATION             br_strcat(BINDIR, GC_DD GC_BINARY)
 #endif
 #define GC_GARBAGE_TEX_FILE_NAME_BASE    "garbage_flavor"
 #define GC_GARBAGE_TEX_NUMBER_DIGITS     (3)

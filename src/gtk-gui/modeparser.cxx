@@ -190,10 +190,10 @@ generate_array(int mode, const gchar *start, GtkWidget *widget) {
 	++i;
 
 #ifdef DEVELOPMENT
-	printf("Arguments:\n");
+	g_print("Arguments:\n");
 	for (i = 0; i < RESULT_SIZE; ++i) {
 		if (result[i] != NULL) {
-			printf("%d: |%s|\n", i, result[i]);
+			g_print("%d: |%s|\n", i, result[i]);
 		}
 	}
 #endif
