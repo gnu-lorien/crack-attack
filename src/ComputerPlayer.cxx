@@ -49,16 +49,6 @@ void ComputerPlayer::gameStart()
   lost = false;
 }
 
-static void show_element (GarbageQueueElement *e) {
-#ifndef NDEBUG
-  printf("Element: %p h %d w %d f %d\n",
-    e,
-    e->height,
-    e->width,
-    e->flavor);
-#endif
-}
-
 int ComputerPlayer::gameFinish()
 {
   return ai->determineLoss() ? GS_WON : GS_LOST;
@@ -139,12 +129,15 @@ int ComputerPlayer::findTopRed()
     if (lightPartition(i) >= ai->garbageQueue()->height())
       return i;
   }
+	return 0;
 }
 
 int ComputerPlayer::levelLightImpact (  )
 {
   if (impact(true))
     return findTopRed();
+
+	return 0;
 }
 
 bool ComputerPlayer::impact (bool reset)

@@ -1393,7 +1393,7 @@ void Displayer::generateBlockDisplayList (   )
       -0.85f,0.85f,1.0f // upper left
     };
 
-    GLfloat *vertices, *normals;
+    GLfloat *vertices, *normals = NULL;
     int n_vertices;
 
     if (MetaState::mode & CM_REALLY_LOW_GRAPHICS) {
@@ -1421,7 +1421,7 @@ void Displayer::generateBlockDisplayList (   )
 
   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-  GLfloat tex_coords[3 * n_vertices];
+	GLfloat *tex_coords = new GLfloat[3 * n_vertices];
   for (int n = 3 * n_vertices; n--; )
     tex_coords[n] = vertices[n] * 0.5f;
 
@@ -1505,15 +1505,18 @@ void Displayer::generateBlockDisplayList (   )
     cerr << "**********\nWARNING:"
       "disabling call to 1d texturing on DRI 20020221 Voodoo3 renderer "
       "since it segfaults\n**********" << endl;
+		delete[] tex_coords;
     return;
   }
   if (strstr((char*) renderer, "865G 20021115")) {
     cerr << "**********\nWARNING:"
       "disabling call to 1d texturing on 865G 20021115 renderer "
       "since it segfaults\n**********" << endl;
+		delete[] tex_coords;
     return;
   }
 
   glTexImage1D(GL_TEXTURE_1D, 0, GL_LUMINANCE, 32, GL_FALSE, GL_LUMINANCE,
    GL_UNSIGNED_BYTE, texture);
-};
+	delete[] tex_coords;
+}

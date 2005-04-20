@@ -45,7 +45,7 @@ protected:
 public:
 
   ComputerPlayerAI();
-  ~ComputerPlayerAI(){}
+  virtual ~ComputerPlayerAI(){}
 
   int alarm ( );
   void resetAlarm ( );
@@ -59,7 +59,7 @@ public:
 class EasyAI :public ComputerPlayerAI { 
 public:
   EasyAI() { }
-  ~EasyAI(){}
+  virtual ~EasyAI(){}
 
   virtual int lossHeight();
 protected:
@@ -69,7 +69,7 @@ protected:
 class MediumAI :public ComputerPlayerAI { 
 public:
   MediumAI(){}
-  ~MediumAI(){}
+  virtual ~MediumAI(){}
 
   virtual int lossHeight();
 protected:
@@ -79,7 +79,7 @@ protected:
 class HardAI :public ComputerPlayerAI { 
 public:
   HardAI(){}
-  ~HardAI(){}
+  virtual ~HardAI(){}
 
   virtual int lossHeight();
 protected:

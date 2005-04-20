@@ -42,7 +42,8 @@
 #include "glext.h"
 
 #ifdef HAVE_CONFIG_H
-#  include <config.h>
+#  undef BR_PTHREAD
+#  include "config.h"
 #endif 
 
 #include "Mode.h"

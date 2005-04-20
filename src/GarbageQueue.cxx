@@ -74,7 +74,7 @@ int GarbageQueue::removeToFirst ( int flavor )
   MESSAGE("Height after erase " << current_height);
   //assert((prev_height - num_removed)==current_height);
 	if (prev_height - num_removed != current_height) {
-		MESSAGE("******Assertion would've failed here in GarbageQueue.cxx:75******");
+		MESSAGE("***********Assertion would've failed here in GarbageQueue.cxx:75***********");
 		MESSAGE("prev_height - num_removed != current_height (" <<
 				prev_height << " - " << num_removed << " != " <<
 				current_height << ")");
@@ -110,7 +110,7 @@ void GarbageQueue::add ( GarbageQueueElement &element )
   assert(element.height <= GC_PLAY_HEIGHT);
   assert(element.width  <= GC_PLAY_WIDTH);
   garbage_queue.push_back(element);
-  int old_height = cached_height;
+  //int old_height = cached_height;
   cached_height = -1;
   //assert(height()-element.height == old_height);
 }

@@ -40,7 +40,6 @@
 using namespace std;
 
 #include "TextureLoader.h"
-#include "Game.h"
 #include "Attack.h"
 #include "Communicator.h"
 #include "MetaState.h"

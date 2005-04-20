@@ -148,7 +148,7 @@ public:
     return points;
   }
 
-  static inline bool Score::topRank (   )
+  static inline bool topRank (   )
   {
     return player_rank == GC_SCORE_REC_LENGTH - 1;
   }

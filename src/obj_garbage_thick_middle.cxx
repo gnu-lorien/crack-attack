@@ -97,4 +97,4 @@ void Displayer::generateGarbageThickMiddleList (   )
   glDisableClientState(GL_VERTEX_ARRAY);
   glDisableClientState(GL_NORMAL_ARRAY);
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-};
+}

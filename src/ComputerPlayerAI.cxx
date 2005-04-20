@@ -85,8 +85,6 @@ GarbageQueue *ComputerPlayerAI::garbageQueue ()
 GarbageQueue *ComputerPlayerAI::garbageAmount( )
 {
   GarbageQueue *q = new GarbageQueue();
-  size_t const size = 20;
-  size_t i = 0;
   BufferElement garbage;
   int working_height = GC_SAFE_HEIGHT - 1 - garbageQueue()->height();
   int num_grays, num_normals;
