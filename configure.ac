@@ -81,7 +81,7 @@ AC_ARG_ENABLE(debug,
   enable_debug=no)
 if test "$enable_debug" = "yes"; then
   DEBUG_INCLUDES=-DDEVELOPMENT
-  DEBUG_CFLAGS="-g"
+  DEBUG_CFLAGS="-g -Wall -pedantic"
 else
   DEBUG_INCLUDES=-DNDEBUG
   DEBUG_CFLAGS=
