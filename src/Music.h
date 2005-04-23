@@ -41,21 +41,21 @@
 
 class Music {
 	public:
-		static void Music::initialize (   );
-		static void Music::play();
-		static void Music::play_prelude();
-		static void Music::play_game();
-		static void Music::play_gameover();
-		static void Music::play_youwin();
-		static void Music::pause();
-		static void Music::resume();
-		static void Music::stop();
-		static void Music::fadeout( int ms );
-		static void Music::cleanup (  );
-		static void Music::load(  );
+		static void initialize (   );
+		static void play();
+		static void play_prelude();
+		static void play_game();
+		static void play_gameover();
+		static void play_youwin();
+		static void pause();
+		static void resume();
+		static void stop();
+		static void fadeout( int ms );
+		static void cleanup (  );
+		static void load(  );
 	private:
-		static void Music::play_track( char *track );
-		static void Music::finished();
+		static void play_track( char *track );
+		static void finished();
 };
 
 #endif /* MUSIC_H */

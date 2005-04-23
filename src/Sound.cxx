@@ -64,7 +64,7 @@ void Sound::initialize( void )
 	// Load chunk files to ChunkMap
 	Mix_Chunk *chunk;
 	string File;
-	for (int i = 0; i < sounds.size(); i++) {
+	for (size_t i = 0; i < sounds.size(); i++) {
 		#ifndef NDEBUG
 		cout << "Loading " << sounds[i];
 		#endif
@@ -92,12 +92,9 @@ void Sound::play( const char *file, int vol )
        if (!has_audio_available || !chunks[file])
               return;
 
-	int channel, i;
+	int channel;
 	
 	if (vol > 10) vol = 10;
-	#ifndef NDEBUG
-	cout << "Playing sound: " << File.c_str() << endl;
-	#endif
 	// string File (file);
 	Mix_VolumeChunk( chunks[file], vol * MIX_MAX_VOLUME / 10 );
 	channel = Mix_PlayChannel( -1, chunks[file], 0 );

@@ -38,10 +38,10 @@ const char GC_SOUND_GARBAGE_SHATTERING[] = "garbage_shattering.wav";
 
 class Sound {
 	public:
-		static void Sound::initialize ( void );
-		static void Sound::play( const char *file, int vol );
-		static void Sound::cleanup ( void );
-		static int  Sound::audio_available( void );
+		static void initialize ( void );
+		static void play( const char *file, int vol );
+		static void cleanup ( void );
+		static int  audio_available( void );
 	private:
 };
 
