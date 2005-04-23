@@ -225,16 +225,19 @@ gui_get_difficulty(int mode_in, GtkWidget *widget) {
 		case 1: {
 							mode |= CM_AI;
 							mode |= CM_AI_EASY;
+							mode &= ~CM_X;
 							return mode;
 						}
 		case 2: {
 							mode |= CM_AI;
 							mode |= CM_AI_MEDIUM;
+							mode &= ~CM_X;
 							return mode;
 						}
 		case 3: {
 							mode |= CM_AI;
 							mode |= CM_AI_HARD;
+							mode &= ~CM_X;
 							return mode;
 						}
 		default: {
