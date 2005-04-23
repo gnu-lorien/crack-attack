@@ -34,6 +34,9 @@
 #include "Spring.h"
 #include "Random.h"
 #include "X.h"
+#ifdef AUDIO_ENABLED
+#include "Sound.h"
+#endif
 
 #include <cassert>
 
@@ -98,6 +101,11 @@ void Garbage::initializeAwaking ( int _x, int _y, int _height, int pop_delay,
   width = GC_PLAY_WIDTH;
   flavor = GF_NORMAL;
   f_y = 0;
+/*
+#ifdef AUDIO_ENABLED
+  Sound::play( GC_SOUND_GARBAGE_SHATTERING, this-> width * this->height );
+#endif
+*/
 
   state = GS_AWAKING;
   alarm = Game::time_step + awake_delay;
@@ -244,6 +252,9 @@ void Garbage::timeStep ( int &l_x, int &l_y )
 
           // change our state
           state = BS_STATIC;
+#ifdef AUDIO_ENABLED
+          Sound::play( GC_SOUND_GARBAGE_FALLEN, this->width * this->height );
+#endif
 
           // if this is the end of our initial fall
           if (initial_fall) {
@@ -331,6 +342,9 @@ void Garbage::startShattering ( int &s_x, int s_y, int &pop_delay,
   // otherwise assert will bite us
   for (int w = 0; w < width; w++)
     Grid::remove(s_x + w, s_y, this);
+#endif
+#ifdef AUDIO_ENABLED
+    Sound::play( GC_SOUND_GARBAGE_SHATTERING, this-> width * this->height );
 #endif
 
   // if it's an even row, perhaps shatter into new garbage

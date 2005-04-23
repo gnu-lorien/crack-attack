@@ -60,7 +60,7 @@ using namespace std;
 // the name
 #define GC_NAME                          "Crack Attack!"
 #define GC_BINARY                        "crack-attack"
-#define GC_VERSION                       "1.1.13"
+#define GC_VERSION                       "1.1.14-cvs"
 
 // startup message
 #define GC_MESSAGE                       GC_NAME " v" GC_VERSION "\n"

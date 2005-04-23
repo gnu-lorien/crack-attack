@@ -29,6 +29,10 @@
 #include "CountDownManager.h"
 #include "MessageManager.h"
 #include "Displayer.h"
+#ifdef AUDIO_ENABLED
+#include "Sound.h"
+#include "Music.h"
+#endif
 
 using namespace std;
 
@@ -43,6 +47,9 @@ void CountDownManager::gameStart (   )
   state = 3;
 
   MessageManager::readyMessage(state);
+#ifdef AUDIO_ENABLED
+      Music::fadeout( 3000 );
+#endif
 }
 
 void CountDownManager::cleanUp (   )
@@ -55,7 +62,12 @@ void CountDownManager::timeStep_inline_split_ (   )
   if (start_pause_alarm)
     start_pause_alarm--;
 
-  if (--message_switch_alarm == 0)
+  if (message_switch_alarm == 30) {
+#ifdef AUDIO_ENABLED
+    Sound::play( GC_SOUND_COUNTDOWN, 1 + state * 3 );
+#endif
+  }
+  if (--message_switch_alarm == 0) {
     if (--state == -1) {
       MessageManager::freeMessage();
       message_switch_alarm = 0;
@@ -63,11 +75,16 @@ void CountDownManager::timeStep_inline_split_ (   )
     } else if (state == MS_COUNT_DOWN_GO) {
       MessageManager::freeMessage();
       MessageManager::readyMessage(MS_COUNT_DOWN_GO);
+#ifdef AUDIO_ENABLED
+      Music::stop();
+      Music::play();
+#endif
       message_switch_alarm = GC_START_PAUSE_DELAY / 3;
 
     } else {
       MessageManager::nextMessage(state);
       message_switch_alarm = GC_START_PAUSE_DELAY / 3;
     }
+  }
 }
 

@@ -9,7 +9,7 @@ Packager: Andrew Sayman <lorien420@myrealbox.com>
 Summary: Crack Attack! is a fast paced 3D puzzle game
 URL: http://savannah.nongnu.org/projects/crack-attack
 License: GNU General Public License, Version 2
-SoftwareVersion: 1.1.12-r1
+SoftwareVersion: 1.1.14-cvs
 AutopackageTarget: 1.0
 
 # Only uncomment InterfaceVersion if your package exposes interfaces to other software,

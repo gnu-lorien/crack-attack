@@ -1,5 +1,8 @@
 /* src/config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Has audio support */
+#undef AUDIO_ENABLED
+
 /* Include pthread support for binary relocation? */
 #undef BR_PTHREAD
 

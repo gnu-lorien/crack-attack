@@ -34,6 +34,9 @@
 #include "WinRecord.h"
 #include "Random.h"
 #include "Score.h"
+#ifdef AUDIO_ENABLED
+#include "Music.h"
+#endif
 
 using namespace std;
 
@@ -56,6 +59,10 @@ void CelebrationManager::gameFinish (   )
 {
   draw_game = true;
   light_level = 1.0f;
+
+#ifdef AUDIO_ENABLED
+  Music::fadeout( 1000 );
+#endif
 
   MessageManager::mode = MM_CELEBRATION;
 
@@ -133,6 +140,9 @@ void CelebrationManager::timeStep (   )
         spark_rate[n] = DC_CSPARK_STARTING_RATE;
         spark_color[n] = Random::number(DC_CSPARK_COLOR_NUMBER);
       }
+#ifdef AUDIO_ENABLED
+      Music::play_youwin();
+#endif
 
     } else {
 
@@ -200,6 +210,9 @@ void CelebrationManager::timeStep (   )
           loss_bounce_count--;
           loss_velocity = 0.0f;
           loss_height = 0.0f;
+#ifdef AUDIO_ENABLED
+          Music::play_gameover();
+#endif
 
         // otherwise, bounce
         } else {

@@ -63,6 +63,9 @@ using namespace std;
 #include "WinRecord.h"
 #include "X.h"
 #include "ComputerPlayer.h"
+#ifdef AUDIO_ENABLED
+#include "Music.h"
+#endif
 
 int Game::time_step;
 int Game::state;
@@ -201,6 +204,9 @@ void Game::buttonPause (   )
       Communicator::unpauseSyncCheck();
       Communicator::signalUnpaused();
     }
+#ifdef AUDIO_ENABLED
+    Music::resume();
+#endif
 
   // pause
   } else {
@@ -215,6 +221,9 @@ void Game::buttonPause (   )
 
     if (!(MetaState::mode & CM_SOLO))
       Communicator::signalPaused();
+#ifdef AUDIO_ENABLED
+    Music::pause();
+#endif
   }
 }
 

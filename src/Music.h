@@ -1,0 +1,61 @@
+/*
+ * Music.h
+ * Miguel Ángel Vilela García - 8/29/03
+ *
+ * Copyright (C) 2003  Miguel Ángel Vilela García 
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * Miguel Ángel Vilela García - www.miguev.net
+ */
+
+#ifndef MUSIC_H
+#define MUSIC_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <dirent.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_mixer.h>
+#include <string>
+#include <vector>
+
+#define GC_MUSIC_FILENAME_LENGTH 128
+#define GC_MUSIC_PRELUDE_TRACK   "prelude.ogg"
+#define GC_MUSIC_GAME_TRACK      "game.ogg"
+#define GC_MUSIC_GAMEOVER_TRACK  "gameover.ogg"
+#define GC_MUSIC_YOUWIN_TRACK    "youwin.ogg"
+
+class Music {
+	public:
+		static void Music::initialize (   );
+		static void Music::play();
+		static void Music::play_prelude();
+		static void Music::play_game();
+		static void Music::play_gameover();
+		static void Music::play_youwin();
+		static void Music::pause();
+		static void Music::resume();
+		static void Music::stop();
+		static void Music::fadeout( int ms );
+		static void Music::cleanup (  );
+		static void Music::load(  );
+	private:
+		static void Music::play_track( char *track );
+		static void Music::finished();
+};
+
+#endif /* MUSIC_H */

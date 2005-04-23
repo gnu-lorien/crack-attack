@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.59)
-AC_INIT(crack-attack,1.1.13,lorien420@myrealbox.com)
+AC_INIT(crack-attack,1.1.14-cvs,lorien420@myrealbox.com)
 AC_CONFIG_SRCDIR(src/Attack.cxx)
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(src/config.h)
@@ -55,23 +55,38 @@ AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
 AM_CONDITIONAL([WANT_GTK], [test "$enable_gtk" = yes])
 
-dnl Check for SDL_mixer
+dnl Check for sound support
 AC_ARG_ENABLE(sound,
   AC_HELP_STRING([--enable-sound=[yes/no]],
-    [Play sounds and music during game[default=yes]]),
+    [Play sounds and music during game [default=yes]]),
   enable_sound="$enableval",
-  enable_sound=yes)
-if test "$enable_sound" = "yes"; then
-  AM_PATH_SDL(1.2.0,, AC_MSG_ERROR([libSDL is needed]))
-  AC_CHECK_LIB([SDL_mixer],
-    [Mix_OpenAudio],
-    AC_MSG_RESULT("SDL_mixer found"); SOUND_LIBS="-lSDL_mixer"; enable_sound=no;,
-    AC_MSG_RESULT("SDL_mixer not found"); SOUND_LIBS=""; enable_sound=no;)
-else
-  SOUND_LIBS=""
+  enable_sound=auto)
+AUDIO_CFLAGS=""
+AUDIO_LIBS=""
+if test "$enable_sound" != "no"; then
+  found_sound="no"
+  AM_PATH_SDL(1.2.0,
+    [
+      AC_CHECK_LIB([SDL_mixer],
+        [Mix_OpenAudio],
+        [found_sound=yes],
+        [found_sound=no]
+      )
+    ],[found_sound=no]
+  )
+
+  if test "$enable_sound" == "yes" -a "$found_sound" == "no"; then
+    AC_MSG_ERROR(libSDL and SDL_mixer are required for sound)
+  fi
+  if test "$found_sound" == "yes"; then
+    AUDIO_CFLAGS="$SDL_CFLAGS"
+    AUDIO_LIBS="$SDL_LIBS -lSDL_mixer"
+    AC_DEFINE(AUDIO_ENABLED, 1, [Has audio support])
+  fi
 fi
-AC_SUBST(SOUND_LIBS)
-AM_CONDITIONAL([AUDIO_ENABLED], [test "$enable_sound" = yes])
+AC_SUBST(AUDIO_CFLAGS)
+AC_SUBST(AUDIO_LIBS)
+AM_CONDITIONAL([AUDIO_ENABLED], [test "$found_sound" = "yes"])
 
 
 dnl Check for debugging

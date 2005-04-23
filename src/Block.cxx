@@ -35,6 +35,7 @@
 #include "Swapper.h"
 #include "SparkleManager.h"
 #include "X.h"
+#include "Sound.h"
 
 using namespace std;
 
@@ -98,8 +99,12 @@ void Block::timeStep (   )
   } else if (state & BS_AWAKING) {
     // The alarm has been set to go off when we're done awaking.  When the
     // pop alarm goes off, we only switch our appearence.
-    if (pop_alarm == Game::time_step)
+    if (pop_alarm == Game::time_step) {
+#ifdef AUDIO_ENABLED
+      Sound::play( GC_SOUND_BLOCK_AWAKING, 5 );
+#endif
       pop_alarm = 0;
+    }
 
     if (alarm == Game::time_step) {
 
@@ -159,6 +164,9 @@ void Block::timeStep (   )
 
           // change our state
           state = BS_STATIC;
+#ifdef AUDIO_ENABLED
+          Sound::play( GC_SOUND_BLOCK_FALLEN, 2 );
+#endif
 
           // update the grid
           Grid::changeState(x, y, this, GR_BLOCK);
@@ -262,6 +270,9 @@ void Block::startDying ( ComboTabulator *combo, int spark_number )
   // change the game state
   Game::dying_count++;
   Game::dying_count_2++;
+#ifdef AUDIO_ENABLED
+  Sound::play( GC_SOUND_BLOCK_DYING, spark_number / 3 );
+#endif
 
   // let the combo know we're in
   beginComboInvolvement(combo);

@@ -45,6 +45,11 @@ using namespace std;
 #include "MetaState.h"
 #include "Random.h"
 
+#ifdef AUDIO_ENABLED
+#include "Sound.h"
+#include "Music.h"
+#endif
+
 #ifdef WANT_GTK
 #include "gtk-gui/gui_main.h"
 #endif
@@ -63,6 +68,8 @@ using namespace std;
  *   remove dying_count_2
  *   find and use correct GL_LIGHT_MODEL_COLOR_CONTROL defines
  */
+
+int nosound = 0;
 
 int main ( int argc, char **argv )
 {
@@ -136,7 +143,21 @@ void run_crack_attack (
 
   MetaState::programStart(mode, player_name, width, height);
 
+#ifdef AUDIO_ENABLED
+  if (!nosound) {
+    Sound::initialize();
+    Music::initialize();
+    Music::play_prelude();
+  }
+#endif
+
   glutMainLoop();
+
+#ifdef AUDIO_ENABLED
+  Music::stop();
+  Music::cleanup();
+  Sound::cleanup();
+#endif
 }
 
 void parseCommandLine ( int argc, char **argv, int &mode, int &port,
@@ -144,6 +165,9 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
 {
   for (int n = 1; argv[n]; n++) {
 
+    if (!strcmp(argv[n], "--nosound"))
+      nosound = 1;
+    else
     if (!strcmp(argv[n], "-s") || !strcmp(argv[n], "--server")) {
       if (mode & (CM_SERVER | CM_CLIENT | CM_SOLO)) usage();
 

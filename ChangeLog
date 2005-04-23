@@ -101,3 +101,8 @@ v 1.1.13
 	- Fixed stones hanging in mid-air (Thanks Wolfgang Klier <stubai>)
 	 - Fixes Savannah bug #10988
   - Added a command-line switch to change the resolution --res.
+
+v 1.1.14-cvs
+  - Some fixes to the build system. (Thanks Mike Frysinger)
+	- Sound and music patches. (Thanks Mike Frysinger and Miguel Ángel Vilela
+	  García)
