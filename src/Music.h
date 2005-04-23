@@ -34,10 +34,10 @@
 #include <vector>
 
 #define GC_MUSIC_FILENAME_LENGTH 128
-#define GC_MUSIC_PRELUDE_TRACK   "prelude.ogg"
-#define GC_MUSIC_GAME_TRACK      "game.ogg"
-#define GC_MUSIC_GAMEOVER_TRACK  "gameover.ogg"
-#define GC_MUSIC_YOUWIN_TRACK    "youwin.ogg"
+#define GC_MUSIC_PRELUDE_TRACK   "prelude"
+#define GC_MUSIC_GAME_TRACK      "game"
+#define GC_MUSIC_GAMEOVER_TRACK  "gameover"
+#define GC_MUSIC_YOUWIN_TRACK    "youwin"
 
 class Music {
 	public:
