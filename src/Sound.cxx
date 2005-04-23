@@ -25,8 +25,13 @@
  * Miguel Ángel Vilela García - www.miguev.net
  */
 
+#include "TextureLoader.h"
 #include "Random.h"
 #include "Sound.h"
+#include <SDL/SDL.h>
+#include <SDL/SDL_mixer.h>
+
+using namespace std;
 
 typedef map <string,Mix_Chunk*> ChunkMap;
 vector<string> sounds;
@@ -64,14 +69,13 @@ void Sound::initialize( void )
 		cout << "Loading " << sounds[i];
 		#endif
 		// Try to load chunk in $HOME/.crack-attack/sounds/
-		sound_dirname = string( getenv( "HOME") );
-		sound_dirname.append( "/.crack-attack/sounds/" );
+    char sound_dirname[256];
+    TextureLoader::buildLocalDataFileName("sounds/", sound_dirname);
 		File = sound_dirname + sounds[i];
 		chunk = Mix_LoadWAV (File.c_str());
 		if ( chunk == NULL ) { // Try to load chunk in DATA_DIRECTORY/sounds/
-			sound_dirname = string (DATA_DIRECTORY);
-			sound_dirname.append( "/sounds/" );
-			File = sound_dirname + sounds[i];
+			char *another_dir = GC_DATA_DIRECTORY("sounds/");
+			File = another_dir + sounds[i];
 			chunk = Mix_LoadWAV (File.c_str());
 		}
 		// If chunk is NULL there is no WAV available for this sound

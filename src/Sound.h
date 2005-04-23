@@ -3,6 +3,10 @@
  * Miguel Ángel Vilela García - 8/29/03
  *
  * Copyright (C) 2003  Miguel Ángel Vilela García 
+ * Copyright (C) 2005  See COPYRIGHT
+ * Crack Attack! is the legal property of its developers, whose names 
+ * are too numerous to list here.  Please refer to the COPYRIGHT file
+ * distributed with this source distribution for a full listing.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,16 +27,6 @@
 
 #ifndef SOUND_H
 #define SOUND_H
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <dirent.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_mixer.h>
-#include <string>
-#include <vector>
-#include <map>
 
 // const char GC_SOUND_FILENAME_LENGTH      = 128;
 const char GC_SOUND_COUNTDOWN[]          = "countdown.wav";

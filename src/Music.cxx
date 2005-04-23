@@ -3,7 +3,11 @@
  * Miguel Ángel Vilela García - 8/29/03
  *
  * Copyright (C) 2003  Miguel Ángel Vilela García 
- * 
+ * Copyright (C) 2005  See COPYRIGHT
+ * Crack Attack! is the legal property of its developers, whose names 
+ * are too numerous to list here.  Please refer to the COPYRIGHT file
+ * distributed with this source distribution for a full listing.
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -21,6 +25,7 @@
  * Miguel Ángel Vilela García - www.miguev.net
  */
 
+#include "TextureLoader.h"
 #include "Random.h"
 #include "Sound.h"
 #include "Music.h"
@@ -39,11 +44,12 @@ DIR *music_dir;
 void Music::initialize (   )
 {
 	if (!Sound::audio_available()) return;
-	music_dirname = string( getenv( "HOME") );
-	music_dirname.append( "/.crack-attack/music/" );
+  char tmp_music_dirname[256];
+  TextureLoader::buildLocalDataFileName("music/", tmp_music_dirname);
+  music_dirname = string( tmp_music_dirname );
 	if ( (music_dir = opendir( music_dirname.c_str() ) ) == NULL ) {
-		music_dirname = string( DATA_DIRECTORY );
-		music_dirname.append( "/music/" );
+    char *another_dir = GC_DATA_DIRECTORY("music/");
+		music_dirname = string( another_dir );
 	}
 	if ( (music_dir = opendir( music_dirname.c_str() ) ) == NULL ) {
 		cout << "WARNING *** Unable to open music directory!" << endl;
