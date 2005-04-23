@@ -4,7 +4,6 @@ AC_INIT(crack-attack,1.1.14-cvs,lorien420@myrealbox.com)
 AC_CONFIG_SRCDIR(src/Attack.cxx)
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(src/config.h)
-AM_BINRELOC
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -14,9 +13,6 @@ AC_PROG_RANLIB
 
 AC_CANONICAL_HOST 
 AC_CANONICAL_TARGET
-
-dnl BinReloc source additions
-AM_CONDITIONAL([WANT_BINRELOC], [test "$br_cv_binreloc" = "yes"])
 
 dnl Checks for libraries.
 # FIXME: Replace `main' with a function in `-lGL':
@@ -37,6 +33,10 @@ dnl Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
 AC_CHECK_HEADERS([arpa/inet.h netdb.h netinet/in.h string.h sys/socket.h unistd.h])
+
+dnl BinReloc source additions
+AM_BINRELOC
+AM_CONDITIONAL([WANT_BINRELOC], [test "$br_cv_binreloc" = "yes"])
 
 dnl Check for gtk
 AC_ARG_ENABLE(gtk,

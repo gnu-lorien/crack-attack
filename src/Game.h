@@ -82,7 +82,7 @@ using namespace std;
 #    define GC_DATA_DIRECTORY(x)          DATA_DIRECTORY x
 #  endif
 #  define GC_LOCAL_DATA_DIRECTORY        GC_DD "." GC_BINARY GC_DD
-#  define GC_BINARY_LOCATION             DATA_DIRECTORY ".." GC_DD ".."
+#  define GC_BINARY_LOCATION             DATA_DIRECTORY ".." GC_DD ".." GC_DD "bin"
 #else
 #  define GC_DATA_DIRECTORY(x)              ".." GC_DD "data" GC_DD x
 #  define GC_LOCAL_DATA_DIRECTORY           ".." GC_DD "localdata" GC_DD
