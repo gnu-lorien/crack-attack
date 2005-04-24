@@ -23,7 +23,8 @@ if WANT_BINRELOC
 else
   PATH_INCLUDES = -DDATA_DIRECTORY='"${pkgdatadir}/"' \
       -DPACKAGE_DATA_DIR=\""$(datadir)"\" \
-    -DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\"
+    -DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+		-DBINARY_DIRECTORY='"${bindir}"'
 endif
 
 INCLUDES = @PACKAGE_CFLAGS@ @DEBUG_INCLUDES@ ${PATH_INCLUDES} 
