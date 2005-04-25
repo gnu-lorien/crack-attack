@@ -30,12 +30,6 @@
 
 #include <gtk/gtk.h>
 #include <glib.h>
-#ifndef _WIN32
-#include <sys/wait.h>
-#else
-typedef int GPid;
-#endif
-
 #include "../Mode.h"
 #include "../Attack.h"
 #include "callbacks.h"
@@ -89,29 +83,18 @@ void prepare_for_actions (GtkToggleButton *gtb) {
     turn_sensitive_off();
 }
 
-#ifndef _WIN32
-gboolean
-check_for_game_end (gpointer data) {
-	int status;
-    pid_t process_id = *((pid_t *)data);
-    pid_t ret_pid;
-    ret_pid = waitpid (process_id, &status, 0);
+static void
+game_end (GPid pid, gint status, gpointer data) {
 #ifdef DEVELOPMENT
-		printf("process_id is %d and ret_pid is %d\n", process_id, ret_pid);
+	g_print("game_end called!\n");
 #endif
-    if (ret_pid == process_id) {
-        // Game finished
-        MS_RUNNING = FALSE;
-        running_process = 0;
-        if (window) {
-            gtk_widget_show(GTK_WIDGET(window));
-        }
-    } else {
-        MS_RUNNING = TRUE;
-    }
-    return MS_RUNNING;
+	MS_RUNNING = FALSE;
+	running_process = 0;
+	if (window) {
+		gtk_widget_show(GTK_WIDGET(window));
+	}
+	g_spawn_close_pid (pid);
 }
-#endif
 
 void
 on_rbtnSingle_toggled                  (GtkToggleButton *togglebutton,
@@ -206,7 +189,8 @@ on_btnStart_clicked                    (GtkButton       *button,
     char player_name[GC_PLAYER_NAME_LENGTH];
     char host_name[256];
     int port;
-    window = GTK_WINDOW(lookup_widget(GTK_WIDGET(button),"winCrackAttackSplash"));
+    window = 
+			GTK_WINDOW(lookup_widget(GTK_WIDGET(button),"winCrackAttackSplash"));
     if (MS_RUNNING) {
         //Game is running, display an error message to the user
         ca_error_dialog("Error: crack-attack is already running");
@@ -235,7 +219,8 @@ on_btnStart_clicked                    (GtkButton       *button,
                 port = 0;
             }
         }
-        entServerAddress = GTK_ENTRY(lookup_widget(GTK_WIDGET(button), "entServerAddress"));
+        entServerAddress = 
+					GTK_ENTRY(lookup_widget(GTK_WIDGET(button), "entServerAddress"));
         if (entServerAddress) {
             tmp = (gchar *)gtk_entry_get_text(entServerAddress);
             g_strlcpy (host_name, tmp, 256);
@@ -251,7 +236,8 @@ on_btnStart_clicked                    (GtkButton       *button,
     }
     
     /* Set the name */
-    entPlayerName = GTK_ENTRY(lookup_widget(GTK_WIDGET(button), "entPlayerName"));
+    entPlayerName = 
+			GTK_ENTRY(lookup_widget(GTK_WIDGET(button), "entPlayerName"));
     if (entPlayerName) {
         tmp = (gchar *)gtk_entry_get_text(entPlayerName);
         if (tmp) {
@@ -287,14 +273,17 @@ on_btnStart_clicked                    (GtkButton       *button,
     GError *err = NULL;
 		GPid pid;
 		gtk_widget_hide(GTK_WIDGET(window));
-		GSpawnFlags flags = (GSpawnFlags) (G_SPAWN_LEAVE_DESCRIPTORS_OPEN | G_SPAWN_DO_NOT_REAP_CHILD);		
-		gchar **args = generate_array(mode, GC_BINARY_LOCATION, GTK_WIDGET(button));
-		gboolean ret = g_spawn_async(NULL, args, NULL, flags, NULL, NULL, &pid, &err);
-#ifndef _WIN32
-		g_timeout_add (500, check_for_game_end, (gpointer) &pid);
-#else
-        gtk_widget_show(GTK_WIDGET(window));
-#endif
+		GSpawnFlags flags = (GSpawnFlags) (G_SPAWN_LEAVE_DESCRIPTORS_OPEN |
+				G_SPAWN_DO_NOT_REAP_CHILD);
+		
+		gchar **args =
+			generate_array(mode, GC_BINARY_LOCATION, GTK_WIDGET(button));
+		
+		gboolean ret =
+			g_spawn_async(NULL, args, NULL, flags, NULL, NULL, &pid, &err);
+
+		MS_RUNNING = TRUE;
+		g_child_watch_add(pid, (GChildWatchFunc) game_end, NULL);
 		g_free(args);
     if (!ret) {
       if (err) ca_error_dialog(err->message);
@@ -316,7 +305,8 @@ void
 on_cbtnLowGraphics_toggled             (GtkToggleButton *togglebutton,
                                         gpointer         user_data)
 {
-    GtkWidget *lowButton = lookup_widget(GTK_WIDGET(togglebutton), "cbtnReallyLowGraphics");
+    GtkWidget *lowButton = 
+			lookup_widget(GTK_WIDGET(togglebutton), "cbtnReallyLowGraphics");
     if (gtk_toggle_button_get_active(togglebutton)) {
         GRAPHICS_LOW = TRUE;
         mode |= CM_LOW_GRAPHICS;
@@ -332,7 +322,8 @@ void
 on_cbtnReallyLowGraphics_toggled       (GtkToggleButton *togglebutton,
                                         gpointer         user_data)
 {
-    GtkWidget *lowButton = lookup_widget(GTK_WIDGET(togglebutton), "cbtnLowGraphics");
+    GtkWidget *lowButton = 
+			lookup_widget(GTK_WIDGET(togglebutton), "cbtnLowGraphics");
     if (gtk_toggle_button_get_active(togglebutton)) {
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lowButton), TRUE);
         GRAPHICS_LOW = TRUE;
