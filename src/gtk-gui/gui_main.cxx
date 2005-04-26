@@ -41,12 +41,7 @@
 
 using namespace std;
 
-#include "TextureLoader.h"
-#include "Game.h"
-#include "Attack.h"
-#include "Communicator.h"
 #include "MetaState.h"
-#include "Random.h"
 #include "gtk-gui/support.h"
 #include "gtk-gui/interface.h"
 #include "gtk-gui/persist.h"
