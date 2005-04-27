@@ -32,6 +32,7 @@
 
 #include "Game.h"
 #include "Controller.h"
+#include "ActionRecorder.h"
 #include "MetaState.h"
 #include "Grid.h"
 
@@ -50,6 +51,7 @@ void Controller::gameStart (   )
 
 void Controller::keyboardPlay ( unsigned char key, int x, int y )
 {
+  bool keypressed = true;
   switch (key) {
   case GC_LEFT_KEY: case (GC_LEFT_KEY - 32):
     state |= CC_LEFT;
@@ -85,11 +87,16 @@ void Controller::keyboardPlay ( unsigned char key, int x, int y )
   case 27:
     Game::concession();
     break;
+  default:
+    keypressed = false;
   }
+  if(keypressed)
+    ActionRecorder::addAction(state);
 }
 
 void Controller::keyboardUpPlay ( unsigned char key, int x, int y )
 {
+  bool keypressed = true;
   switch (key) {
   case GC_LEFT_KEY: case (GC_LEFT_KEY - 32):
     state &= ~CC_LEFT;
@@ -112,7 +119,11 @@ void Controller::keyboardUpPlay ( unsigned char key, int x, int y )
   case GC_PAUSE_KEY: case (GC_PAUSE_KEY - 32):
     state &= ~CC_PAUSE;
     break;
+  default:
+    keypressed = false;
   }
+  if(keypressed)
+    ActionRecorder::addAction(state);
 }
 
 void Controller::specialPlay ( int key, int x, int y )

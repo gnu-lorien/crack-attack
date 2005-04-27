@@ -268,7 +268,8 @@ void Displayer::drawExternalCandy (   )
 
   if ((!(MetaState::mode & CM_REALLY_LOW_GRAPHICS)) || (Game::state & GS_PAUSED) || (Game::state & GS_WON) || (Game::state & GS_LOST)) {
     // draw clock
-    if (MetaState::mode & (CM_SERVER | CM_CLIENT)) {
+    if ((MetaState::mode & (CM_SERVER | CM_CLIENT)) ||
+        (MetaState::mode & (CM_AI))) {
 
       glPushMatrix();
 

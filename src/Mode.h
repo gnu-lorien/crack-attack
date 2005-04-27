@@ -34,5 +34,6 @@
 #define CM_AI_EASY                       (1 << 8)
 #define CM_AI_MEDIUM                     (1 << 9)
 #define CM_AI_HARD                       (1 << 10)
+#define CM_REPLAY                        (1 << 11)
 
 #endif

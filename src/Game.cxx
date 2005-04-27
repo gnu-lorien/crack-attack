@@ -41,6 +41,7 @@ using namespace std;
 #include "CelebrationManager.h"
 #include "Clock.h"
 #include "Controller.h"
+#include "ActionRecorder.h"
 #include "Communicator.h"
 #include "ComboManager.h"
 #include "CountDownManager.h"
@@ -87,6 +88,7 @@ void Game::initialize (   )
   Score::initialize();
   Sine::initialize();
   LoseBar::initialize();
+  ActionRecorder::initialize();
 
   gameFinish();
 }
@@ -489,6 +491,8 @@ void Game::idlePlay (   )
 
       if (MetaState::mode & CM_AI)
         state = ComputerPlayer::gameFinish();
+
+      ActionRecorder::gameFinish();
 
       if (state & GS_LOST)
         MetaState::gameLoss();
