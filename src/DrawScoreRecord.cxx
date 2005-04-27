@@ -42,6 +42,7 @@ void Displayer::drawScoreToBeatMessage_inline_split_ (   )
   if (!(MetaState::mode & CM_SOLO) || 
       !(MetaState::state & MS_BOTH_KEY_WAIT))
     return;
+  if ((MetaState::mode & CM_AI)) return;
 
   glBindTexture(GL_TEXTURE_2D, score_to_beat_texture);
 
