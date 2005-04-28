@@ -80,7 +80,7 @@ int gui_main ( int argc, char **argv )
     gtk_init(&argc, &argv);
     add_pixmap_directory (GC_DATA_DIRECTORY(""));
     winCrackAttackSplash = create_winCrackAttackSplash ();
-		gui_data_read(winCrackAttackSplash);
+		//gui_data_read(winCrackAttackSplash);
     gtk_widget_show (winCrackAttackSplash);
     gtk_main ();
 

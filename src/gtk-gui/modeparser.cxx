@@ -81,9 +81,9 @@ generate_array(int mode, const gchar *start, GtkWidget *widget) {
 		result[i] = gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entPort"));
 		++i;
 	} else if (mode & CM_CLIENT) {  /* Client */
-		result[i] = gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entServerAddress"));
+		result[i] = gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entServerAddressClient"));
 		++i;
-		result[i] = gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entPort2"));
+		result[i] = gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entPortClient"));
 		++i;
 	}
 
@@ -105,8 +105,8 @@ generate_array(int mode, const gchar *start, GtkWidget *widget) {
 	/* Resolution */
 	result[i] = resolution;
 	++i;
-	GtkWidget *optResolutions = lookup_widget(GTK_WIDGET(widget), "optResolutions");
-	int resolution = (int) gtk_option_menu_get_history((GtkOptionMenu *) optResolutions);
+	GtkWidget *cmbResolution = lookup_widget(GTK_WIDGET(widget), "cmbResolution");
+	int resolution = (int) gtk_combo_box_get_active((GtkComboBox *) cmbResolution);
 	switch(resolution) {
 		case 1:
 			result[i] = "570";

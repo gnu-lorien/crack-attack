@@ -44,7 +44,6 @@ static GtkWindow *window = NULL;
 static int mode = CM_SOLO;
 static gboolean MS_RUNNING = FALSE;
 static pid_t running_process = 0;
-static int height = 400, width = 400;
 
 extern int glut_argc;
 extern char **glut_argv;
@@ -196,13 +195,7 @@ on_btnStart_clicked                    (GtkButton       *button,
 #endif
 
 		// Save the gui data when the game starts.
-		gui_data_save(button);
-
-		// Set the height and width to the selected value.
-		height = width = gui_get_dimensions(GTK_WIDGET(button));
-
-		// Set the AI difficulty to the correct setting.
-		//mode = gui_get_difficulty(mode, GTK_WIDGET(button));
+		//gui_data_save(button);
 
 		// Set the mode based on all the widget values...
 		mode = generate_mode(GTK_WIDGET(button));

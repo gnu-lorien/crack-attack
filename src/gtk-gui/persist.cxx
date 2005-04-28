@@ -28,34 +28,6 @@
 #include "interface.h"
 #include "support.h"
 
-
-int
-gui_get_dimensions               (GtkWidget *button)
-
-{
-	GtkWidget *optResolutions;
-	int resolution;
-	
-	optResolutions = lookup_widget(GTK_WIDGET(button), "optResolutions");
-	if (optResolutions) {
-		resolution = (int) gtk_option_menu_get_history((GtkOptionMenu *) optResolutions);
-	}
-
-	switch(resolution) {
-		case 1:
-			return GC_RESOLUTION_1;
-		case 2:
-			return GC_RESOLUTION_2;
-		case 3:
-			return GC_RESOLUTION_3;
-		case 4:
-			return GC_RESOLUTION_4;
-		default:
-			return GC_RESOLUTION_0;
-	}
-}
-
-
 void
 gui_data_save                    (GtkButton *button)
 
@@ -207,41 +179,5 @@ gui_data_read                    (GtkWidget *widget)
 	if (cbtnLowGraphics && cbtnReallyLowGraphics) {
 		gtk_toggle_button_set_active((GtkToggleButton *) cbtnLowGraphics, low);
 		gtk_toggle_button_set_active((GtkToggleButton *) cbtnReallyLowGraphics, reallylow);
-	}
-}
-
-int
-gui_get_difficulty(int mode_in, GtkWidget *widget) {
-	GtkWidget *menu = lookup_widget(GTK_WIDGET(widget), "optionmenu1");
-	int difficulty = (int) gtk_option_menu_get_history((GtkOptionMenu *) menu);
-	int mode = mode_in;
-
-	mode &= ~CM_AI;
-	mode &= ~CM_AI_EASY;
-	mode &= ~CM_AI_MEDIUM;
-	mode &= ~CM_AI_HARD;
-
-	switch(difficulty) {
-		case 1: {
-							mode |= CM_AI;
-							mode |= CM_AI_EASY;
-							mode &= ~CM_X;
-							return mode;
-						}
-		case 2: {
-							mode |= CM_AI;
-							mode |= CM_AI_MEDIUM;
-							mode &= ~CM_X;
-							return mode;
-						}
-		case 3: {
-							mode |= CM_AI;
-							mode |= CM_AI_HARD;
-							mode &= ~CM_X;
-							return mode;
-						}
-		default: {
-							 return mode;
-						 }
 	}
 }
