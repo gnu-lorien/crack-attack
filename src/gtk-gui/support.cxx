@@ -108,7 +108,7 @@ create_pixmap                          (GtkWidget       *widget,
 
   if (!pathname)
     {
-      g_warning (_("Couldn't find pixmap file: %s"), filename);
+      g_warning (("Couldn't find pixmap file: %s"), filename);
       return gtk_image_new ();
     }
 

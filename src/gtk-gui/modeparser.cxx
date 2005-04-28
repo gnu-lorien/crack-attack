@@ -49,60 +49,6 @@ static const gchar *space         = " ";
 /* Resolution */
 static const gchar *resolution    = "--res";
 
-gchar*
-generate_arguments(int mode, const gchar *start, GtkWidget *widget) {
-	
-	gchar *args = g_strdup(start);
-  args = args_cat(args, space);
-	
-	if (mode & CM_SOLO) {  /* Solo */
-		args = args_cat(args, single_player);
-		if (mode & CM_AI_EASY) {
-			args = args_cat(args, aieasy);
-		} else if (mode & CM_AI_MEDIUM) {
-			args = args_cat(args, aimedium);
-		} else if (mode & CM_AI_HARD) {
-			args = args_cat(args, aihard);
-		}
-	} else if (mode & CM_SERVER) {  /* Server */
-		args = args_cat(args, server);
-		args = args_cat(args, gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entPort")));
-		args = args_cat(args, space);
-	} else if (mode & CM_CLIENT) {  /* Client */
-		args = args_cat(args, gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entServerAddress")));
-		args = args_cat(args, space);
-		args = args_cat(args, gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entPort2")));
-		args = args_cat(args, space);
-	}
-
-	/* Global */
-	if (mode & CM_REALLY_LOW_GRAPHICS) {
-		args = args_cat(args, veryreduced);
-	}
-	if (mode & CM_LOW_GRAPHICS) {
-		args = args_cat(args, reduced);
-	}
-	if (mode & CM_X) {
-		args = args_cat(args, xtreme);
-	}
-
-
-	/* Resolution */
-	int max_len = 6;
-	gchar num_string[max_len];
-	int num = gui_get_dimensions(GTK_WIDGET(widget));
-	g_snprintf(num_string, max_len, "%d", num);
-	args = args_cat(args, resolution);
-	args = args_cat(args, num_string);
-	args = args_cat(args, space);
-
-	/* Add the name to the end, without a trailing space. */
-	args = args_cat(args, name);
-	args = args_cat(args, gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entPlayerName")));
-
-	return args;
-}
-
 gchar**
 generate_array(int mode, const gchar *start, GtkWidget *widget) {
 
@@ -201,14 +147,6 @@ generate_array(int mode, const gchar *start, GtkWidget *widget) {
 	return (gchar **) result;
 }
 
-
-gchar*
-args_cat(gchar *old, const gchar *to_cat) {
-	gchar *tmp = g_strconcat(old, to_cat, NULL);
-	g_free(old);
-	return tmp;
-}
-
 gboolean
 validate_mode(int mode) {
 	if (!(mode & (CM_SERVER | CM_CLIENT | CM_SOLO)))
@@ -224,4 +162,82 @@ validate_mode(int mode) {
 		return FALSE;
 
 	return TRUE;
+}
+
+gint
+generate_mode(GtkWidget *widget) {
+	gint mode = 0;
+	gint tmp = 0;
+
+	tmp = gtk_notebook_get_current_page((GtkNotebook *) lookup_widget(GTK_WIDGET(widget), "ntbGameMode"));
+	switch (tmp) {
+		case 1: {
+							mode |= CM_SERVER;
+							mode &= ~CM_SOLO;
+							mode &= ~CM_CLIENT;
+							mode &= ~CM_AI;
+							break;
+						}
+		case 2: {
+							mode |= CM_CLIENT;
+							mode &= ~CM_SOLO;
+							mode &= ~CM_SERVER;
+							mode &= ~CM_AI;
+							break;
+						}
+		default: {
+							 mode |= CM_SOLO;
+							 mode &= ~CM_SERVER;
+							 mode &= ~CM_CLIENT;
+							 tmp = gtk_combo_box_get_active((GtkComboBox *) lookup_widget(GTK_WIDGET(widget), "cmbAI"));
+							 switch (tmp) {
+								 case 1: {
+													 mode |= CM_AI;
+													 mode |= CM_AI_EASY;
+													 break;
+												 }
+								 case 2: {
+													 mode |= CM_AI;
+													 mode |= CM_AI_MEDIUM;
+													 break;
+												 }
+								 case 3: {
+													 mode |= CM_AI;
+													 mode |= CM_AI_HARD;
+													 break;
+												 }
+								 default: {
+														mode &= ~CM_AI;
+														mode &= ~CM_AI_EASY;
+														mode &= ~CM_AI_MEDIUM;
+														mode &= ~CM_AI_HARD;
+													}
+							 }
+						 }
+	}
+	
+	tmp = gtk_toggle_button_get_active((GtkToggleButton *) lookup_widget(GTK_WIDGET(widget), "rbtnXtreme"));
+	// Enable extreme mode iff it's selected and AI isn't selected.
+	if (tmp && !(mode & CM_AI)) {
+		mode |= CM_X;
+	} else {
+		mode &= ~CM_X;
+	}
+
+	tmp = gtk_combo_box_get_active((GtkComboBox *) lookup_widget(GTK_WIDGET(widget), "cmbQuality"));
+	switch (tmp) {
+		case 1: {
+							mode |= CM_LOW_GRAPHICS;
+							break;
+						}
+		case 2: {
+							mode |= CM_LOW_GRAPHICS;
+							mode |= CM_REALLY_LOW_GRAPHICS;
+							break;
+						}
+		default: {
+							 mode &= ~CM_LOW_GRAPHICS;
+							 mode &= ~CM_REALLY_LOW_GRAPHICS;
+						 }
+	}
 }

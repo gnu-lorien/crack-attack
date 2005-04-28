@@ -20,16 +20,11 @@
  */
 #include <gtk/gtk.h>
 
-gchar*
-generate_arguments(int, const gchar *, GtkWidget *);
-
-
-gchar*
-args_cat(gchar *, const gchar *);
-
-
 gboolean
 validate_mode(int);
 
 gchar**
 generate_array(int, const gchar *, GtkWidget *);
+
+gint
+generate_mode(GtkWidget *);

@@ -96,67 +96,6 @@ game_end (GPid pid, gint status, gpointer data) {
 	g_spawn_close_pid (pid);
 }
 
-void
-on_rbtnSingle_toggled                  (GtkToggleButton *togglebutton,
-                                        gpointer         user_data)
-{
-    GtkWidget *x = lookup_widget(GTK_WIDGET(togglebutton), "cbtnXtreme2");
-		gtk_toggle_button_set_active((GtkToggleButton *) x, FALSE);
-    if (gtk_toggle_button_get_active(togglebutton)) {
-        prepare_for_actions(togglebutton);
-        gtk_widget_set_sensitive (fraSingle, TRUE);
-        GAME_SINGLE = TRUE;
-        mode |= CM_SOLO;
-    } else {
-        mode &= ~CM_SOLO;
-    }
-}
-
-
-void
-on_rbtnServer_toggled                  (GtkToggleButton *togglebutton,
-                                        gpointer         user_data)
-{
-    GtkWidget *x = lookup_widget(GTK_WIDGET(togglebutton), "cbtnXtreme");
-		gtk_toggle_button_set_active((GtkToggleButton *) x, FALSE);
-    if (gtk_toggle_button_get_active(togglebutton)) {
-        prepare_for_actions(togglebutton);
-        gtk_widget_set_sensitive (fraServer, TRUE);
-        GAME_SERVER = TRUE;
-        mode |= CM_SERVER;
-    } else {
-        mode &= ~CM_SERVER;
-    }
-}
-
-void
-on_rbtnClient_toggled                  (GtkToggleButton *togglebutton,
-                                        gpointer         user_data)
-{
-    if (gtk_toggle_button_get_active(togglebutton)) {
-        prepare_for_actions(togglebutton);
-        gtk_widget_set_sensitive (fraClient, TRUE);
-        GAME_CLIENT = TRUE;
-        mode |= CM_CLIENT;
-    } else {
-        mode &= ~CM_CLIENT;
-    }
-}
-
-
-void
-on_Xtreme_toggled                      (GtkToggleButton *togglebutton,
-                                        gpointer         user_data)
-{
-    if (gtk_toggle_button_get_active(togglebutton)) {
-        GAME_EXTREME = TRUE;
-        mode |= CM_X;
-    } else {
-        GAME_EXTREME = FALSE;
-        mode &= ~CM_X;
-    }
-}
-
 void 
 ca_error_dialog (const char *message)
 {
@@ -263,7 +202,10 @@ on_btnStart_clicked                    (GtkButton       *button,
 		height = width = gui_get_dimensions(GTK_WIDGET(button));
 
 		// Set the AI difficulty to the correct setting.
-		mode = gui_get_difficulty(mode, GTK_WIDGET(button));
+		//mode = gui_get_difficulty(mode, GTK_WIDGET(button));
+
+		// Set the mode based on all the widget values...
+		mode = generate_mode(GTK_WIDGET(button));
 
 #ifdef DEVELOPMENT
     g_print("Looking for location: %s\n", GC_BINARY_LOCATION);
@@ -291,143 +233,9 @@ on_btnStart_clicked                    (GtkButton       *button,
     g_free(command);
 }
 
-
-
-void
-on_btnHelp_clicked                     (GtkButton       *button,
-                                        gpointer         user_data)
-{
-
-}
-
-
-void
-on_cbtnLowGraphics_toggled             (GtkToggleButton *togglebutton,
-                                        gpointer         user_data)
-{
-    GtkWidget *lowButton = 
-			lookup_widget(GTK_WIDGET(togglebutton), "cbtnReallyLowGraphics");
-    if (gtk_toggle_button_get_active(togglebutton)) {
-        GRAPHICS_LOW = TRUE;
-        mode |= CM_LOW_GRAPHICS;
-    } else {
-        GRAPHICS_LOW = FALSE;
-        mode &= ~CM_LOW_GRAPHICS;
-        mode &= ~CM_REALLY_LOW_GRAPHICS;
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lowButton), FALSE);
-    }
-}
-
-void
-on_cbtnReallyLowGraphics_toggled       (GtkToggleButton *togglebutton,
-                                        gpointer         user_data)
-{
-    GtkWidget *lowButton = 
-			lookup_widget(GTK_WIDGET(togglebutton), "cbtnLowGraphics");
-    if (gtk_toggle_button_get_active(togglebutton)) {
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lowButton), TRUE);
-        GRAPHICS_LOW = TRUE;
-        mode |= CM_LOW_GRAPHICS;
-        mode |= CM_REALLY_LOW_GRAPHICS;
-    } else {
-        GRAPHICS_LOW = FALSE;
-        mode &= ~CM_REALLY_LOW_GRAPHICS;
-    }
-}
-
 gboolean 
 on_winCrackAttackSplash_delete_event   (GtkWindow *window,
                                         gpointer  user_data)
 {
     return FALSE;
 }
-
-void
-on_640by480_activate                   (GtkMenuItem     *menuitem,
-                                        gpointer         user_data)
-{
-	height = width = GC_RESOLUTION_0;
-}
-
-void
-on_800by600_activate                   (GtkMenuItem     *menuitem,
-                                        gpointer         user_data)
-{
-  height = width = GC_RESOLUTION_1;
-}
-
-void
-on_1024by768_activate                  (GtkMenuItem     *menuitem,
-                                        gpointer         user_data)
-{
-	height = width = GC_RESOLUTION_2;	
-}
-
-void
-on_1280by1024_activate                 (GtkMenuItem     *menuitem,
-                                        gpointer         user_data)
-{
-	height = width = GC_RESOLUTION_3;	
-}
-
-void
-on_1600by1200_activate                 (GtkMenuItem     *menuitem,
-                                        gpointer         user_data)
-{
-	height = width = GC_RESOLUTION_4;
-}
-
-static void undo_ai_settings() 
-{
-    mode &= ~CM_AI;
-    mode &= ~CM_AI_EASY;
-    mode &= ~CM_AI_MEDIUM;
-    mode &= ~CM_AI_HARD;
-}
-
-void
-on_ai_none_activate                    (GtkMenuItem     *menuitem,
-                                        gpointer         user_data)
-{
-    GtkWidget *x = lookup_widget(GTK_WIDGET(menuitem), "cbtnXtreme");
-    gtk_widget_set_sensitive(x, TRUE);
-    undo_ai_settings();
-}
-
-void
-on_ai_easy_activate                    (GtkMenuItem     *menuitem,
-                                        gpointer         user_data)
-{
-    GtkWidget *x = lookup_widget(GTK_WIDGET(menuitem), "cbtnXtreme");
-		gtk_toggle_button_set_active((GtkToggleButton *) x, FALSE);
-    gtk_widget_set_sensitive(x, FALSE);
-    undo_ai_settings();
-    mode |= CM_AI;
-    mode |= CM_AI_EASY;
-}
-
-void
-on_ai_medium_activate                  (GtkMenuItem     *menuitem,
-                                        gpointer         user_data)
-{
-    GtkWidget *x = lookup_widget(GTK_WIDGET(menuitem), "cbtnXtreme");
-		gtk_toggle_button_set_active((GtkToggleButton *) x, FALSE);
-    gtk_widget_set_sensitive(x, FALSE);
-    undo_ai_settings();
-    mode |= CM_AI;
-    mode |= CM_AI_MEDIUM;
-}
-
-void
-on_ai_hard_activate                    (GtkMenuItem     *menuitem,
-                                        gpointer         user_data)
-{
-    GtkWidget *x = lookup_widget(GTK_WIDGET(menuitem), "cbtnXtreme");
-		gtk_toggle_button_set_active((GtkToggleButton *) x, FALSE);
-    gtk_widget_set_sensitive(x, FALSE);
-    undo_ai_settings();
-    mode |= CM_AI;
-    mode |= CM_AI_HARD;
-}
-
-
