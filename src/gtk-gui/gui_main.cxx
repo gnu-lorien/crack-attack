@@ -65,22 +65,16 @@ char **glut_argv;
 
 int gui_main ( int argc, char **argv )
 {
-  char player_name[GC_PLAYER_NAME_LENGTH];
-  char host_name[GC_HOST_NAME_SIZE];
-  int port;
-  int mode = 0;
   GtkWidget *winCrackAttackSplash = NULL;
   
   // Backup argc and argv to initialize glut in the child process
   glut_argc = argc;
   glut_argv = argv;
 
-  player_name[0] = '\0';
-
     gtk_init(&argc, &argv);
     add_pixmap_directory (GC_DATA_DIRECTORY(""));
     winCrackAttackSplash = create_winCrackAttackSplash ();
-		//gui_data_read(winCrackAttackSplash);
+		gui_data_read(winCrackAttackSplash);
     gtk_widget_show (winCrackAttackSplash);
     gtk_main ();
 

@@ -24,7 +24,7 @@
 
 
 void
-gui_data_save                 (GtkButton *);
+gui_data_save                 (GtkWidget *);
 
 
 void

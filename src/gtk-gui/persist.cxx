@@ -29,24 +29,19 @@
 #include "support.h"
 
 void
-gui_data_save                    (GtkButton *button)
+gui_data_save                    (GtkWidget *widget)
 
 {
-	char file_name[256];
+	gchar file_name[256];
 	GtkEntry *entPlayerName;
-	GtkWidget *optResolutions;
-	GtkWidget *cbtnLowGraphics;
-	GtkWidget *cbtnReallyLowGraphics;
-	GtkWidget *optionmenu1;
 	gchar *tmp = NULL;
-	char player_name[GC_PLAYER_NAME_LENGTH];
-	int resolution;
-	gboolean low;
-	gboolean reallylow;
-	int ai_difficulty;
+	gchar player_name[GC_PLAYER_NAME_LENGTH];
+	gint resolution = 0;
+	gint quality = 0;
+	gint ai_difficulty;
 
 	// Get the current name in the name text box.
-	entPlayerName = GTK_ENTRY(lookup_widget(GTK_WIDGET(button), "entPlayerName"));
+	entPlayerName = GTK_ENTRY(lookup_widget(GTK_WIDGET(widget), "entPlayerName"));
 	if (entPlayerName) {
 		tmp = (gchar *) gtk_entry_get_text(entPlayerName);
 		if (tmp) {
@@ -59,22 +54,13 @@ gui_data_save                    (GtkButton *button)
 	}
 
 	// Get the currently selected resolution.
-	optResolutions = lookup_widget(GTK_WIDGET(button), "optResolutions");
-	if (optResolutions) {
-		resolution = (int) gtk_option_menu_get_history((GtkOptionMenu *) optResolutions);
-	}
+	resolution = (gint) gtk_combo_box_get_active((GtkComboBox *) lookup_widget(GTK_WIDGET(widget), "cmbResolution"));
 
-	// Get the status of the low and really low graphics check boxes.
-	cbtnLowGraphics = lookup_widget(GTK_WIDGET(button), "cbtnLowGraphics");
-	cbtnReallyLowGraphics = lookup_widget(GTK_WIDGET(button), "cbtnReallyLowGraphics");
-	if (cbtnLowGraphics && cbtnReallyLowGraphics) {
-		low = gtk_toggle_button_get_active((GtkToggleButton *) cbtnLowGraphics);
-		reallylow = gtk_toggle_button_get_active((GtkToggleButton *) cbtnReallyLowGraphics);
-	}
+	// Get the status of the quality combo box.
+	quality = gtk_combo_box_get_active((GtkComboBox *) lookup_widget(GTK_WIDGET(widget), "cmbQuality"));
 
 	// Get the current AI difficulty setting.
-	optionmenu1 = lookup_widget(GTK_WIDGET(button), "optionmenu1");
-	ai_difficulty = (int) gtk_option_menu_get_history((GtkOptionMenu *) optionmenu1);
+	ai_difficulty = gtk_combo_box_get_active((GtkComboBox *) lookup_widget(GTK_WIDGET(widget), "cmbAI"));
 
 	// Generate the file name and write the data,
 	TextureLoader::buildLocalDataFileName(GC_GUI_FILE_NAME, file_name);
@@ -87,8 +73,7 @@ gui_data_save                    (GtkButton *button)
 
 	file << player_name << endl;
 	file << resolution << endl;
-	file << low << endl;
-	file << reallylow << endl;
+	file << quality << endl;
 	file << ai_difficulty << endl;
 
 	file.close();
@@ -102,15 +87,11 @@ gui_data_read                    (GtkWidget *widget)
 	char buffer[256];
 	char file_name[256];
 	GtkEntry *entPlayerName;
-	GtkWidget *optResolutions;
-	GtkWidget *cbtnLowGraphics;
-	GtkWidget *cbtnReallyLowGraphics;
-	GtkWidget *optionmenu1;
-	char player_name[GC_PLAYER_NAME_LENGTH];
-	int resolution;
-	gboolean low;
-	gboolean reallylow;
-	int ai_difficulty;
+	gchar player_name[GC_PLAYER_NAME_LENGTH];
+	gint resolution = 0;
+	gint quality = 0;
+	gint ai_difficulty;
+
 
 	// Generate the name of the file and read the data.
 	TextureLoader::buildLocalDataFileName(GC_GUI_FILE_NAME, file_name);
@@ -135,13 +116,18 @@ gui_data_read                    (GtkWidget *widget)
 		}
 
 		file.getline(buffer, 256);
-		low = atoi(buffer);
+		quality = atoi(buffer);
 
-		file.getline(buffer, 256);
-		reallylow = atoi(buffer);
+		if (quality < 0 || quality > 2) {
+			quality = 0;
+		}
 
 		file.getline(buffer, 256);
 		ai_difficulty = atoi(buffer);
+
+		if (ai_difficulty < 0 || ai_difficulty > 3) {
+			ai_difficulty = 0;
+		}
 		
 	} else {
 		file.close();
@@ -155,29 +141,12 @@ gui_data_read                    (GtkWidget *widget)
 		gtk_entry_set_text (GTK_ENTRY (entPlayerName), player_name);
 	}
 
-	/* Set the resolution in the option box.  This does not actually change the
-	 * value of the height and width.  That is done with the gui_get_dimensions
-	 * function before the game is launched...
-	 */
-	optResolutions = lookup_widget(GTK_WIDGET(widget), "optResolutions");
-	if (optResolutions) {
-		gtk_option_menu_set_history((GtkOptionMenu *) optResolutions, (guint) resolution);
-	}
+	// Set the resolution.
+	gtk_combo_box_set_active((GtkComboBox *) lookup_widget(GTK_WIDGET(widget), "cmbResolution"), resolution);
 
-	/* Set the AI difficulty. This does not actually change the
-	 * value of the height and width.  That is done with the gui_get_difficulty
-	 * function before the game is launched...
-	 */
-	optionmenu1 = lookup_widget(GTK_WIDGET(widget), "optionmenu1");
-	if (optionmenu1) {
-		gtk_option_menu_set_history((GtkOptionMenu *) optionmenu1, (guint) ai_difficulty);
-	}
+	// Set the AI.
+	gtk_combo_box_set_active((GtkComboBox *) lookup_widget(GTK_WIDGET(widget), "cmbAI"), ai_difficulty);
 
-	// Set the low and really low graphics check boxes.
-	cbtnLowGraphics = lookup_widget(GTK_WIDGET(widget), "cbtnLowGraphics");
-	cbtnReallyLowGraphics = lookup_widget(GTK_WIDGET(widget), "cbtnReallyLowGraphics");
-	if (cbtnLowGraphics && cbtnReallyLowGraphics) {
-		gtk_toggle_button_set_active((GtkToggleButton *) cbtnLowGraphics, low);
-		gtk_toggle_button_set_active((GtkToggleButton *) cbtnReallyLowGraphics, reallylow);
-	}
+	// Set the 	quality.
+	gtk_combo_box_set_active((GtkComboBox *) lookup_widget(GTK_WIDGET(widget), "cmbQuality"), quality);
 }

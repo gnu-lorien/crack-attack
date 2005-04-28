@@ -44,7 +44,6 @@ static const gchar *reduced       = "--low";
 static const gchar *veryreduced   = "--really";
 static const gchar *xtreme        = "--extreme";
 static const gchar *name          = "--name";
-static const gchar *space         = " ";
 
 /* Resolution */
 static const gchar *resolution    = "--res";

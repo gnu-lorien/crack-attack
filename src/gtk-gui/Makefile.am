@@ -4,7 +4,7 @@ libgtkgui_a_SOURCES = \
   interface.cxx callbacks.cxx support.cxx gui_main.cxx persist.cxx modeparser.cxx \
   interface.h   callbacks.h   support.h   gui_main.h   persist.h   modeparser.h
 
-AM_CXXFLAGS = -O2
+AM_CXXFLAGS = -O2 -pedantic -Wall
 
 if WANT_BINRELOC
   PATH_INCLUDES = 

@@ -208,6 +208,7 @@ create_winCrackAttackSplash (void)
   gtk_combo_box_append_text (GTK_COMBO_BOX (cmbAI), "Easy");
   gtk_combo_box_append_text (GTK_COMBO_BOX (cmbAI), "Medium");
   gtk_combo_box_append_text (GTK_COMBO_BOX (cmbAI), "Hard");
+	gtk_combo_box_set_active (GTK_COMBO_BOX (cmbAI), 0);
 
   lblSolo = gtk_label_new_with_mnemonic ("S_olo");
   gtk_widget_set_name (lblSolo, "lblSolo");
@@ -342,6 +343,7 @@ create_winCrackAttackSplash (void)
   gtk_combo_box_append_text (GTK_COMBO_BOX (cmbResolution), "1024x768");
 	gtk_combo_box_append_text (GTK_COMBO_BOX (cmbResolution), "1280x1024");
 	gtk_combo_box_append_text (GTK_COMBO_BOX (cmbResolution), "1600x1200");
+	gtk_combo_box_set_active (GTK_COMBO_BOX (cmbResolution), 0);
 
   alignment5 = gtk_alignment_new (0.5, 0.5, 1, 1);
   gtk_widget_set_name (alignment5, "alignment5");
@@ -357,6 +359,7 @@ create_winCrackAttackSplash (void)
   gtk_combo_box_append_text (GTK_COMBO_BOX (cmbQuality), "Normal");
   gtk_combo_box_append_text (GTK_COMBO_BOX (cmbQuality), "Reduced");
   gtk_combo_box_append_text (GTK_COMBO_BOX (cmbQuality), "Extremely Reduced");
+	gtk_combo_box_set_active (GTK_COMBO_BOX (cmbQuality), 0);
 
   lblGraphicsSettings = gtk_label_new ("<b>Graphics Settings</b>");
   gtk_widget_set_name (lblGraphicsSettings, "lblGraphicsSettings");
