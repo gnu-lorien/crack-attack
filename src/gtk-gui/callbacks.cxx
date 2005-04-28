@@ -156,3 +156,30 @@ on_winCrackAttackSplash_delete_event   (GtkWindow *window,
 {
     return FALSE;
 }
+
+void
+on_cmbQuality_changed                  (GtkComboBox     *cmb,
+                                        gpointer         user_data)
+{
+  gint tmp = gtk_combo_box_get_active(cmb);
+  GtkImage * imgLogo = GTK_IMAGE(lookup_widget(GTK_WIDGET(cmb), "imgLogo"));
+  gchar *filename = NULL;
+  switch (tmp) {
+    case 0: {
+              filename = find_pixmap_file("preview_normal.tga");
+              break;
+            }
+    case 1: {
+              filename = find_pixmap_file("preview_reduced.tga");
+              break;
+            }
+    case 2: {
+              filename = find_pixmap_file("preview_extremely_reduced.tga");
+              break;
+            }
+    default: {
+              filename = find_pixmap_file("preview_normal.tga");
+             }
+  }
+  gtk_image_set_from_file(imgLogo, filename);
+}

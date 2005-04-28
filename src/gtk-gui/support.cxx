@@ -74,7 +74,7 @@ add_pixmap_directory                   (const gchar     *directory)
 }
 
 /* This is an internally used function to find pixmap files. */
-static gchar*
+gchar*
 find_pixmap_file                       (const gchar     *filename)
 {
   GList *elem;

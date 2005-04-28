@@ -162,7 +162,7 @@ create_winCrackAttackSplash (void)
   gtk_widget_show (vbox4);
   gtk_container_add (GTK_CONTAINER (alignment1), vbox4);
 
-  imgLogo = create_pixmap (winCrackAttackSplash, "logo_x.tga");
+  imgLogo = create_pixmap (winCrackAttackSplash, "preview_normal.tga");
   gtk_widget_set_name (imgLogo, "imgLogo");
   gtk_widget_show (imgLogo);
   gtk_box_pack_start (GTK_BOX (vbox4), imgLogo, FALSE, FALSE, 0);
@@ -490,6 +490,9 @@ create_winCrackAttackSplash (void)
                     NULL);
   g_signal_connect ((gpointer) btnQuit, "clicked",
                     G_CALLBACK (gtk_main_quit),
+                    NULL);
+  g_signal_connect ((gpointer) cmbQuality, "changed",
+                    G_CALLBACK (on_cmbQuality_changed),
                     NULL);
 
   gtk_label_set_mnemonic_widget (GTK_LABEL (lblAI), cmbAI);

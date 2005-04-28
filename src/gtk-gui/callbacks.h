@@ -29,3 +29,7 @@
 void
 on_btnStart_clicked                    (GtkButton       *button,
                                         gpointer         user_data);
+
+void
+on_cmbQuality_changed                  (GtkComboBox     *button,
+                                        gpointer         user_data);
