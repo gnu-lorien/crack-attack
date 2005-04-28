@@ -240,4 +240,5 @@ generate_mode(GtkWidget *widget) {
 							 mode &= ~CM_REALLY_LOW_GRAPHICS;
 						 }
 	}
+	return mode;
 }
