@@ -155,7 +155,7 @@ create_winCrackAttackSplash (void)
   gtk_widget_set_name (alignment1, "alignment1");
   gtk_widget_show (alignment1);
   gtk_container_add (GTK_CONTAINER (frmGraphicsPreview), alignment1);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment1), 0, 0, 12, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment1), 3, 0, 6, 6);
 
   vbox4 = gtk_vbox_new (FALSE, 0);
   gtk_widget_set_name (vbox4, "vbox4");
