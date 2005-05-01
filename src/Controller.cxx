@@ -167,7 +167,7 @@ void Controller::keyboardMeta ( unsigned char key, int x, int y )
 #ifdef DEVELOPMENT
   if (key == '.') Displayer::screenShot();
 #endif
-  MetaState::localKeyPressed(key == 27);
+  MetaState::localKeyPressed(true);
 }
 
 void Controller::keyboardUpMeta ( unsigned char key, int x, int y )
