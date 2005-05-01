@@ -35,7 +35,7 @@
 #  include <direct.h>
 #endif
 
-#include "glext.h"
+#include "../glext.h"
 
 #include <gtk/gtk.h>
 
