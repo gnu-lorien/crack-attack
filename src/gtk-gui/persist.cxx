@@ -22,7 +22,7 @@
 #include <fstream>
 #include <cstring>
 
-#include "TextureLoader.h"
+#include "../TextureLoader.h"
 #include "persist.h"
 #include "callbacks.h"
 #include "interface.h"

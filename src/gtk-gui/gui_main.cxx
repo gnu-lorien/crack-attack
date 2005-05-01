@@ -41,10 +41,10 @@
 
 using namespace std;
 
-#include "MetaState.h"
-#include "gtk-gui/support.h"
-#include "gtk-gui/interface.h"
-#include "gtk-gui/persist.h"
+#include "../MetaState.h"
+#include "support.h"
+#include "interface.h"
+#include "persist.h"
 
 #define GC_HOST_NAME_SIZE (256)
 int glut_argc;

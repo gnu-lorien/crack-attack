@@ -20,7 +20,7 @@
  * vim: set noet ts=2 sw=2:
  */
 #include <gtk/gtk.h>
-#include "Mode.h"
+#include "../Mode.h"
 #include "persist.h"
 #include "modeparser.h"
 #include "support.h"

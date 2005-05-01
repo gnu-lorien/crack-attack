@@ -65,8 +65,10 @@ GLfloat Displayer::play_offset_y;
 #ifndef NO_MULTITEXTURING
 #  ifndef _WIN32
 #  else
+#    ifndef __MINGW32__
 PFNGLACTIVETEXTUREARBPROC Displayer::glActiveTextureARB;
 PFNGLCLIENTACTIVETEXTUREARBPROC Displayer::glClientActiveTextureARB;
+#    endif
 #  endif
 #endif
 
