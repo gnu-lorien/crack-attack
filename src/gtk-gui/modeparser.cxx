@@ -34,6 +34,7 @@ static const gchar *aihard        = "--hard";
 /* Multiplayer Server Options.
  * PORT is dynamic. */
 static const gchar *server        = "--server";
+static const gchar *wait          = "--wait";
 
 /* The client side doesn't need anything special.
  * SERVER and PORT are dynamic. */
@@ -75,8 +76,10 @@ generate_array(int mode, const gchar *start, GtkWidget *widget) {
 			++i;
 		}
 	} else if (mode & CM_SERVER) {  /* Server */
-		result[i] = server;
+    result[i] = wait;
 		++i;
+		result[i] = server;
+    ++i;
 		result[i] = gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entPort"));
 		++i;
 	} else if (mode & CM_CLIENT) {  /* Client */

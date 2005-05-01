@@ -90,13 +90,13 @@ void prepare_for_actions (GtkToggleButton *gtb) {
 
 static void
 game_end (GPid pid, gint status, gpointer data) {
-	GtkWidget *networking;
 #ifdef DEVELOPMENT
 	g_print("game_end called!\n");
 #endif
 	game_pid = 0;
 	if (networking) {
-		gtk_widget_destroy(networking);
+		//gtk_widget_destroy(GTK_WIDGET(networking));
+		g_print("Networking... huh? game_end");
 	}
 	if (window) {
 		gtk_widget_show(GTK_WIDGET(window));
@@ -129,11 +129,14 @@ void
 on_winNetworking_destroy               (GtkObject       *object,
                                         gpointer         user_data)
 {
+	g_print("Kill the process");
+	if (game_pid) {
 #ifndef _WIN32
-	kill(game_pid, 9);
+		kill(game_pid, SIGKILL);
 #else
-	TerminateProcess(pid, 9);
+		TerminateProcess(pid, 9);
 #endif
+	}
 	networking = NULL;
 }
 
@@ -207,16 +210,17 @@ on_btnStart_clicked                    (GtkButton       *button,
 					&sin, &sout, &serr,
 					&err);
 
-		g_child_watch_add(pid, (GChildWatchFunc) game_end, NULL);
-		game_pid = pid;
-		g_free(args);
-    if (!ret) {
+    if (ret) {
+			g_child_watch_add(pid, (GChildWatchFunc) game_end, NULL);
+			game_pid = pid;
+			if (mode & CM_SERVER) {
+				spawn_networking_dialog(sout);
+			}
+		} else {
       if (err) ca_error_dialog(err->message);
     }
 
-		if (mode & CM_SERVER) {
-    	spawn_networking_dialog(sout);
-    }
+		g_free(args);
 }
 
 gboolean 
