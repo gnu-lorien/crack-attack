@@ -26,3 +26,4 @@
  */
 
 GtkWidget* create_winCrackAttackSplash (void);
+GtkWidget* create_winNetworking (void);

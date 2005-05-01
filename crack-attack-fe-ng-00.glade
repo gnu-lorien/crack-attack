@@ -1065,8 +1065,8 @@ Extremely Reduced</property>
 </widget>
 
 <widget class="GtkWindow" id="winNetworking">
-  <property name="width_request">205</property>
-  <property name="height_request">115</property>
+  <property name="width_request">310</property>
+  <property name="height_request">195</property>
   <property name="visible">True</property>
   <property name="title" translatable="yes">Crack Attack Server</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
@@ -1079,6 +1079,7 @@ Extremely Reduced</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <signal name="destroy" handler="on_winNetworking_destroy" last_modification_time="Sun, 01 May 2005 05:21:42 GMT"/>
 
   <child>
     <widget class="GtkVBox" id="vbox10">
@@ -1112,7 +1113,7 @@ Extremely Reduced</property>
 		<widget class="GtkTextView" id="txtOutput">
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
-		  <property name="editable">True</property>
+		  <property name="editable">False</property>
 		  <property name="overwrite">False</property>
 		  <property name="accepts_tab">True</property>
 		  <property name="justification">GTK_JUSTIFY_LEFT</property>
@@ -1157,7 +1158,7 @@ Extremely Reduced</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="focus_on_click">True</property>
-	      <signal name="clicked" handler="gtk_widget_destroy" last_modification_time="Sun, 01 May 2005 04:03:39 GMT"/>
+	      <signal name="clicked" handler="on_btnCancel_clicked" last_modification_time="Sun, 01 May 2005 05:22:06 GMT"/>
 	    </widget>
 	  </child>
 	</widget>

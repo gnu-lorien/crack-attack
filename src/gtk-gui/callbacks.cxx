@@ -39,11 +39,17 @@
 #include "persist.h"
 #include "modeparser.h"
 
+#ifndef _WIN32
+	#include <sys/types.h>
+	#include <signal.h>
+#else
+  #include <windows.h>
+#endif
+
 static GtkWidget *fraClient, *fraSingle, *fraServer;
-static GtkWindow *window = NULL;
+static GtkWindow *window = NULL, *networking = NULL;
 static int mode = CM_SOLO;
-static gboolean MS_RUNNING = FALSE;
-static pid_t running_process = 0;
+static GPid game_pid = 0;
 
 extern int glut_argc;
 extern char **glut_argv;
@@ -84,11 +90,14 @@ void prepare_for_actions (GtkToggleButton *gtb) {
 
 static void
 game_end (GPid pid, gint status, gpointer data) {
+	GtkWidget *networking;
 #ifdef DEVELOPMENT
 	g_print("game_end called!\n");
 #endif
-	MS_RUNNING = FALSE;
-	running_process = 0;
+	game_pid = 0;
+	if (networking) {
+		gtk_widget_destroy(networking);
+	}
 	if (window) {
 		gtk_widget_show(GTK_WIDGET(window));
 	}
@@ -109,16 +118,66 @@ ca_error_dialog (const char *message)
 }
 
 void
+on_btnCancel_clicked                    (GtkButton       *button,
+                                        gpointer         user_data)
+{
+	GtkWidget *win = GTK_WIDGET(user_data);
+	gtk_widget_destroy(win);
+}
+
+void
+on_winNetworking_destroy               (GtkObject       *object,
+                                        gpointer         user_data)
+{
+#ifndef _WIN32
+	kill(game_pid, 9);
+#else
+	TerminateProcess(pid, 9);
+#endif
+	networking = NULL;
+}
+
+gboolean networking_output (
+		GIOChannel *source, GIOCondition condition, gpointer data)
+{
+	GtkWidget *win = GTK_WIDGET(data);
+	GtkTextView *txtOutput = NULL;
+	GtkTextIter iter;
+	GtkTextBuffer *buffer = NULL;
+	gchar *out = NULL;
+	gsize length = 0;
+
+	txtOutput = GTK_TEXT_VIEW(
+			lookup_widget(GTK_WIDGET(win), "txtOutput"));
+	buffer = gtk_text_view_get_buffer(txtOutput);
+	gtk_text_buffer_get_end_iter(buffer, &iter);
+	g_print("|");
+	g_io_channel_read_line(source, &out, &length, NULL, NULL);
+	g_print(out);
+	g_print("|");
+	gtk_text_buffer_insert(buffer, &iter, out, length);
+	g_free(out);
+	return true;
+}
+
+void
+spawn_networking_dialog                (gint       standard_output)
+{
+	GIOChannel *channel;
+
+	networking = GTK_WINDOW(create_winNetworking());
+	gtk_widget_show(GTK_WIDGET(networking));
+	
+	channel = g_io_channel_unix_new(standard_output);
+	g_io_add_watch(channel, G_IO_IN, networking_output, networking);
+}
+
+void
 on_btnStart_clicked                    (GtkButton       *button,
                                         gpointer         user_data)
 {
     window = 
 			GTK_WINDOW(lookup_widget(GTK_WIDGET(button),"winCrackAttackSplash"));
-    if (MS_RUNNING) {
-        //Game is running, display an error message to the user
-        ca_error_dialog("Error: crack-attack is already running");
-        return;
-    }
 
 		// Save the gui data when the game starts.
 		gui_data_save(GTK_WIDGET(button));
@@ -139,14 +198,24 @@ on_btnStart_clicked                    (GtkButton       *button,
 		gchar **args =
 			generate_array(mode, GC_BINARY_LOCATION, GTK_WIDGET(button));
 		
+		gint sin, sout, serr;
 		gboolean ret =
-			g_spawn_async(NULL, args, NULL, flags, NULL, NULL, &pid, &err);
+			g_spawn_async_with_pipes(
+					NULL,	args,	NULL,
+					flags, NULL, NULL,
+					&pid,
+					&sin, &sout, &serr,
+					&err);
 
-		MS_RUNNING = TRUE;
 		g_child_watch_add(pid, (GChildWatchFunc) game_end, NULL);
+		game_pid = pid;
 		g_free(args);
     if (!ret) {
       if (err) ca_error_dialog(err->message);
+    }
+
+		if (mode & CM_SERVER) {
+    	spawn_networking_dialog(sout);
     }
 }
 

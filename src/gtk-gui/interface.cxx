@@ -571,3 +571,75 @@ create_winCrackAttackSplash (void)
   return winCrackAttackSplash;
 }
 
+GtkWidget*
+create_winNetworking (void)
+{
+  GtkWidget *winNetworking;
+  GtkWidget *vbox10;
+  GtkWidget *alignment13;
+  GtkWidget *scrtxtOutput;
+  GtkWidget *txtOutput;
+  GtkWidget *alignment14;
+  GtkWidget *btnCancel;
+
+  winNetworking = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_widget_set_name (winNetworking, "winNetworking");
+  gtk_widget_set_size_request (winNetworking, 310, 195);
+  gtk_window_set_title (GTK_WINDOW (winNetworking), "Crack Attack Server");
+  gtk_window_set_modal (GTK_WINDOW (winNetworking), TRUE);
+  gtk_window_set_destroy_with_parent (GTK_WINDOW (winNetworking), TRUE);
+
+  vbox10 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_name (vbox10, "vbox10");
+  gtk_widget_show (vbox10);
+  gtk_container_add (GTK_CONTAINER (winNetworking), vbox10);
+
+  alignment13 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_set_name (alignment13, "alignment13");
+  gtk_widget_show (alignment13);
+  gtk_box_pack_start (GTK_BOX (vbox10), alignment13, TRUE, TRUE, 0);
+  gtk_widget_set_size_request (alignment13, 57, -1);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment13), 5, 5, 5, 5);
+
+  scrtxtOutput = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_set_name (scrtxtOutput, "scrtxtOutput");
+  gtk_widget_show (scrtxtOutput);
+  gtk_container_add (GTK_CONTAINER (alignment13), scrtxtOutput);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrtxtOutput), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrtxtOutput), GTK_SHADOW_IN);
+
+  txtOutput = gtk_text_view_new ();
+  gtk_widget_set_name (txtOutput, "txtOutput");
+  gtk_widget_show (txtOutput);
+  gtk_container_add (GTK_CONTAINER (scrtxtOutput), txtOutput);
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (txtOutput), FALSE);
+
+  alignment14 = gtk_alignment_new (0.5, 0.5, 0, 1);
+  gtk_widget_set_name (alignment14, "alignment14");
+  gtk_widget_show (alignment14);
+  gtk_box_pack_start (GTK_BOX (vbox10), alignment14, FALSE, FALSE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment14), 5, 5, 5, 5);
+
+  btnCancel = gtk_button_new_from_stock ("gtk-cancel");
+  gtk_widget_set_name (btnCancel, "btnCancel");
+  gtk_widget_show (btnCancel);
+  gtk_container_add (GTK_CONTAINER (alignment14), btnCancel);
+
+  g_signal_connect ((gpointer) btnCancel, "clicked",
+                    G_CALLBACK (on_btnCancel_clicked),
+                    GTK_WIDGET(winNetworking));
+  g_signal_connect ((gpointer) winNetworking, "destroy",
+                    G_CALLBACK (on_winNetworking_destroy),
+                    NULL);
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (winNetworking, winNetworking, "winNetworking");
+  GLADE_HOOKUP_OBJECT (winNetworking, vbox10, "vbox10");
+  GLADE_HOOKUP_OBJECT (winNetworking, alignment13, "alignment13");
+  GLADE_HOOKUP_OBJECT (winNetworking, scrtxtOutput, "scrtxtOutput");
+  GLADE_HOOKUP_OBJECT (winNetworking, txtOutput, "txtOutput");
+  GLADE_HOOKUP_OBJECT (winNetworking, alignment14, "alignment14");
+  GLADE_HOOKUP_OBJECT (winNetworking, btnCancel, "btnCancel");
+
+  return winNetworking;
+}

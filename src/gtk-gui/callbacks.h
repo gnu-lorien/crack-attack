@@ -29,7 +29,13 @@
 void
 on_btnStart_clicked                    (GtkButton       *button,
                                         gpointer         user_data);
-
+void
+on_btnCancel_clicked                    (GtkButton       *button,
+                                        gpointer         user_data);
 void
 on_cmbQuality_changed                  (GtkComboBox     *button,
+                                        gpointer         user_data);
+
+void
+on_winNetworking_destroy               (GtkObject       *object,
                                         gpointer         user_data);
