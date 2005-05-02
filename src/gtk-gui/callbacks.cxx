@@ -51,6 +51,7 @@ static GtkWindow *window = NULL, *networking = NULL;
 static int mode = CM_SOLO;
 static GPid game_pid = 0;
 GIOChannel *channel = NULL;
+guint source_id = 0;
 
 extern int glut_argc;
 extern char **glut_argv;
@@ -148,6 +149,10 @@ on_winNetworking_destroy               (GtkObject       *object,
 gboolean networking_output (
 		GIOChannel *source, GIOCondition condition, gpointer data)
 {
+	if (condition == G_IO_HUP) {
+		g_source_remove(source_id);
+		return false;
+	}
 	GtkWidget *win = GTK_WIDGET(data);
 	GtkTextView *txtOutput = NULL;
 	GtkTextIter iter;
@@ -179,7 +184,8 @@ spawn_networking_dialog                (gint       standard_output)
     channel = NULL;
   }
 	channel = g_io_channel_unix_new(standard_output);
-	g_io_add_watch(channel, G_IO_IN, networking_output, networking);
+	source_id = g_io_add_watch(channel, (GIOCondition) (G_IO_IN | G_IO_HUP),
+			networking_output, networking);
 }
 
 void
@@ -198,7 +204,6 @@ on_btnStart_clicked                    (GtkButton       *button,
 #ifdef DEVELOPMENT
     g_print("Looking for location: %s\n", GC_BINARY_LOCATION);
 #endif
-    gtk_widget_hide(GTK_WIDGET(window));
     GError *err = NULL;
 		GPid pid;
 		gtk_widget_hide(GTK_WIDGET(window));
