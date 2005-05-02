@@ -36,6 +36,8 @@ void
 on_cmbQuality_changed                  (GtkComboBox     *button,
                                         gpointer         user_data);
 
+#ifndef _WIN32
 void
 on_winNetworking_destroy               (GtkObject       *object,
                                         gpointer         user_data);
+#endif

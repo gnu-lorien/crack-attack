@@ -50,8 +50,8 @@ static GtkWidget *fraClient, *fraSingle, *fraServer;
 static GtkWindow *window = NULL, *networking = NULL;
 static int mode = CM_SOLO;
 static GPid game_pid = 0;
-GIOChannel *channel = NULL;
-guint source_id = 0;
+static GIOChannel *channel = NULL;
+static guint source_id = 0;
 
 extern int glut_argc;
 extern char **glut_argv;
@@ -96,10 +96,6 @@ game_end (GPid pid, gint status, gpointer data) {
 	g_print("game_end called!\n");
 #endif
 	game_pid = 0;
-	if (networking) {
-		//gtk_widget_destroy(GTK_WIDGET(networking));
-		g_print("Networking... huh? game_end");
-	}
 	if (window) {
 		gtk_widget_show(GTK_WIDGET(window));
 	}
@@ -127,20 +123,14 @@ on_btnCancel_clicked                    (GtkButton       *button,
 	gtk_widget_destroy(win);
 }
 
+#ifndef _WIN32
 void
 on_winNetworking_destroy               (GtkObject       *object,
                                         gpointer         user_data)
 {
 	g_print("Kill the process");
 	if (game_pid) {
-#ifndef _WIN32
 		kill(game_pid, SIGKILL);
-#else
-		HANDLE handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ |
-				PROCESS_TERMINATE, 0, (DWORD) game_pid);
-		TerminateProcess(handle, 9);
-		CloseHandle(handle);
-#endif
 	}
 	networking = NULL;
   if(NULL!=channel) {
@@ -190,6 +180,7 @@ spawn_networking_dialog                (gint       standard_output)
 	source_id = g_io_add_watch(channel, (GIOCondition) (G_IO_IN | G_IO_HUP),
 			networking_output, networking);
 }
+#endif // _WIN32
 
 void
 on_btnStart_clicked                    (GtkButton       *button,
@@ -228,9 +219,13 @@ on_btnStart_clicked                    (GtkButton       *button,
     if (ret) {
 			g_child_watch_add(pid, (GChildWatchFunc) game_end, NULL);
 			game_pid = pid;
+
+#ifndef _WIN32
 			if (mode & CM_SERVER) {
 				spawn_networking_dialog(sout);
 			}
+#endif
+
 		} else {
       if (err) ca_error_dialog(err->message);
     }
