@@ -36,7 +36,6 @@ var ICONS_GROUP
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
-!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\README.txt"
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
@@ -363,6 +362,7 @@ Section "MainSection" SEC01
   File "Crack-Attack\share\locale\en@boldquot\LC_MESSAGES\gettext-runtime.mo"
 
 ; Shortcuts
+  SetOutPath "$INSTDIR\bin"
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
   CreateDirectory "$SMPROGRAMS\$ICONS_GROUP"
   CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Crack-Attack!.lnk" "$INSTDIR\bin\crack-attack-gui.exe"
