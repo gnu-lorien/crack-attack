@@ -76,8 +76,12 @@ generate_array(int mode, const gchar *start, GtkWidget *widget) {
 			++i;
 		}
 	} else if (mode & CM_SERVER) {  /* Server */
+
+#ifndef _WIN32 // Wait indefinitely on Linux because we have a dialog box...
     result[i] = wait;
 		++i;
+#endif
+
 		result[i] = server;
     ++i;
 		result[i] = gtk_entry_get_text((GtkEntry *) lookup_widget(GTK_WIDGET(widget), "entPort"));
