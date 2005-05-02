@@ -115,6 +115,7 @@ ca_error_dialog (const char *message)
     gtk_widget_destroy (dialog);
 }
 
+#ifndef _WIN32
 void
 on_btnCancel_clicked                    (GtkButton       *button,
                                         gpointer         user_data)
@@ -123,7 +124,6 @@ on_btnCancel_clicked                    (GtkButton       *button,
 	gtk_widget_destroy(win);
 }
 
-#ifndef _WIN32
 void
 on_winNetworking_destroy               (GtkObject       *object,
                                         gpointer         user_data)

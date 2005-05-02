@@ -625,12 +625,14 @@ create_winNetworking (void)
   gtk_widget_show (btnCancel);
   gtk_container_add (GTK_CONTAINER (alignment14), btnCancel);
 
+#ifndef _WIN32
   g_signal_connect ((gpointer) btnCancel, "clicked",
                     G_CALLBACK (on_btnCancel_clicked),
                     GTK_WIDGET(winNetworking));
   g_signal_connect ((gpointer) winNetworking, "destroy",
                     G_CALLBACK (on_winNetworking_destroy),
                     NULL);
+#endif
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (winNetworking, winNetworking, "winNetworking");
