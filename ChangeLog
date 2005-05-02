@@ -108,4 +108,5 @@ v 1.1.14-cvs
     García). These are currently unsupported, so good luck figuring out how to
     use them.
   - Totally redesigned GUI.
-   - Fixes Savannah bugs #12832, #12915
+  - Fixes Savannah bugs #12832, #12915
+  - Fixes the level lights when playing against the AI.
