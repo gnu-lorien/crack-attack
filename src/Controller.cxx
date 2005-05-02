@@ -167,7 +167,18 @@ void Controller::keyboardMeta ( unsigned char key, int x, int y )
 #ifdef DEVELOPMENT
   if (key == '.') Displayer::screenShot();
 #endif
-  MetaState::localKeyPressed(true);
+	switch (key) {
+  case GC_LEFT_KEY: case (GC_LEFT_KEY - 32):
+  case GC_RIGHT_KEY: case (GC_RIGHT_KEY - 32):
+  case GC_UP_KEY: case (GC_UP_KEY - 32):
+  case GC_DOWN_KEY: case (GC_DOWN_KEY - 32):
+  case GC_SWAP_KEY: case (GC_SWAP_KEY - 32): case ' ':
+  case GC_ADVANCE_KEY: case (GC_ADVANCE_KEY - 32): case '\r':
+  case GC_PAUSE_KEY: case (GC_PAUSE_KEY - 32):
+		MetaState::localKeyPressed(false);
+	default:
+		MetaState::localKeyPressed(true);
+	}
 }
 
 void Controller::keyboardUpMeta ( unsigned char key, int x, int y )
