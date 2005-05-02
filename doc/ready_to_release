@@ -29,3 +29,7 @@ Play a single-player game to completion versus the computer player.
 Play a multi-player game with the current version, and the earliest version that this is expected to be compatible with and the most recent version.
 
 Make sure there isn't any debugging output when DEVELOPMENT isn't defined.
+
+== Compatibility ==
+
+Check that the networking version number is compatible with all versions that share this number.
