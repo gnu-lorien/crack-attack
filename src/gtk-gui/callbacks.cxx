@@ -50,6 +50,7 @@ static GtkWidget *fraClient, *fraSingle, *fraServer;
 static GtkWindow *window = NULL, *networking = NULL;
 static int mode = CM_SOLO;
 static GPid game_pid = 0;
+GIOChannel *channel = NULL;
 
 extern int glut_argc;
 extern char **glut_argv;
@@ -138,6 +139,10 @@ on_winNetworking_destroy               (GtkObject       *object,
 #endif
 	}
 	networking = NULL;
+  if(NULL!=channel) {
+    g_io_channel_unref(channel);
+    channel = NULL;
+  }
 }
 
 gboolean networking_output (
@@ -166,11 +171,13 @@ gboolean networking_output (
 void
 spawn_networking_dialog                (gint       standard_output)
 {
-	GIOChannel *channel;
-
 	networking = GTK_WINDOW(create_winNetworking());
 	gtk_widget_show(GTK_WIDGET(networking));
 	
+  if(channel != NULL) {
+    g_io_channel_unref(channel);
+    channel = NULL;
+  }
 	channel = g_io_channel_unix_new(standard_output);
 	g_io_add_watch(channel, G_IO_IN, networking_output, networking);
 }
