@@ -136,8 +136,9 @@ on_winNetworking_destroy               (GtkObject       *object,
 #ifndef _WIN32
 		kill(game_pid, SIGKILL);
 #else
-		HANDLE handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
-				0, (DWORD) game_pid);
+		HANDLE handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ |
+				PROCESS_TERMINATE, 0, (DWORD) game_pid);
+		TerminateProcess(handle, 9);
 		CloseHandle(handle);
 #endif
 	}
