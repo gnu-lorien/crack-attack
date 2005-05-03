@@ -164,10 +164,11 @@ void Controller::specialUpPlay ( int key, int x, int y )
 
 void Controller::keyboardMeta ( unsigned char key, int x, int y )
 {
-#ifdef DEVELOPMENT
-  if (key == '.') Displayer::screenShot();
-#endif
 	switch (key) {
+#ifdef DEVELOPMENT
+  case '.':
+    Displayer::screenShot(); break;
+#endif
   case GC_LEFT_KEY: case (GC_LEFT_KEY - 32):
   case GC_RIGHT_KEY: case (GC_RIGHT_KEY - 32):
   case GC_UP_KEY: case (GC_UP_KEY - 32):
@@ -175,8 +176,11 @@ void Controller::keyboardMeta ( unsigned char key, int x, int y )
   case GC_SWAP_KEY: case (GC_SWAP_KEY - 32): case ' ':
   case GC_ADVANCE_KEY: case (GC_ADVANCE_KEY - 32): case '\r':
   case GC_PAUSE_KEY: case (GC_PAUSE_KEY - 32):
+    MESSAGE("game key pressed");
 		MetaState::localKeyPressed(false);
+    break;
 	default:
+    MESSAGE("game key not-pressed");
 		MetaState::localKeyPressed(true);
 	}
 }

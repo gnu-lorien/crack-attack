@@ -213,6 +213,12 @@ void CelebrationManager::timeStep (   )
 #ifdef AUDIO_ENABLED
           Music::play_gameover();
 #endif
+          // Not sure if this line should be here. It seems to break up 
+          // many other parts of the program. Doing this allows any button
+          // to cause the game to return to the UI after the game-over
+          // sign has finished bouncing. If you find any problems with this
+          // line, remove it immediately.
+          MetaState::state = MS_GAME_OVER_ANY_KEY_WAIT;
 
         // otherwise, bounce
         } else {

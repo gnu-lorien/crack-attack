@@ -36,10 +36,11 @@ using namespace std;
 #define MS_REMOTE_KEY_WAIT                 (1 << 1)
 #define MS_LOCAL_KEY_WAIT                  (1 << 2)
 #define MS_GAME_OVER_KEY_WAIT              (1 << 3)
-#define MS_READY_GAME_START                (1 << 4)
-#define MS_CELEBRATION_WAIT                (1 << 5)
-#define MS_GAME_PLAY                       (1 << 6)
-#define MS_CONCESSION                      (1 << 7)
+#define MS_GAME_OVER_ANY_KEY_WAIT          (1 << 4)
+#define MS_READY_GAME_START                (1 << 5)
+#define MS_CELEBRATION_WAIT                (1 << 6)
+#define MS_GAME_PLAY                       (1 << 7)
+#define MS_CONCESSION                      (1 << 8)
 
 /* static */ class MetaState {
 public:
