@@ -32,5 +32,5 @@ echo "Game should start with solo low extreme game"
 ./inst/bin/crack-attack -1 -X > /dev/null
 mv ./inst ./moved_inst
 echo "Game should fail to start"
-./inst/bin/crack-attack -1 -X > /dev/null
+./moved_inst/bin/crack-attack -1 -X > /dev/null
 mv ./moved_inst ./inst
