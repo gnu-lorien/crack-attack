@@ -218,7 +218,7 @@ void CelebrationManager::timeStep (   )
           // to cause the game to return to the UI after the game-over
           // sign has finished bouncing. If you find any problems with this
           // line, remove it immediately.
-          MetaState::state = MS_GAME_OVER_ANY_KEY_WAIT;
+          //MetaState::state = MS_GAME_OVER_ANY_KEY_WAIT;
 
         // otherwise, bounce
         } else {
