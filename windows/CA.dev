@@ -11,7 +11,7 @@ PrivateResource=CA_private.rc
 ResourceIncludes=
 MakeIncludes=
 Compiler=
-CppCompiler=-I"<INCLUDE>\gtk-2.0" _@@_-I"<INCLUDE>\..\lib\gtk-2.0\include" _@@_-I"<INCLUDE>\atk-1.0" _@@_-I"<INCLUDE>\pango-1.0" _@@_-I"<INCLUDE>\glib-2.0" _@@_-I"<INCLUDE>\..\lib\glib-2.0\include" _@@_-mms-bitfields_@@_-mno-cygwin_@@_-DNO_MULTITEXTURING_@@_-DWANT_GTK_@@_-DNDEBUG_@@_-march=i586_@@_-O2_@@_-mtune=i686_@@_-fomit-frame-pointer_@@_-ftracer_@@_-pipe_@@_-ffast-math_@@_
+CppCompiler=-I"<INCLUDE>\gtk-2.0" _@@_-I"<INCLUDE>\..\lib\gtk-2.0\include" _@@_-I"<INCLUDE>\atk-1.0" _@@_-I"<INCLUDE>\pango-1.0" _@@_-I"<INCLUDE>\glib-2.0" _@@_-I"<INCLUDE>\..\lib\glib-2.0\include" _@@_-mms-bitfields_@@_-mno-cygwin_@@_-DNO_MULTITEXTURING_@@_-DWANT_GTK_@@_-DNDEBUG_@@_-march=i586_@@_-O2_@@_-mtune=i686_@@_-fomit-frame-pointer_@@_-ftracer_@@_-pipe_@@_-ffast-math_@@_-mmmx_@@_
 Linker=-lglut32 -lglu32 -lopengl32 -lwinmm_@@_-lgtk-win32-2.0 -lgdk-win32-2.0 -lgthread-2.0 -lgdi32 -lole32 -luuid -latk-1.0 -lgdk_pixbuf-2.0 -lpangowin32-1.0 -lgdi32 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -lglib-2.0 -lintl -liconv_@@_-lws2_32_@@_
 IsCpp=1
 Icon=..\doc\cube_icon.ico

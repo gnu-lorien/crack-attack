@@ -41,6 +41,7 @@ require @opengl.org/glut 3
 # Put your installation script here
 installExe bin/*
 copyFiles share/crack-attack "$PREFIX/share"
+installMan 6 man/man6/crack-attack.6
 installDesktop "Applications/Games" share/crack-attack/crack-attack.desktop
 installIcon share/crack-attack/crack-attack.xpm
 
