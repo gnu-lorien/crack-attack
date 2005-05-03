@@ -102,11 +102,11 @@ v 1.1.13
    - Fixes Savannah bug #10988
   - Added a command-line switch to change the resolution --res.
 
-v 1.1.14-cvs
+v 1.1.14
   - Some fixes to the build system. (Thanks Mike Frysinger)
   - Sound and music patches. (Thanks Mike Frysinger and Miguel Ángel Vilela
     García). These are currently unsupported, so good luck figuring out how to
     use them.
   - Totally redesigned GUI.
   - Fixes Savannah bugs #12832, #12915
-  - Fixes the level lights when playing against the AI.
+  - Fixes the level lights when playing against the AI on Windows
