@@ -71,10 +71,8 @@ void MetaState::programStart ( int _mode,
   glutReshapeFunc(Displayer::reshape);
   glutIdleFunc(Game::idleMeta);
 
-  /*
   if (!(mode & CM_SOLO))
     Communicator::barrier();
-  */
 
   atexit(programEnd);
 
@@ -106,10 +104,8 @@ void MetaState::gameStart (   )
   glutDisplayFunc(Displayer::displayPlay);
   glutIdleFunc(Game::idlePlay);
 
-  /*
   if (!(mode & CM_SOLO))
     Communicator::barrier();
-  */
 
   Game::go();
 }
@@ -167,10 +163,8 @@ void MetaState::gameFinish (   )
     glutKeyboardUpFunc(null); // workaround
   }
 
-  /*
   if (!(mode & CM_SOLO) && !WinRecord::isMatchFinished())
     Communicator::barrier();
-  */
 
   Game::go();
 }
