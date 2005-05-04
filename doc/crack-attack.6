@@ -1,19 +1,25 @@
 .TH crack-attack 6   
-.\" auto-generated from crack-attack-manpage.xml by docbook2manxml $Revision: 1.2 $ 
+.\" auto-generated from crack-attack.xml by docbook2manxml $Revision: 1.3 $ 
 .SH NAME
 crack-attack \- multiplayer OpenGL puzzle game like "Tetris Attack"
 .SH SYNOPSIS
 \fBcrack-attack\fR
 {
 { [\fB--server \fIPORT\fB\fR]
-| [\fB-X\fR] | [\fB--wait\fR]
+| [\fB--wait\fR]
 }
-{ [\fB\fISERVER\fB\fR]
-| [\fB-X\fR]
+{ [\fBSERVER\fR] | [\fBPORT\fR]
 }
-{ [\fB--solo\fR] | [\fB-X\fR]}
+{ [\fB--solo\fR]
+[
+[\fB\fI--easy\fB\fR]
+| [\fB\fI--medium\fB\fR]
+| [\fB\fI--hard\fB\fR]
+]
+}
 }
 [\fB--name \fINAME\fB\fR]
+[\fB-X\fR]
 .SH DESCRIPTION
 Crack Attack is roughly based on the Super Nintendo game
 "Tetris Attack"\&. Slowly, your stack of colored blocks grows from the
@@ -24,8 +30,20 @@ blocks disappear, and put off slightly your inevitable demise\&.
 .PP
 Crack Attack essentially requires hardware acceleration\&. For
 XFree users, this means you want DRI\&.
+.SH OPTIONS
+.TP 
+\fBsolo\fR
+Creates a solo game versus yourself\&. The goal is to 
+gain as many points as possible\&. If an AI level is specified, then 
+the game is played versus a computer and the goal is to defeat the 
+computer player in as little time as possible\&.
 .SH COPYRIGHT
 Copyright 2000 Daniel Nelson
+.PP
+Copyright 2005 Andrew Sayman
+.PP
+An attempt at a complete list of copyright holders is included 
+with the source distribution of this software in the file COPYRIGHT
 .PP
 This program is free software; you can redistribute it
 and/or modify it under the terms of the GNU General Public License
@@ -46,9 +64,9 @@ It is important to realize that the name of Crack Attack!
 X-treme play mode is meant to be humorous, and thus should not
 itself be the subject of derision\&. Thank you\&.
 .SH AUTHOR
-Direct comments, questions, praise, flames, and job offers
-to nelson@aluminumangel\&.org\&. Visit my homepage at
-aluminumangel\&.org\&.
+Direct any comments or questions to Andrew Sayman via the 
+Crack Attack! home page:
+https://savannah\&.nongnu\&.org/projects/crack-attack
 .PP
 This manual page was written by Colin Walters <walters@debian\&.org> for
 the Debian GNU/Linux system (but may be used by others)\&. Permission is

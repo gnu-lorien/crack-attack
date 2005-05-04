@@ -48,14 +48,20 @@ Manual page for crack-attack 1.0
       <command>&dhpackage;</command>
       <group choice="req">
         <group choice="req"><arg>--server <replaceable>PORT</replaceable></arg>
-               <arg choice="opt">-X</arg><arg choice="opt">--wait</arg>
+               <arg choice="opt">--wait</arg>
         </group>
-        <group choice="req"><arg><replaceable>SERVER</replaceable></arg>
-               <arg choice="opt">-X</arg>
+        <group choice="req"><arg>SERVER PORT</arg>
         </group>
-        <group choice="req"><arg>--solo</arg><arg choice="opt">-X</arg></group>
+        <group choice="req"><arg>--solo</arg>
+          <group choice="opt">
+            <arg choice="opt"><replaceable>--easy</replaceable></arg>
+            <arg choice="opt"><replaceable>--medium</replaceable></arg>
+            <arg choice="opt"><replaceable>--hard</replaceable></arg>
+          </group>
+        </group>
       </group>
       <arg choice="opt">--name <replaceable>NAME</replaceable></arg>
+      <arg choice="opt">-X</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
   <refsect1 id="description">
@@ -78,7 +84,7 @@ Manual page for crack-attack 1.0
     <title>Options</title>
     <variablelist>
       <varlistentry>
-        <term><option>solo</option></term>
+        <term><option>--solo</option></term>
         <listitem><para> Creates a solo game versus yourself. The goal is to 
         gain as many points as possible. If an AI level is specified, then 
         the game is played versus a computer and the goal is to defeat the 
