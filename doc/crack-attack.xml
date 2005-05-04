@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "/usr/share/sgml/docbook/dtd/xml/4.1.2/docbookx.dtd"
+ [
+  <!ENTITY package  "Crack Attack">
+
+  <!ENTITY dhfirstname "<firstname>Colin</firstname>">
+  <!ENTITY dhsurname   "<surname>Walters</surname>">
+  <!ENTITY dhdate      "<date>January 03, 2003</date>">
+  <!ENTITY dhsection   "<manvolnum>6</manvolnum>">
+  <!ENTITY dhemail     "<email>walters@debian.org</email>">
+  <!ENTITY dhusername  "Colin Walters">
+  <!ENTITY dhpackage   "crack-attack">
+
+  <!ENTITY debian      "Debian GNU/Linux">
+  <!ENTITY gnu         "<acronym>GNU</acronym>">
+
+]>
+
+<!--
+Manual page for crack-attack 1.0
+
+     © 2001,2003 Colin Walters <walters@debian.org>
+     © 2005 Andrew Sayman <lorien420@myrealbox.com>
+
+ Permission is granted to copy, distribute and/or modify this document
+ under the terms of the GNU Free Documentation License, Version 1.1 or
+ any later version published by the Free Software Foundation; with no
+ Invariant Sections, no Front-Cover Texts and no Back-Cover Texts.
+
+ A copy of Version 1.2 of the Free Documentation License is included in
+ the file debian/copyright in the crack-attack source package.  This
+ file is also available in the Debian package as
+ /usr/share/doc/crack-attack/copyright.
+
+-->     
+
+<refentry id="crack-attack.6">
+  <refmeta>
+    <refentrytitle>crack-attack</refentrytitle>
+    <manvolnum>6</manvolnum>
+  </refmeta>
+  <refnamediv id="name">
+    <refname>crack-attack</refname>
+    <refpurpose>multiplayer OpenGL puzzle game like "Tetris Attack"</refpurpose>
+  </refnamediv>
+  <refsynopsisdiv id="synopsis">
+    <cmdsynopsis>
+      <command>&dhpackage;</command>
+      <group choice="req">
+        <group choice="req"><arg>--server <replaceable>PORT</replaceable></arg>
+               <arg choice="opt">-X</arg><arg choice="opt">--wait</arg>
+        </group>
+        <group choice="req"><arg><replaceable>SERVER</replaceable></arg>
+               <arg choice="opt">-X</arg>
+        </group>
+        <group choice="req"><arg>--solo</arg><arg choice="opt">-X</arg></group>
+      </group>
+      <arg choice="opt">--name <replaceable>NAME</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+  <refsect1 id="description">
+    <title>Description</title>
+    <para>
+      &package; is roughly based on the Super Nintendo game
+      "Tetris Attack".  Slowly, your stack of colored blocks grows from the
+      bottom, and you've got to make sure it never reaches the top. If it
+      does, you lose. To eliminate blocks from the stack, line up at least
+      three of one color, horizontally or vertically. Once you do, those
+      blocks disappear, and put off slightly your inevitable demise.
+    </para>
+    
+    <para>
+      Crack Attack essentially requires hardware acceleration.  For
+      XFree users, this means you want <abbrev>DRI</abbrev>.
+    </para>
+  </refsect1>
+  <refsect1 id="options">
+    <title>Options</title>
+    <variablelist>
+      <varlistentry>
+        <term><option>solo</option></term>
+        <listitem><para> Creates a solo game versus yourself. The goal is to 
+        gain as many points as possible. If an AI level is specified, then 
+        the game is played versus a computer and the goal is to defeat the 
+        computer player in as little time as possible.</para></listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+  <refsect1 id="copyright">
+    <title>Copyright</title>
+
+    <para>Copyright &copy; 2000 Daniel Nelson</para>
+    <para>Copyright &copy; 2005 Andrew Sayman</para>
+
+    <para>An attempt at a complete list of copyright holders is included 
+    with the source distribution of this software in the file COPYRIGHT</para>
+
+    <para>This program is free software; you can redistribute it
+    and/or modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2 of
+    the License, or (at your option) any later version.</para>
+
+    <para>This program is distributed in the hope that it will be
+    useful, but WITHOUT ANY WARRANTY; without even the implied
+    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+    PURPOSE. See the GNU General Public License for more details.</para>
+    
+    <para>The GNU General Public License can be found online at
+    http://www.gnu.org/copyleft/gpl.html. Additionally, a copy can be
+    obtained by writing to the Free Software Foundation, Inc., 59
+    Temple Place - Suite 330, Boston, MA 02111-1307, USA.</para>
+    
+  </refsect1>
+  <refsect1>
+    <title>Disclaimer</title>
+    <para>It is important to realize that the name of Crack Attack!
+    X-treme play mode is meant to be humorous, and thus should not
+    itself be the subject of derision.  Thank you.</para>
+  </refsect1>
+
+  <refsect1>
+    <title>Author</title>
+    <para>Direct any comments or questions to Andrew Sayman via the 
+    Crack Attack! home page:
+    https://savannah.nongnu.org/projects/crack-attack</para>
+
+    <para>This manual page was written by &dhusername; &dhemail; for
+    the &debian; system (but may be used by others).  Permission is
+    granted to copy, distribute and/or modify this document under the
+    terms of the <acronym>GNU</acronym> Free Documentation License,
+    Version 1.1 or any later version published by the Free Software
+    Foundation; with no Invariant Sections, no Front-Cover Texts and
+    no Back-Cover Texts.</para>
+
+    <para>A copy of Version 1.2 of the Free Documentation License is
+    included in the file debian/copyright in the crack-attack source
+    package.  This file is also available in the Debian package as
+    /usr/share/doc/crack-attack/copyright.</para>
+
+  </refsect1>
+
+</refentry>
+
+<!--
+Local Variables:
+compile-command: "SP_CHARSET_FIXED=YES SP_ENCODING=XML nsgmls -wxml -mdeclaration/xml.soc -gues crack-attack.xml"
+End:
+-->
