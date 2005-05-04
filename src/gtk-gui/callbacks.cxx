@@ -96,6 +96,9 @@ game_end (GPid pid, gint status, gpointer data) {
 	g_print("game_end called!\n");
 #endif
 	game_pid = 0;
+  if (networking) {
+    gtk_widget_destroy(GTK_WIDGET(networking));
+  }
 	if (window) {
 		gtk_widget_show(GTK_WIDGET(window));
 	}

@@ -60,7 +60,7 @@ AC_ARG_ENABLE(sound,
   AC_HELP_STRING([--enable-sound=[yes/no]],
     [Play sounds and music during game [default=yes]]),
   enable_sound="$enableval",
-  enable_sound=auto)
+  enable_sound="no")
 AUDIO_CFLAGS=""
 AUDIO_LIBS=""
 if test "$enable_sound" != "no"; then

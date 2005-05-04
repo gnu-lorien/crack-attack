@@ -212,6 +212,7 @@ void MetaState::localKeyPressed ( bool esc )
   case MS_GAME_OVER_KEY_WAIT:
     if (!esc) return;
   case MS_GAME_OVER_ANY_KEY_WAIT:
+    MESSAGE("Exiting the game");
     exit(0);
     return;
   }
