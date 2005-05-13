@@ -63,7 +63,6 @@ using namespace std;
  *
  * Issues and Watches
  *   slow if left sitting a long time before game start
- *   gtk+ frontend
  *   central server for online game setup
  *   remove dying_count_2
  *   find and use correct GL_LIGHT_MODEL_COLOR_CONTROL defines
@@ -253,18 +252,19 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
       usage();
 }
 
+#define MKDIR(x,y) (mkdir(x, y))
+#ifdef _WIN32
+#  include <dir.h>
+#  undef MKDIR
+#  define MKDIR(x,y) (_mkdir(x))
+#endif
+
 void setupLocalDataDirectory (   )
 {
   char local_directory[256];
   TextureLoader::buildLocalDataDirectoryName(local_directory);
   if (!TextureLoader::fileExists(local_directory)
-#ifndef _WIN32
-   && mkdir(local_directory, 0777)
-#else
-#ifndef __MINGW32__
-   && _mkdir(local_directory)
-#endif
-#endif
+   && MKDIR(local_directory, 0777)
    ) {
    cerr << "Error creating local data directory '" << local_directory
     << "'." << endl;
