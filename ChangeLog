@@ -110,3 +110,7 @@ v 1.1.14
   - Totally redesigned GUI.
   - Fixes Savannah bugs #12832, #12915
   - Fixes the level lights when playing against the AI on Windows
+  - Bumped the networking version to 1.1.14. Essentially, we messed up
+    compatibility somewhere. Considering that we're planning on redoing
+    networking in the next release, a bumb seemed the most appropriate. Please
+    update to the latest version.
