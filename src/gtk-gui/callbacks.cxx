@@ -131,8 +131,7 @@ void
 on_winNetworking_destroy               (GtkObject       *object,
                                         gpointer         user_data)
 {
-	g_print("Kill the process");
-	if (game_pid) {
+    if (game_pid) {
 		kill(game_pid, SIGKILL);
 	}
 	networking = NULL;
@@ -160,10 +159,8 @@ gboolean networking_output (
 			lookup_widget(GTK_WIDGET(win), "txtOutput"));
 	buffer = gtk_text_view_get_buffer(txtOutput);
 	gtk_text_buffer_get_end_iter(buffer, &iter);
-	g_print("|");
 	g_io_channel_read_line(source, &out, &length, NULL, NULL);
 	g_print(out);
-	g_print("|");
 	gtk_text_buffer_insert(buffer, &iter, out, length);
 	g_free(out);
 	return true;
