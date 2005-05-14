@@ -44,7 +44,7 @@ AC_ARG_ENABLE(gtk,
   enable_gtk="$enableval",
   enable_gtk=yes)
 if test "$enable_gtk" = "yes"; then
-  pkg_modules="gtk+-2.0 >= 2.0.0"
+  pkg_modules="gtk+-2.0 >= 2.6.0"
   PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
   AC_DEFINE([WANT_GTK], [], [Wants to compile gtk front-end])
 else
