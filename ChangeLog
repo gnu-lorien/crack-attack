@@ -114,3 +114,8 @@ v 1.1.14
     compatibility somewhere. Considering that we're planning on redoing
     networking in the next release, a bumb seemed the most appropriate. Please
     update to the latest version.
+
+v 1.1.15-cvs
+  - Fixed #13163 in which the process never terminates if it exits
+    unexpectedly.  Need to add fix to the glade file, move fix from gui_main
+    to interface implicitly.
