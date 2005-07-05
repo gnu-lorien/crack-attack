@@ -83,6 +83,7 @@ int main ( int argc, char **argv )
   int height = -1, width = -1;
   
   player_name[0] = '\0';
+	glutInit(&argc, argv);
   parseCommandLine(argc, argv, mode, port, host_name, player_name, height, width);
   run_crack_attack(mode, port, host_name, player_name, height, width);
 
@@ -249,7 +250,8 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
     usage();
 
   if ((mode & CM_AI && (mode & CM_X)))
-      usage();
+    usage();
+
 }
 
 #define MKDIR(x,y) (mkdir(x, y))

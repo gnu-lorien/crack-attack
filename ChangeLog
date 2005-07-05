@@ -119,3 +119,4 @@ v 1.1.15-cvs
   - Fixed #13163 in which the process never terminates if it exits
     unexpectedly.  Need to add fix to the glade file, move fix from gui_main
     to interface implicitly.
+  - Updated to work with freeglut 2.4.0. We now call glutInit().
