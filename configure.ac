@@ -58,7 +58,7 @@ AM_CONDITIONAL([WANT_GTK], [test "$enable_gtk" = yes])
 dnl Check for sound support
 AC_ARG_ENABLE(sound,
   AC_HELP_STRING([--enable-sound=[yes/no]],
-    [Play sounds and music during game [default=yes]]),
+    [Play sounds and music during game [default=no]]),
   enable_sound="$enableval",
   enable_sound="no")
 AUDIO_CFLAGS=""
