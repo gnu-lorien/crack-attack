@@ -28,7 +28,6 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 
-// FIXME: may actually need GL/glext.h
 #include "glext.h"
 
 using namespace std;
