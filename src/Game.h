@@ -85,7 +85,7 @@ using namespace std;
 #  define GC_BINARY_LOCATION             BINARY_DIRECTORY GC_DD GC_BINARY
 #else
 #  define GC_DATA_DIRECTORY(x)              ".." GC_DD "data" GC_DD x
-#  define GC_MODEL_DIRECTORY(x)             GC_DATA_DIRECTORY("models" GC_DD x)
+#  define GC_MODEL_DIRECTORY(x)             ".." GC_DD "data" GC_DD "models" GC_DD x
 #  define GC_LOCAL_DATA_DIRECTORY           ".." GC_DD "localdata" GC_DD
 #  define GC_BINARY_LOCATION                GC_BINARY
 #endif
@@ -94,7 +94,7 @@ using namespace std;
 #  undef GC_BINARY_LOCATION
 #  include "prefix.h"
 #  define GC_DATA_DIRECTORY_INTER        br_strcat(DATADIR, GC_DD GC_BINARY GC_DD)
-#  define GC_MODEL_DIRECTORY_INTER       br_strcat(DATADIR, GC_DATA_DIRECTORY_INTER GC_DD "models" GC_DD)
+#  define GC_MODEL_DIRECTORY_INTER       br_strcat(DATADIR, GC_DD GC_BINARY GC_DD GC_DD "models" GC_DD)
 #  define GC_DATA_DIRECTORY(x)           br_strcat(GC_DATA_DIRECTORY_INTER, x)
 #  define GC_MODEL_DIRECTORY(x)          br_strcat(GC_MODEL_DIRECTORY_INTER, x)
 #  define GC_BINARY_LOCATION             br_strcat(BINDIR, GC_DD GC_BINARY)
