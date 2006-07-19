@@ -375,11 +375,11 @@ void Displayer::displayPlay (   )
     drawCountDown();
   else
     drawMessage();
-  
+
   glutSwapBuffers();
 }
 
-bool Displayer::checkExtension ( char *extension_name )
+bool Displayer::checkExtension ( const char *extension_name )
 {
   char *extensions = (char *) glGetString(GL_EXTENSIONS);
 

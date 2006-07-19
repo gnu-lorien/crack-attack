@@ -553,7 +553,7 @@ private:
      + Spring::y;
   }
 
-  static bool checkExtension ( char *extension_name );
+  static bool checkExtension ( const char *extension_name );
 
   static void generateBlockDisplayList (   );
   static void generateGarbageExtras (   );

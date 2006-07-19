@@ -186,7 +186,7 @@ void TextureLoader::createTGA ( const char *tga_file_name, GLubyte *texture,
   header[5] = 40;
   file.write((char *) header, sizeof(header));
 
-  file.write((char *) tga_id, tga_id_length);
+  file.write(tga_id, tga_id_length);
 
   // tga is BGR
   for (int n = 0; n < _width * _height * 4; n += 4) {

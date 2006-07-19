@@ -215,13 +215,13 @@ private:
   {
     ENetEvent event;
     MESSAGE("Potentially waiting forever");
-    while(enet_host_service(host, &event, CO_SERVER_TIME_OUT * 1000) > 0) {
+    while (enet_host_service(host, &event, CO_SERVER_TIME_OUT * 1000) > 0) {
       DOT(4);
-      if(event.type == ENET_EVENT_TYPE_DISCONNECT) {
+      if (event.type == ENET_EVENT_TYPE_DISCONNECT) {
         cerr << "Disconnected from host." << endl;
         exit(1);
       }
-      if(event.type == ENET_EVENT_TYPE_RECEIVE) {
+      else if (event.type == ENET_EVENT_TYPE_RECEIVE) {
         if(event.channelID!=CO_CHANNEL_REL) {
           MESSAGE("Received out-of-order non-reliable packet on channnel " <<
             event.channelID);
@@ -242,13 +242,13 @@ private:
   static inline bool commGetRelNoBlock ( void *buffer, size_t size )
   {
     ENetEvent event;
-    if(enet_host_service(host, &event, 0) > 0) {
-      if(event.type == ENET_EVENT_TYPE_DISCONNECT) {
+    if (enet_host_service(host, &event, 0) > 0) {
+      if (event.type == ENET_EVENT_TYPE_DISCONNECT) {
         cerr << "Disconnected from host." << endl;
         exit(1);
       }
-      if(event.type == ENET_EVENT_TYPE_RECEIVE) {
-        if(event.channelID!=CO_CHANNEL_REL) {
+      else if (event.type == ENET_EVENT_TYPE_RECEIVE) {
+        if (event.channelID != CO_CHANNEL_REL) {
           MESSAGE("Received out-of-order non-reliable packet on channnel " <<
             event.channelID);
           return false;
@@ -258,11 +258,10 @@ private:
           return true;
         }
       }
-    } else {
-      return false;
     }
+    return false;
   }
-    
+
   static inline bool commGetRelNoBlock( uint32 &value)
   {
     return commGetRelNoBlock(&value, sizeof(value));
@@ -272,7 +271,7 @@ private:
   {
     commSendGarbage(send_garb_buffer);
   }
-  
+
   static inline void commSendGarbage ( const GarbageBuffer &buffer )
   {
     for (uint32 count = 0; count < buffer.count; ++count) {

@@ -105,7 +105,7 @@ GarbageQueue *ComputerPlayerAI::garbageAmount( )
 
   int norm_div = num_normals / 3;
   int norm_mod = num_normals % 3;
-  int more_gray = norm_mod / 2;
+  //int more_gray = norm_mod / 2;
   LOG("div: " << norm_div << " mod: " << norm_mod << " gray: " << more_gray);
   if (norm_div > 0) q->add(norm_div, 6, GF_NORMAL);
   loopi(norm_mod) q->add(1, 6, GF_NORMAL);
@@ -120,7 +120,7 @@ void ComputerPlayerAI::shatter()
   MESSAGE("Resetting garbageQueue " << garbageQueue()->height());
   if (garbageQueue()->height() > 0) {
     state = AI_SHATTERING; 
-    int gray_height = garbageQueue()->specialHeight();
+    //int gray_height = garbageQueue()->specialHeight();
     last_shatter_height = garbageQueue()->removeWithSpecials();
     MESSAGE(last_shatter_height << " shattered and " << garbageQueue()->height() << " remaining grays:" << gray_height);
     loopi(last_shatter_height) {
