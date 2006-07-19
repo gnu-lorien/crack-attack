@@ -167,6 +167,7 @@ AC_CONFIG_FILES(
   src/Makefile 
   src/gtk-gui/Makefile
   data/Makefile 
+  data/models/Makefile
   doc/Makefile
   autopackage/default.apspec
   enet/Makefile
