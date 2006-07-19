@@ -31,8 +31,8 @@
 #include <vector>
 #include <string>
 #include <map>
-#include <climits>
-#include <cstdlib>
+//#include <climits>
+//#include <cstdlib>
 #include <cmath>
 
 #ifdef __MINGW32__
@@ -62,7 +62,7 @@ using namespace std;
 // the name
 #define GC_NAME                          "Crack Attack!"
 #define GC_BINARY                        "crack-attack"
-#define GC_VERSION                       "1.1.14"
+#define GC_VERSION                       "1.1.15-cvs"
 
 // startup message
 #define GC_MESSAGE                       GC_NAME " v" GC_VERSION "\n"

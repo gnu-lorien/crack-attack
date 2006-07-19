@@ -32,6 +32,8 @@ using namespace std;
 #include "Game.h"
 #include "Random.h"
 
+#include <cmath>
+
 Angle Random::angle_table[GC_SIZE_RANDOM_ANGLE_TABLE];
 Angle Random::angle_death_spark_table[GC_SIZE_RANDOM_ANGLE_TABLE];
 Angle Random::angle_celebration_spark_1_table[GC_SIZE_RANDOM_ANGLE_TABLE];

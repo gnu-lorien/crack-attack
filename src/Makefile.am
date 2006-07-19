@@ -14,9 +14,12 @@ if WANT_GTK
   GUI_LIBS = gtk-gui/libgtkgui.a
 endif
 
+  NET_INCLUDES = -I../enet/include
+  NET_LIBS = ../enet/libenet.a
+
 SUBDIRS = $(GUI_DIR)
 
-AM_CXXFLAGS = -DBR_PTHREAD=0 @DEBUG_CFLAGS@ @AUDIO_CFLAGS@
+AM_CXXFLAGS = -DBR_PTHREAD=0 @DEBUG_CFLAGS@ @AUDIO_CFLAGS@ $(NET_INCLUDES) $(CFLAGS)
 
 if WANT_BINRELOC
   PATH_INCLUDES = 
@@ -29,6 +32,6 @@ endif
 
 INCLUDES = @PACKAGE_CFLAGS@ @DEBUG_INCLUDES@ ${PATH_INCLUDES} 
 
-crack_attack_DEPENDENCIES = $(GUI_LIBS)
-AM_LDFLAGS = ${all_libraries}
-crack_attack_LDADD = ${X_PRE_LIBS} ${X_LIBS} ${X_EXTRA_LIBS} -lGL -lGLU -lglut -lXi -lX11 -lXmu $(GUI_LIBS) @PACKAGE_LIBS@ @AUDIO_LIBS@
+crack_attack_DEPENDENCIES = $(GUI_LIBS) $(NET_LIBS)
+AM_LDFLAGS = ${all_libraries} $(NET_INCLUDES)
+crack_attack_LDADD = ${X_PRE_LIBS} ${X_LIBS} ${X_EXTRA_LIBS} -lGL -lGLU -lglut -lXi -lX11 -lXmu $(GUI_LIBS) @PACKAGE_LIBS@ @AUDIO_LIBS@ $(NET_LIBS)

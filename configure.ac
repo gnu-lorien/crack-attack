@@ -1,8 +1,11 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.59)
-AC_INIT(crack-attack,1.1.14,lorien420@myrealbox.com)
+AC_INIT(crack-attack,1.1.15-cvs,lorien420@myrealbox.com)
 AC_CONFIG_SRCDIR(src/Attack.cxx)
+AC_CANONICAL_HOST
+AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE
+
 AM_CONFIG_HEADER(src/config.h)
 
 dnl Checks for programs.
@@ -10,9 +13,6 @@ AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_RANLIB
-
-AC_CANONICAL_HOST 
-AC_CANONICAL_TARGET
 
 dnl Checks for libraries.
 # FIXME: Replace `main' with a function in `-lGL':
@@ -29,10 +29,19 @@ AC_CHECK_LIB([GLU], [gluLookAt])
 # FIXME: Replace `main' with a function in `-lglut':
 AC_CHECK_LIB([glut], [glutInit])
 
+
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS([arpa/inet.h netdb.h netinet/in.h string.h sys/socket.h unistd.h])
+AC_CHECK_HEADERS([arpa/inet.h netdb.h netinet/in.h string.h sys/socket.h unistd.h sys/types.h stdlib.h])
+AC_CHECK_HEADER(inttypes.h, break, echo "Must have inttypes.h for enet. Exiting..."; exit)
+
+dnl enet checks
+AC_CHECK_MEMBER(
+  struct msghdr.msg_flags, 
+  AC_DEFINE([HAS_MSGHDR_FLAGS], [], [has msghdr flags]),
+  [],
+  [sys/socket.h])
 
 dnl BinReloc source additions
 AM_BINRELOC
@@ -96,13 +105,48 @@ AC_ARG_ENABLE(debug,
   enable_debug=no)
 if test "$enable_debug" = "yes"; then
   DEBUG_INCLUDES=-DDEVELOPMENT
-  DEBUG_CFLAGS="-g -Wall -pedantic"
+  DEBUG_CFLAGS="-g3 -ggdb3 -Wall -pedantic"
 else
   DEBUG_INCLUDES=-DNDEBUG
   DEBUG_CFLAGS=
 fi
 AC_SUBST(DEBUG_INCLUDES)
 AC_SUBST(DEBUG_CFLAGS)
+
+# Suggested by davyd, borrowed from Nautilus
+AC_ARG_ENABLE(more-warnings,
+[  --enable-more-warnings  Maximum compiler warnings],
+set_more_warnings="$enableval",[
+    set_more_warnings=no
+])
+AC_MSG_CHECKING(for more warnings, including -Werror)
+if test "$GCC" = "yes" -a "$set_more_warnings" != "no"; then
+    AC_MSG_RESULT(yes)
+    CXXFLAGS="\
+    -Wall -Werror \
+    -Wchar-subscripts \
+    -Wpointer-arith \
+    -Wcast-align -Wsign-compare \
+    $CXXFLAGS"
+
+    for option in -Wno-strict-aliasing -Wno-sign-compare; do
+        SAVE_CXXFLAGS="$CXXFLAGS"
+        CXXFLAGS="$CXXFLAGS $option"
+        AC_MSG_CHECKING([whether gcc understands $option])
+        AC_TRY_COMPILE([], [],
+            has_option=yes,
+            has_option=no,)
+        if test $has_option = no; then
+            CXXFLAGS="$SAVE_CXXFLAGS"
+        fi
+        AC_MSG_RESULT($has_option)
+        unset has_option
+        unset SAVE_CXXFLAGS
+    done
+    unset option
+else
+    AC_MSG_RESULT(no)
+fi
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
@@ -116,7 +160,7 @@ dnl Checks for library functions.
 AC_FUNC_FORK
 AC_FUNC_MEMCMP
 AC_FUNC_STAT
-AC_CHECK_FUNCS([atexit gethostbyname inet_ntoa mkdir pow socket sqrt strchr strcspn strstr poll])
+AC_CHECK_FUNCS([atexit gethostbyname gethostbyname_r gethostbyaddr_r fcntl inet_ntoa mkdir pow socket sqrt strchr strcspn strstr poll])
 
 AC_CONFIG_FILES(
   Makefile 
@@ -124,6 +168,9 @@ AC_CONFIG_FILES(
   src/gtk-gui/Makefile
   data/Makefile 
   doc/Makefile
-  autopackage/default.apspec)
+  autopackage/default.apspec
+  enet/Makefile
+  enet/include/Makefile
+  enet/include/enet/Makefile)
 
 AC_OUTPUT

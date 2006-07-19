@@ -1,4 +1,4 @@
-/*
+/* vim: set et ts=2 sw=2: 
  * Communicator.h
  * Daniel Nelson - 8/24/0
  *
@@ -26,19 +26,10 @@
 #ifndef COMMUNICATOR_H
 #define COMMUNICATOR_H
 
-using namespace std;
+//#include <sys/types.h>
 
-#include <sys/types.h>
-
-#ifndef _WIN32
-#  include <unistd.h>
-#  include <sys/socket.h>
-#  include <netinet/in.h>
-#else
-#  include <winsock2.h>
-#endif
-
-#include "Game.h"
+//#include "Game.h"
+#include "enet/enet.h"
 
 // default communication port
 #define CO_DEFAULT_PORT                          (8080)
@@ -53,7 +44,12 @@ using namespace std;
 #define CO_TEST_INT                              (47)
 
 // protocol version number
-#define CO_VERSION                               "1.1.14"
+#define CO_VERSION                               "1.1.15"
+#define CO_VERSION_MAX_LENGTH                    (10)
+
+// channel numbers
+enum { CO_CHANNEL_REL = 0, CO_CHANNEL_GARBAGE, CO_CHANNEL_STATUS,
+  CO_CHANNEL_BOARD,  NUM_CHANNELS };
 
 class BufferElement {
 public:
@@ -65,14 +61,26 @@ public:
   BufferElement (): time_stamp(0), height(0), width(0), flavor(0) { };
 };
 
-class CommunicationBuffer {
+class GarbageBuffer {
 public:
   BufferElement garbage[GC_GARBAGE_QUEUE_SIZE];
   uint32 count;
+};
+
+class CommunicationBuffer {
+public:
   uint32 level_lights;
   uint32 game_state;
   uint32 loss_time_stamp;
   uint32 sync;
+
+  inline void print() const {
+    /*
+    cout << "lights: " << level_lights << " state: " 
+      << game_state << " stamp: " << loss_time_stamp
+      << " sync: " << sync << endl;
+    */
+  }
 };
 
 /* static */ class Communicator {
@@ -119,7 +127,7 @@ public:
   static inline void timeStepPlay (   )
   {
     time_step++;
-    if (time_step & (CO_COMMUNICATION_PERIOD - 1)) return;
+    //if (time_step & (CO_COMMUNICATION_PERIOD - 1)) return;
     if (!no_communication)
       timeStepPlay_inline_split_();
   }
@@ -127,7 +135,7 @@ public:
   static inline void timeStepMeta (   )
   {
     time_step++;
-    if (time_step & (CO_COMMUNICATION_PERIOD - 1)) return;
+    //if (time_step & (CO_COMMUNICATION_PERIOD - 1)) return;
     timeStepMeta_inline_split_();
   }
 
@@ -138,13 +146,13 @@ public:
 
   static inline void sendGarbage ( int height, int width, int flavor )
   {
-    if (send_buffer.count == GC_GARBAGE_QUEUE_SIZE) return;
+    if (send_garb_buffer.count == GC_GARBAGE_QUEUE_SIZE) return;
 
-    send_buffer.garbage[send_buffer.count].time_stamp = Game::time_step;
-    send_buffer.garbage[send_buffer.count].height = height;
-    send_buffer.garbage[send_buffer.count].width = width;
-    send_buffer.garbage[send_buffer.count].flavor = flavor;
-    send_buffer.count++;
+    send_garb_buffer.garbage[send_garb_buffer.count].time_stamp = Game::time_step;
+    send_garb_buffer.garbage[send_garb_buffer.count].height = height;
+    send_garb_buffer.garbage[send_garb_buffer.count].width = width;
+    send_garb_buffer.garbage[send_garb_buffer.count].flavor = flavor;
+    send_garb_buffer.count++;
   }
 
   static inline void setLevelLightSendBit ( int mask )
@@ -169,85 +177,158 @@ private:
   static void timeStepPlay_inline_split_ (   );
   static void timeStepMeta_inline_split_ (   );
 
+  static void handlePlayRecv (  );
+  static void handlePlayRecvGarbage ( ENetEvent event );
+  static void handlePlayRecvStatus  ( ENetEvent event );
+  static void handlePlayRecvBoard   ( ENetEvent event );
+    
+  static void handlePlaySend (  );
+
   static void exchangeRandomSeed (   );
 
-  static inline void commSend ( const void *message, int size )
+  static inline void commSend ( 
+      const void *message, 
+      size_t size, 
+      enet_uint8 channelId,
+      bool reliable)
   {
-    int n;
-    do
-      if ((n = send(comm_link, (char *) message, size, 0)) != -1) {
-        message = (char *) message + n;
-        size -= n;
-      } else {
-        cerr << "Connection lost." << endl;
+    ENetPacket *packet = enet_packet_create(
+        message, size, (reliable ? ENET_PACKET_FLAG_RELIABLE : 0));
+    DOT((int)channelId + 10);
+    if(enet_peer_send(peer, channelId, packet)!=0) {
+      cerr << "Connection lost on send" << endl;
+      exit(1);
+    }
+  }
+
+  static inline void commSendRel ( const void *buffer, size_t size )
+  {
+    commSend(buffer, size, CO_CHANNEL_REL, true);
+  }
+
+  static inline void commSendRel ( uint32 value )
+  {
+    commSendRel(&value, sizeof(value));
+  }
+
+  static inline void commGetRel ( void *buffer, size_t size )
+  {
+    ENetEvent event;
+    MESSAGE("Potentially waiting forever");
+    while(enet_host_service(host, &event, CO_SERVER_TIME_OUT * 1000) > 0) {
+      DOT(4);
+      if(event.type == ENET_EVENT_TYPE_DISCONNECT) {
+        cerr << "Disconnected from host." << endl;
         exit(1);
       }
-    while (size > 0);
+      if(event.type == ENET_EVENT_TYPE_RECEIVE) {
+        if(event.channelID!=CO_CHANNEL_REL) {
+          MESSAGE("Received out-of-order non-reliable packet on channnel " <<
+            event.channelID);
+          continue;
+        }
+        read(event.packet, buffer, size);
+        enet_packet_destroy(event.packet);
+        break;
+      }
+    }
   }
 
-  static inline void commRecv ( void *buffer, int size )
+  static inline void commGetRel ( uint32 &value )
   {
-    int n;
-    do
-      if ((n = recv(comm_link, (char *) buffer, size, 0)) != -1) {
-        buffer = (char *) buffer + n;
-        size -= n;
-      } else {
-        cerr << "Connection lost." << endl;
+    commGetRel(&value, sizeof(value));
+  }
+
+  static inline bool commGetRelNoBlock ( void *buffer, size_t size )
+  {
+    ENetEvent event;
+    if(enet_host_service(host, &event, 0) > 0) {
+      if(event.type == ENET_EVENT_TYPE_DISCONNECT) {
+        cerr << "Disconnected from host." << endl;
         exit(1);
       }
-    while (size > 0);
-  }
-
-  static inline void commSend ( uint32 value )
-  {
-    value = htonl(value);
-    commSend(&value, sizeof(value));
-  }
-
-  static inline void commRecv ( uint32 &value )
-  {
-    commRecv(&value, sizeof(value));
-    value = ntohl(value);
-  }
-
-  static inline void commSend ( const CommunicationBuffer &buffer )
-  {
-    work_buffer.count = htonl(buffer.count);
-    for (int i = buffer.count; i--; ) {
-      work_buffer.garbage[i].time_stamp = htonl(buffer.garbage[i].time_stamp);
-      work_buffer.garbage[i].height = htonl(buffer.garbage[i].height);
-      work_buffer.garbage[i].width = htonl(buffer.garbage[i].width);
-      work_buffer.garbage[i].flavor = htonl(buffer.garbage[i].flavor);
+      if(event.type == ENET_EVENT_TYPE_RECEIVE) {
+        if(event.channelID!=CO_CHANNEL_REL) {
+          MESSAGE("Received out-of-order non-reliable packet on channnel " <<
+            event.channelID);
+          return false;
+        } else {
+          read(event.packet, buffer, size);
+          enet_packet_destroy(event.packet);
+          return true;
+        }
+      }
+    } else {
+      return false;
     }
-    work_buffer.level_lights = htonl(buffer.level_lights);
-    work_buffer.game_state = htonl(buffer.game_state);
-    work_buffer.loss_time_stamp = htonl(buffer.loss_time_stamp);
-    work_buffer.sync = htonl(buffer.sync);
-
-    commSend(&work_buffer, sizeof(work_buffer));
+  }
+    
+  static inline bool commGetRelNoBlock( uint32 &value)
+  {
+    return commGetRelNoBlock(&value, sizeof(value));
   }
 
-  static inline void commRecv ( CommunicationBuffer &buffer )
+  static inline void commSendGarbage (  )
   {
-    commRecv(&work_buffer, sizeof(work_buffer));
-
-    buffer.count = ntohl(work_buffer.count);
-    for (int i = buffer.count; i--; ) {
-      buffer.garbage[i].time_stamp = ntohl(work_buffer.garbage[i].time_stamp);
-      buffer.garbage[i].height = ntohl(work_buffer.garbage[i].height);
-      buffer.garbage[i].width = ntohl(work_buffer.garbage[i].width);
-      buffer.garbage[i].flavor = ntohl(work_buffer.garbage[i].flavor);
+    commSendGarbage(send_garb_buffer);
+  }
+  
+  static inline void commSendGarbage ( const GarbageBuffer &buffer )
+  {
+    for (uint32 count = 0; count < buffer.count; ++count) {
+      commSend(&(buffer.garbage[count]), sizeof(BufferElement), CO_CHANNEL_GARBAGE, true);
     }
-    buffer.level_lights = ntohl(work_buffer.level_lights);
-    buffer.game_state = ntohl(work_buffer.game_state);
-    buffer.loss_time_stamp = ntohl(work_buffer.loss_time_stamp);
-    buffer.sync = ntohl(work_buffer.sync);
+    //commSend(&buffer, sizeof(buffer), CO_CHANNEL_GARBAGE, true);
+  }
+
+  static inline void commSendStatus (  ) 
+  {
+    commSendStatus(send_buffer);
+  }
+  
+  static inline void commSendStatus ( const CommunicationBuffer &buffer )
+  {
+    MESSAGE("Sending status");
+#ifdef DEVELOPMENT
+    buffer.print();
+#endif
+    commSend(&buffer, sizeof(buffer), CO_CHANNEL_STATUS, false);
+  }
+
+  static inline void read ( ENetPacket *p, void *buffer, size_t size)
+  {
+    size_t plen = p->dataLength;
+    size_t ilen = std::min(plen, size);
+    enet_uint8 *buf = (enet_uint8 *)buffer;
+    for (size_t i=0; i < ilen; ++i) {
+      buf[i] = p->data[i];
+    }
+  }
+
+  static inline void fillCommunicationBuffer ( ENetPacket *packet)
+  {
+    read(packet, &work_buffer, sizeof(work_buffer));
+
+    recv_buffer.level_lights = (work_buffer.level_lights);
+    recv_buffer.game_state = (work_buffer.game_state);
+    recv_buffer.loss_time_stamp = (work_buffer.loss_time_stamp);
+    recv_buffer.sync = (work_buffer.sync);
+  }
+
+  static inline void fillGarbageBuffer ( ENetPacket *packet )
+  {
+    size_t len = packet->dataLength;
+    size_t num_garbage = len / sizeof(BufferElement);
+    recv_garb_buffer.count = num_garbage;
+    for (size_t i = 0; i < num_garbage; ++i) {
+      read(packet, &(recv_garb_buffer.garbage[i]), sizeof(BufferElement));
+    }
   }
 
   static void startupExchange ( char player_name[GC_PLAYER_NAME_LENGTH] );
 
-  static int comm_link;
+  static ENetHost * host;
+  static ENetPeer * peer;
   static bool comm_link_active;
   static bool no_communication;
   static bool have_communicated;
@@ -255,6 +336,8 @@ private:
   static int last_own_sync;
   static CommunicationBuffer send_buffer;
   static CommunicationBuffer recv_buffer;
+  static GarbageBuffer       send_garb_buffer;
+  static GarbageBuffer       recv_garb_buffer;
   static CommunicationBuffer work_buffer;
 
   static bool win_ties;

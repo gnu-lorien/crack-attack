@@ -45,7 +45,7 @@ public:
   static void comboComplete ( ComboTabulator &combo );
   static void timeStep (   );
   static void addToQueue ( GarbageQueueElement &e );
-  static void addToQueue ( CommunicationBuffer &buffer );
+  static void addToQueue ( GarbageBuffer &buffer );
   static void addToQueue ( BufferElement garbage[], size_t size );
   static void addToQueue ( uint32 height, uint32 width, uint32 flavor, uint32 stamp );
 

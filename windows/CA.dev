@@ -1,33 +1,33 @@
 [Project]
 FileName=CA.dev
 Name=crack-attack
-UnitCount=122
+UnitCount=129
 Type=1
 Ver=1
 ObjFiles=
-Includes=
+Includes=..\enet\include
 Libs=
 PrivateResource=CA_private.rc
 ResourceIncludes=
 MakeIncludes=
-Compiler=
+Compiler=-D__GNUWIN32___@@_-W_@@_-DWIN32 _@@_-DNDEBUG _@@_-D_MBCS _@@_-D_LIB_@@_-march=i586_@@_-O2_@@_-mtune=i686_@@_-fomit-frame-pointer_@@_-ftracer_@@_-pipe_@@_-ffast-math_@@_-mmmx_@@_
 CppCompiler=-I"<INCLUDE>\gtk-2.0" _@@_-I"<INCLUDE>\..\lib\gtk-2.0\include" _@@_-I"<INCLUDE>\atk-1.0" _@@_-I"<INCLUDE>\pango-1.0" _@@_-I"<INCLUDE>\glib-2.0" _@@_-I"<INCLUDE>\..\lib\glib-2.0\include" _@@_-mms-bitfields_@@_-mno-cygwin_@@_-DNO_MULTITEXTURING_@@_-DWANT_GTK_@@_-DNDEBUG_@@_-march=i586_@@_-O2_@@_-mtune=i686_@@_-fomit-frame-pointer_@@_-ftracer_@@_-pipe_@@_-ffast-math_@@_-mmmx_@@_
-Linker=-lglut32 -lglu32 -lopengl32 -lwinmm_@@_-lgtk-win32-2.0 -lgdk-win32-2.0 -lgthread-2.0 -lgdi32 -lole32 -luuid -latk-1.0 -lgdk_pixbuf-2.0 -lpangowin32-1.0 -lgdi32 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -lglib-2.0 -lintl -liconv_@@_-lws2_32_@@_
+Linker=-lglut32 -lglu32 -lopengl32 -lwinmm_@@_-lgtk-win32-2.0 -lgdk-win32-2.0 -lgthread-2.0 -lgdi32 -lole32 -luuid -latk-1.0 -lgdk_pixbuf-2.0 -lpangowin32-1.0 -lgdi32 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -lglib-2.0 -lintl -liconv_@@_-lws2_32 _@@__@@__@@__@@_
 IsCpp=1
-Icon=..\doc\cube_icon.ico
+Icon=CA.ico
 ExeOutput=..\bin\
 ObjectOutput=
 OverrideOutput=1
 OverrideOutputName=crack-attack.exe
 HostApplication=
-Folders="Computer Players",Display,"gtk front end",src
+Folders="Computer Players",Display,"gtk front end",Networking,Networking/ENet,src
 CommandLine=
 UseCustomMakefile=0
 CustomMakefile=
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0000000000000000000000
+CompilerSettings=0000000000000001000000
 
 [Unit1]
 FileName=..\src\ActionRecorder.h
@@ -112,7 +112,7 @@ BuildCmd=
 [Unit9]
 FileName=..\src\Communicator.h
 CompileCpp=1
-Folder=src
+Folder=Networking
 Compile=1
 Link=1
 Priority=1000
@@ -512,7 +512,7 @@ BuildCmd=
 [Unit52]
 FileName=..\src\Communicator.cxx
 CompileCpp=1
-Folder=src
+Folder=Networking
 Compile=1
 Link=1
 Priority=1000
@@ -1200,54 +1200,54 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit124]
-FileName=..\src\gtk-gui\persist.cxx
-CompileCpp=1
-Folder=src/gtk-gui
+FileName=..\enet\host.c
+CompileCpp=0
+Folder=Networking/ENet
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
-BuildCmd=
+BuildCmd=$(CC) -c host.c -o host.o $(CFLAGS)
 
 [Unit125]
-FileName=..\src\gtk-gui\persist.h
-CompileCpp=1
-Folder=src/gtk-gui
+FileName=..\enet\list.c
+CompileCpp=0
+Folder=Networking/ENet
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
-BuildCmd=
+BuildCmd=$(CC) -c list.c -o list.o $(CFLAGS)
 
 [Unit126]
-FileName=..\src\gtk-gui\prefs.h
-CompileCpp=1
-Folder=src/gtk-gui
+FileName=..\enet\memory.c
+CompileCpp=0
+Folder=Networking/ENet
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
-BuildCmd=
+BuildCmd=$(CC) -c memory.c -o memory.o $(CFLAGS)
 
 [Unit127]
-FileName=..\src\gtk-gui\support.cxx
-CompileCpp=1
-Folder=src/gtk-gui
+FileName=..\enet\packet.c
+CompileCpp=0
+Folder=Networking/ENet
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
-BuildCmd=
+BuildCmd=$(CC) -c packet.c -o packet.o $(CFLAGS)
 
 [Unit128]
-FileName=..\src\gtk-gui\support.h
-CompileCpp=1
-Folder=src/gtk-gui
+FileName=..\enet\peer.c
+CompileCpp=0
+Folder=Networking/ENet
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
-BuildCmd=
+BuildCmd=$(CC) -c peer.c -o peer.o $(CFLAGS)
 
 [VersionInfo]
 Major=0
@@ -1316,4 +1316,24 @@ Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+
+[Unit123]
+FileName=..\enet\win32.c
+CompileCpp=0
+Folder=Networking/ENet
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=$(CC) -c win32.c -o win32.o $(CFLAGS)
+
+[Unit129]
+FileName=..\enet\protocol.c
+CompileCpp=0
+Folder=Networking/ENet
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=$(CC) -c protocol.c -o protocol.o $(CFLAGS)
 

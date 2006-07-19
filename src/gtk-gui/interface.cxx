@@ -70,8 +70,8 @@ create_winCrackAttackSplash (void)
   GtkWidget *cmbAI;
   GtkWidget *lblSolo;
   GtkWidget *vbox7;
-  GtkWidget *lblTmpServerAddress;
-  GtkWidget *lblServerAddress;
+  /*GtkWidget *lblTmpServerAddress;*/
+  /*GtkWidget *lblServerAddress;*/
   GtkWidget *hbox8;
   GtkWidget *lblPort;
   GtkWidget *entPort;
@@ -84,6 +84,8 @@ create_winCrackAttackSplash (void)
   GtkWidget *alignment7;
   GtkWidget *entPortClient;
   GtkWidget *lblClient;
+  GtkWidget *lblAboutInfo;
+  GtkWidget *lblAbout;
   GtkWidget *frmGraphicsSettings;
   GtkWidget *alignment10;
   GtkWidget *table1;
@@ -120,7 +122,7 @@ create_winCrackAttackSplash (void)
 
   winCrackAttackSplash = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_widget_set_name (winCrackAttackSplash, "winCrackAttackSplash");
-  gtk_window_set_title (GTK_WINDOW (winCrackAttackSplash), "Crack Attack!");
+  gtk_window_set_title (GTK_WINDOW (winCrackAttackSplash), "Crack Attack! 1.1.15-cvs");
   gtk_window_set_destroy_with_parent (GTK_WINDOW (winCrackAttackSplash), TRUE);
   winCrackAttackSplash_icon_pixbuf = create_pixbuf ("crack-attack.xpm");
   if (winCrackAttackSplash_icon_pixbuf)
@@ -220,15 +222,17 @@ create_winCrackAttackSplash (void)
   gtk_widget_show (vbox7);
   gtk_container_add (GTK_CONTAINER (ntbGameMode), vbox7);
 
+  /*
   lblTmpServerAddress = gtk_label_new ("Server Address:");
   gtk_widget_set_name (lblTmpServerAddress, "lblTmpServerAddress");
   gtk_widget_show (lblTmpServerAddress);
   gtk_box_pack_start (GTK_BOX (vbox7), lblTmpServerAddress, FALSE, FALSE, 0);
 
-  lblServerAddress = gtk_label_new ("127.0.0.1");
+  lblServerAddress = gtk_label_new ("INADDR_ANY");
   gtk_widget_set_name (lblServerAddress, "lblServerAddress");
   gtk_widget_show (lblServerAddress);
   gtk_box_pack_start (GTK_BOX (vbox7), lblServerAddress, FALSE, FALSE, 0);
+  */
 
   hbox8 = gtk_hbox_new (FALSE, 0);
   gtk_widget_set_name (hbox8, "hbox8");
@@ -293,6 +297,15 @@ create_winCrackAttackSplash (void)
   gtk_widget_show (lblClient);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (ntbGameMode), gtk_notebook_get_nth_page (GTK_NOTEBOOK (ntbGameMode), 2), lblClient);
   gtk_misc_set_alignment (GTK_MISC (lblClient), 0.49, 0.5);
+
+  lblAboutInfo = gtk_label_new (_("Crack-Attack! 1.1.15-cvs-00\nLooking for competition?\nJoin our community channel!\n#crack-attack on irc.freenode.net"));
+  gtk_widget_show (lblAboutInfo);
+  gtk_container_add (GTK_CONTAINER (ntbGameMode), lblAboutInfo);
+  gtk_label_set_justify (GTK_LABEL (lblAboutInfo), GTK_JUSTIFY_CENTER);
+
+  lblAbout = gtk_label_new_with_mnemonic ("_About");
+  gtk_widget_show (lblAbout);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (ntbGameMode), gtk_notebook_get_nth_page (GTK_NOTEBOOK (ntbGameMode), 3), lblAbout);
 
   frmGraphicsSettings = gtk_frame_new (NULL);
   gtk_widget_set_name (frmGraphicsSettings, "frmGraphicsSettings");
@@ -521,8 +534,8 @@ create_winCrackAttackSplash (void)
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, cmbAI, "cmbAI");
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, lblSolo, "lblSolo");
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, vbox7, "vbox7");
-  GLADE_HOOKUP_OBJECT (winCrackAttackSplash, lblTmpServerAddress, "lblTmpServerAddress");
-  GLADE_HOOKUP_OBJECT (winCrackAttackSplash, lblServerAddress, "lblServerAddress");
+  /*GLADE_HOOKUP_OBJECT (winCrackAttackSplash, lblTmpServerAddress, "lblTmpServerAddress");*/
+  /*GLADE_HOOKUP_OBJECT (winCrackAttackSplash, lblServerAddress, "lblServerAddress");*/
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, hbox8, "hbox8");
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, lblPort, "lblPort");
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, entPort, "entPort");
@@ -535,6 +548,8 @@ create_winCrackAttackSplash (void)
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, alignment7, "alignment7");
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, entPortClient, "entPortClient");
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, lblClient, "lblClient");
+  GLADE_HOOKUP_OBJECT (winCrackAttackSplash, lblAboutInfo, "lblAboutInfo");
+  GLADE_HOOKUP_OBJECT (winCrackAttackSplash, lblAbout, "lblAbout");
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, frmGraphicsSettings, "frmGraphicsSettings");
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, alignment10, "alignment10");
   GLADE_HOOKUP_OBJECT (winCrackAttackSplash, table1, "table1");

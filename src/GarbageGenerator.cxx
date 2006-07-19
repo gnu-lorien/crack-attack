@@ -147,7 +147,7 @@ void GarbageGenerator::comboComplete ( ComboTabulator &combo )
     sendGarbage(combo.multiplier - 1, GC_PLAY_WIDTH, GF_NORMAL);
 }
 
-void GarbageGenerator::addToQueue ( CommunicationBuffer &buffer )
+void GarbageGenerator::addToQueue ( GarbageBuffer &buffer )
 {
 	addToQueue(buffer.garbage, buffer.count);
 }

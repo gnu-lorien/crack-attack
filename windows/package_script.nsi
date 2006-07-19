@@ -1,5 +1,8 @@
 ; Script generated with the Venis Install Wizard
 
+;Debug Informations
+; !define DEBUG
+
 ; Define your application name
 !define APPNAME "Crack-Attack!"
 !define APPNAMEANDVERSION "Crack-Attack! 1.1.14"
@@ -7,7 +10,6 @@
 ; Main Install settings
 Name "${APPNAMEANDVERSION}"
 InstallDir "$PROGRAMFILES\Crack-Attack"
-InstallDirRegKey HKLM "Software\${APPNAME}" ""
 OutFile "${APPNAMEANDVERSION} Setup.exe"
 
 ; Use compression
@@ -23,6 +25,7 @@ SetCompressor BZip2
 
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "Crack-Attack\COPYING.txt"
+!insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 
@@ -33,11 +36,155 @@ SetCompressor BZip2
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_RESERVEFILE_LANGDLL
 
+Var isadmin
+Var winver
+
+!macro checkadmin
+	;Check whether admin or not
+
+	ClearErrors
+	UserInfo::GetAccountType
+	IfErrors admin ;Win 9x
+	Pop $1
+	StrCmp $1 "Admin" admin
+	Goto user ;Error or not admin -> user_inst
+
+	admin:
+		!ifdef DEBUG
+			MessageBox MB_OK 'Admin install'
+		!endif
+		Push 1
+		goto ahead
+	user:
+		!ifdef DEBUG
+			MessageBox MB_OK 'User install'
+		!endif
+		Push 0
+	ahead:
+		Pop $isadmin
+
+!macroend
+
+ ; GetWindowsVersion
+ ;
+ ; Based on Yazno's function, http://yazno.tripod.com/powerpimpit/
+ ; Updated by Joost Verburg
+ ;
+ ; Returns on top of stack
+ ;
+ ; Windows Version (95, 98, ME, NT x.x, 2000, XP, 2003)
+ ; or
+ ; '' (Unknown Windows Version)
+ ;
+ ; Usage:
+ ;   Call GetWindowsVersion
+ ;   Pop $R0
+ ;   ; at this point $R0 is "NT 4.0" or whatnot
+ 
+ Function GetWindowsVersion
+ 
+   Push $R0
+   Push $R1
+ 
+   ClearErrors
+ 
+   ReadRegStr $R0 HKLM \
+   "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
+
+   IfErrors 0 lbl_winnt
+   
+   ; we are not NT
+   ReadRegStr $R0 HKLM \
+   "SOFTWARE\Microsoft\Windows\CurrentVersion" VersionNumber
+ 
+   StrCpy $R1 $R0 1
+   StrCmp $R1 '4' 0 lbl_error
+ 
+   StrCpy $R1 $R0 3
+ 
+   StrCmp $R1 '4.0' lbl_win32_95
+   StrCmp $R1 '4.9' lbl_win32_ME lbl_win32_98
+ 
+   lbl_win32_95:
+     StrCpy $R0 '95'
+   Goto lbl_done
+ 
+   lbl_win32_98:
+     StrCpy $R0 '98'
+   Goto lbl_done
+ 
+   lbl_win32_ME:
+     StrCpy $R0 'ME'
+   Goto lbl_done
+ 
+   lbl_winnt:
+ 
+   StrCpy $R1 $R0 1
+ 
+   StrCmp $R1 '3' lbl_winnt_x
+   StrCmp $R1 '4' lbl_winnt_x
+ 
+   StrCpy $R1 $R0 3
+ 
+   StrCmp $R1 '5.0' lbl_winnt_2000
+   StrCmp $R1 '5.1' lbl_winnt_XP
+   StrCmp $R1 '5.2' lbl_winnt_2003 lbl_error
+ 
+   lbl_winnt_x:
+     StrCpy $R0 "NT $R0" 6
+   Goto lbl_done
+ 
+   lbl_winnt_2000:
+     Strcpy $R0 '2000'
+   Goto lbl_done
+ 
+   lbl_winnt_XP:
+     Strcpy $R0 'XP'
+   Goto lbl_done
+ 
+   lbl_winnt_2003:
+     Strcpy $R0 '2003'
+   Goto lbl_done
+ 
+   lbl_error:
+     Strcpy $R0 ''
+   lbl_done:
+ 
+   Pop $R1
+   Exch $R0
+ 
+FunctionEnd
+
+Function .onInit
+	!insertmacro checkadmin
+	Call GetWindowsVersion
+	Pop $winver
+FunctionEnd
+
+Function un.onInit
+	!insertmacro checkadmin
+FunctionEnd
+
 Section "Crack-Attack!" Section1
+
+	;Check whether we should install Crack-Attack! for all users or just for current user
+	StrCmp $winver "95" user_inst
+	StrCmp $winver "98" user_inst
+	StrCmp $winver "ME" user_inst ;For these windows versions: user install
+	
+	IntCmp $isadmin 1 admin_inst user_inst
+admin_inst:
+	MessageBox MB_YESNO "Do you want to install ${APPNAME} for all users?" IDYES all_yes IDNO user_inst
+all_yes:
+	SetShellVarContext all
+	goto ahead_inst
+user_inst:
+	SetShellVarContext current
+ahead_inst:
 
 	; Set Section properties
 	SetOverwrite on
-	
+
 	Delete "$INSTDIR\uninst.exe"
 
 	; Set Section Files and Shortcuts
@@ -345,18 +492,22 @@ Section "Crack-Attack!" Section1
 	SetOutPath "$INSTDIR\share\locale\en@boldquot\LC_MESSAGES\"
 	File "Crack-Attack\share\locale\en@boldquot\LC_MESSAGES\gettext-runtime.mo"
 	SetOutPath "$INSTDIR\bin"
-	CreateShortCut "$DESKTOP\Crack-Attack!.lnk" "$INSTDIR\bin\crack-attack-gui.exe"
+
 	CreateDirectory "$SMPROGRAMS\Crack-Attack!"
 	CreateShortCut "$SMPROGRAMS\Crack-Attack!\Crack-Attack!.lnk" "$INSTDIR\bin\crack-attack-gui.exe"
 	CreateShortCut "$SMPROGRAMS\Crack-Attack!\Uninstall.lnk" "$INSTDIR\uninstall.exe"
+	SetShellVarContext current ; install desktop icon just for current user
+	CreateShortCut "$DESKTOP\Crack-Attack!.lnk" "$INSTDIR\bin\crack-attack-gui.exe"
 
 SectionEnd
 
 Section -FinishSection
 
-	WriteRegStr HKLM "Software\${APPNAME}" "" "$INSTDIR"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayName" "${APPNAME}"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "UninstallString" "$INSTDIR\uninstall.exe"
+	;Write Registry Keys
+	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayName" "${APPNAME}"
+	WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "UninstallString" "$INSTDIR\uninstall.exe"
+
+	;Write Uninstaller
 	WriteUninstaller "$INSTDIR\uninstall.exe"
 
 SectionEnd
@@ -370,17 +521,30 @@ SectionEnd
 Section Uninstall
 
 	;Remove from registry...
-	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
-	DeleteRegKey HKLM "SOFTWARE\${APPNAME}"
+	DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
 
-	; Delete self
-	Delete "$INSTDIR\uninstall.exe"
+	ClearErrors
 
 	; Delete Shortcuts
 	Delete "$DESKTOP\Crack-Attack!.lnk"
 	Delete "$SMPROGRAMS\Crack-Attack!\Crack-Attack!.lnk"
 	Delete "$SMPROGRAMS\Crack-Attack!\Uninstall.lnk"
 	Delete "$SMPROGRAMS\Crack-Attack!\Website.lnk"
+
+	IntCmp $isadmin 1 admin_uninst ahead_uninst
+
+admin_uninst:
+	SetShellVarContext all
+	Delete "$DESKTOP\Crack-Attack!.lnk"
+	Delete "$SMPROGRAMS\Crack-Attack!\Crack-Attack!.lnk"
+	Delete "$SMPROGRAMS\Crack-Attack!\Uninstall.lnk"
+	Delete "$SMPROGRAMS\Crack-Attack!\Website.lnk"
+	SetShellVarContext current
+
+ahead_uninst:
+
+	; Delete self
+	Delete "$INSTDIR\uninstall.exe"
 
 	; Clean up Crack-Attack!
 	Delete "$INSTDIR\COPYING.LIB-2"
@@ -704,6 +868,14 @@ Section Uninstall
 	RMDir "$INSTDIR\etc\"
 	RMDir "$INSTDIR\data\"
 	RMDir "$INSTDIR\bin\"
+
+	IfErrors part_success
+	goto end
+
+part_success:
+	MessageBox MB_OK "Not all files could be deleted."
+
+end:
 
 SectionEnd
 

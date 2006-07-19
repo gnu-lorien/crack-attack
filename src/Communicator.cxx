@@ -33,7 +33,6 @@
 #include <cstring>
 
 #ifndef _WIN32
-#  include <unistd.h>
 #  include <sys/socket.h>
 #  include <sys/poll.h>
 #  include <netinet/in.h>
@@ -56,7 +55,8 @@ using namespace std;
 #include "MetaState.h"
 #include "Random.h"
 
-int Communicator::comm_link;
+ENetHost *Communicator::host;
+ENetPeer *Communicator::peer;
 int Communicator::time_step;
 bool Communicator::comm_link_active;
 bool Communicator::no_communication;
@@ -65,24 +65,37 @@ int Communicator::last_recv_sync;
 int Communicator::last_own_sync;
 CommunicationBuffer Communicator::send_buffer;
 CommunicationBuffer Communicator::recv_buffer;
+GarbageBuffer       Communicator::send_garb_buffer;
+GarbageBuffer       Communicator::recv_garb_buffer;
 CommunicationBuffer Communicator::work_buffer;
 bool Communicator::win_ties;
 char Communicator::opponent_name[GC_PLAYER_NAME_LENGTH];
 
+static void print_ip_address( int ip )
+{
+  ip = ntohl(ip);
+  cout << ((ip & 0xFF000000) >> 24) << ".";
+  cout << ((ip & 0x00FF0000) >> 16) << ".";
+  cout << ((ip & 0x0000FF00) >> 8) << ".";
+  cout << (ip & 0x000000FF);
+}
+
 void Communicator::startupExchange ( char player_name[GC_PLAYER_NAME_LENGTH] )
 {
   // exchange names
-  commSend(player_name, GC_PLAYER_NAME_LENGTH);
-  commRecv(opponent_name, GC_PLAYER_NAME_LENGTH);
+  MESSAGE("Exchanging names");
+  commSendRel(player_name, GC_PLAYER_NAME_LENGTH);
+  commGetRel(opponent_name, GC_PLAYER_NAME_LENGTH);
 
   // notify if we have a personal garbage flavor image
+  MESSAGE("Exchanging garbage");
   uint32 flag = GarbageFlavorImage::personalGarbageFlavorImageExists();
-  commSend(flag);
+  commSendRel(flag);
 
   // and send it out
   if (flag) {
     GLubyte *texture = GarbageFlavorImage::loadPersonalGarbageFlavorImage();
-    commSend(texture, 4 * DC_GARBAGE_TEX_LENGTH * DC_GARBAGE_TEX_LENGTH
+    commSendRel(texture, 4 * DC_GARBAGE_TEX_LENGTH * DC_GARBAGE_TEX_LENGTH
      * sizeof(GLubyte));
 #ifndef _WIN32
     delete [] texture;
@@ -95,12 +108,12 @@ void Communicator::startupExchange ( char player_name[GC_PLAYER_NAME_LENGTH] )
   }
 
   // check to see if they have a personal garbage flavor image
-  commRecv(flag);
+  commGetRel(flag);
 
   // and recv it
   if (flag) {
     GLubyte texture[4 * DC_GARBAGE_TEX_LENGTH * DC_GARBAGE_TEX_LENGTH];
-    commRecv(texture, 4 * DC_GARBAGE_TEX_LENGTH * DC_GARBAGE_TEX_LENGTH
+    commGetRel(texture, 4 * DC_GARBAGE_TEX_LENGTH * DC_GARBAGE_TEX_LENGTH
      * sizeof(GLubyte));
     GarbageFlavorImage::handleNetworkGarbageFlavorImage(texture);
   }
@@ -109,137 +122,144 @@ void Communicator::startupExchange ( char player_name[GC_PLAYER_NAME_LENGTH] )
 void Communicator::initialize ( int mode, int port, char host_name[256],
  char player_name[GC_PLAYER_NAME_LENGTH] )
 {
+  ENetAddress address;
+  host = NULL;
+  peer = NULL;
   comm_link_active = false;
 
-#ifndef _WIN32
-#else
-  WSAData wsa_data;
-  if (WSAStartup(MAKEWORD(1, 1), &wsa_data) != 0) {
-    cerr << "Winsock startup failed." << endl;
+  if (enet_initialize () != 0)
+  {
+    cerr << "An error occurred while initializing ENet." << endl;
     exit(1);
   }
-#endif
+  else
+  {
+    cout << "ENet properly initialized." << endl;
+  }
+  atexit (enet_deinitialize);
 
   if (port == 0)
-    port = CO_DEFAULT_PORT;
+    address.port = CO_DEFAULT_PORT;
+  else
+    address.port = port;
 
   switch (mode & (CM_SERVER | CM_CLIENT)) {
   case CM_SERVER: {
-    int connection_socket = socket(AF_INET, SOCK_STREAM, 0);
+    address.host = ENET_HOST_ANY;
 
-    sockaddr_in address;
-#ifndef _WIN32
-    int val = 1;
-    setsockopt (connection_socket, SOL_SOCKET, SO_REUSEADDR, &val, sizeof (int));
-#endif
-    address.sin_family = AF_INET;
-    address.sin_addr.s_addr = htonl(INADDR_ANY);
-    address.sin_port = htons(port);
-
-    if (bind(connection_socket, (sockaddr *) &address, sizeof(address)) < 0) {
-      cerr << "Port " << port << " is busy." << endl;
+    host = enet_host_create(&address, 1, 0, 0);
+    if (NULL == host) {
+      cerr << "An error occured while trying to create the server" << endl;
       exit(1);
     }
 
-    cout << "Waiting for connection at port " << port << "..." << endl;
-    listen(connection_socket, 1);
-
-#ifndef _WIN32
-    if (!(mode & CM_NO_TIME_OUT)) {
-      pollfd ufds;
-      ufds.fd = connection_socket;
-      ufds.events = POLLIN;
-
-      if (!poll(&ufds, 1, CO_SERVER_TIME_OUT * 1000)) {
-        cerr << "Timed out." << endl;
-        exit(1);
+    cout << "Waiting for connection at port " << address.port << "..." << endl;
+    ENetEvent event;
+    do {
+      if (enet_host_service(host, &event, CO_SERVER_TIME_OUT * 1000) > 0)
+      {
+        switch (event.type) {
+          case ENET_EVENT_TYPE_CONNECT: {
+            peer = event.peer;
+            cout << "Accepting connection from ";
+            print_ip_address(peer->address.host);
+            cout << endl;
+            comm_link_active = true;
+            break;
+          }
+          case ENET_EVENT_TYPE_RECEIVE: {
+						enet_packet_destroy(event.packet);
+            break;
+          }
+          case ENET_EVENT_TYPE_DISCONNECT: {
+            break;
+          }
+          case ENET_EVENT_TYPE_NONE: {
+            break;
+          }
+        }
       }
-    }
-#endif
+    } while((mode & CM_NO_TIME_OUT) && !comm_link_active);
 
-#ifndef _WIN32
-    unsigned int length = sizeof(address);
-#else
-    int length = sizeof(address);
-#endif
-    comm_link = accept(connection_socket, (sockaddr *) &address, &length);
-    comm_link_active = true;
-
-    // check version id
-    uint32 version_id = CO_TEST_INT;
-    for (char *c = CO_VERSION; *c; c++)
-      version_id += *c;
-#ifdef DEVELOPMENT
-    cout << "Version id:  " << version_id << endl;
-#endif
-    version_id = htonl(version_id);
-    if (send(comm_link, (char *) &version_id, sizeof(version_id), 0) < 1) {
-      cerr << "Connection failed." << endl;
+    if (!comm_link_active)
+    {
+      cerr << "Time out." << endl;
       exit(1);
     }
+            
+    // check version id
+
+    commSendRel(CO_VERSION, strlen(CO_VERSION) + 1);
 
     // server sends extremeness level
-    uint32 X_level = ((mode & CM_X) ? 1 : 0);
-    commSend(X_level);
+    enet_uint8 X_level = ((mode & CM_X) ? 1 : 0);
+    commSendRel(&X_level, sizeof(X_level));
 
     // for simplicity, server wins ties - but don't tell anyone; it's the only
     // available symmetry breaking term
     win_ties = true;
 
-    cout << "Connection made by " << inet_ntoa(address.sin_addr) << '.' << endl;
+    cout << "Connection made by ";
+    print_ip_address(peer->address.host);
+    cout << endl;
     break;
 
   } 
   case CM_CLIENT: {
-    comm_link = socket(AF_INET, SOCK_STREAM, 0);
+    host = enet_host_create(NULL, 1, 57600, 14400);
+    if(NULL == host) {
+      cerr << "Could not create ENet host." << endl;
+      exit(1);
+    }
     comm_link_active = true;
 
 #ifdef DEVELOPMENT
     cout << "Hostname: " << host_name << endl;
 #endif
-    hostent *host = gethostbyname(host_name);
-    if (!host) {
+    if (enet_address_set_host(&address, host_name)!=0) {
       cerr << "Host '" << host_name << "' not found." << endl;
       exit(1);
     }
 
-    sockaddr_in address;
-    address.sin_family = AF_INET;
-    address.sin_addr = *(struct in_addr *) host->h_addr;
-    address.sin_port = htons((short) port);
-    if (connect(comm_link, (sockaddr *) &address, sizeof(address)) < 0) {
-      cerr << "Connection failed. Unable to connect to address." << endl;
+
+    peer = enet_host_connect(host, &address, NUM_CHANNELS);
+    if(NULL == peer) {
+      cerr << "No available peers for initiating an ENet connection." << endl;
+      exit(1);
+    }
+    /* Wait up to 5 seconds for the connection attempt to succeed. */
+    ENetEvent event;
+    MESSAGE("Waiting five seconds for connection attempt to succeed");
+    if (enet_host_service (host, & event, 5000) > 0 &&
+        event.type == ENET_EVENT_TYPE_CONNECT)
+    {
+      cout << "Connection to " << host_name << " succeeded." << endl;
+    }
+    else
+    {
+      enet_peer_reset (peer);
+      cerr << "Connection to " << host_name << " failed." << endl;
       exit(1);
     }
 
     // check version id
-    uint32 version_id = CO_TEST_INT;
-    for (char *c = CO_VERSION; *c; c++)
-      version_id += *c;
-#ifdef DEVELOPMENT
-    cout << "Version id:  " << version_id << endl;
-#endif
-    uint32 server_version_id;
-    if (recv(comm_link, (char *) &server_version_id, sizeof(server_version_id),
-     0) != sizeof(server_version_id)) {
-      cerr << "Connection failed. Unable to read version information." << endl;
-      exit(1);
-    }
-    if (ntohl(server_version_id) != version_id) {
-      cerr << "Connected to incompatible version." << endl;
+    char sversion[CO_VERSION_MAX_LENGTH];
+    commGetRel(sversion, CO_VERSION_MAX_LENGTH);
+    if(strncmp(sversion, CO_VERSION, CO_VERSION_MAX_LENGTH)!=0) {
+      cerr << "Connected to incompatible version: " << sversion << endl;
       exit(1);
     }
 
     // server sends extremeness level
-    uint32 X_level;
-    commRecv(X_level);
+    enet_uint8 X_level;
+    commGetRel(&X_level, sizeof(X_level));
     if (X_level == 1) MetaState::mode |= CM_X;
 
     // for simplicity, client loses ties - but don't tell anyone
     win_ties = false;
 
-    cout << "Connection made to " << inet_ntoa(address.sin_addr) << ':'
-     << (short) port << '.' << endl;
+    cout << "Connection made to " << peer->address.host << ':'
+     << peer->address.port << '.' << endl;
     break;
   } }
 
@@ -253,18 +273,7 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
 void Communicator::cleanUp (   )
 {
   if (comm_link_active) {
-    /* One solution to avoid "port is busy" after a game
-       is to have the client initiate the closure, so let's
-       wait a few seconds if we're the server.
-       http://hea-www.harvard.edu/~fine/Tech/addrinuse.html
-     */
-    if (MetaState::mode & CM_SERVER)
-      sleep(1);
-#ifndef _WIN32
-    close(comm_link);
-#else
-    closesocket(comm_link);
-#endif
+    enet_deinitialize();
     comm_link_active = false;
   }
 }
@@ -274,11 +283,12 @@ void Communicator::exchangeRandomSeed (   )
   uint32 seed;
 
   // server sends the the random seed
+  MESSAGE("Sending seed");
   if (MetaState::mode & CM_SERVER) {
     seed = Random::generateSeed();
-    commSend(seed);
+    commSendRel(seed);
   } else
-    commRecv(seed);
+    commGetRel(seed);
 
   Random::seed(seed);
 }
@@ -290,8 +300,8 @@ void Communicator::gameStart (   )
   have_communicated = false;
   last_recv_sync = 0;
   last_own_sync = 0;
-  send_buffer.count = 0;
-  recv_buffer.count = 0;
+  send_garb_buffer.count = 0;
+  recv_garb_buffer.count = 0;
   send_buffer.level_lights = 0;
   recv_buffer.level_lights = 0;
   send_buffer.game_state = 0;
@@ -306,96 +316,187 @@ void Communicator::gameFinish (   )
   have_communicated = false;
 }
 
+void Communicator::handlePlayRecv (  )
+{
+  ENetEvent event;
+  int code;
+
+  while((code = enet_host_service(host, &event, 0)) > 0) switch(event.type)
+  {
+    case ENET_EVENT_TYPE_RECEIVE:
+      MESSAGE("Receiving message for channel " << (int)event.channelID << "|"
+          << " len " << event.packet->dataLength << "|");
+      switch(event.channelID) {
+        case CO_CHANNEL_GARBAGE:
+          handlePlayRecvGarbage(event);
+          break;
+        case CO_CHANNEL_STATUS:
+          MESSAGE("Receiving status");
+          handlePlayRecvStatus (event);
+          break;
+        case CO_CHANNEL_BOARD:
+					MESSAGE("Receiving board data (unimplemented)");
+          handlePlayRecvBoard  (event);
+        case CO_CHANNEL_REL:
+					MESSAGE("Channel reliable used! Should not be during play!");
+          MESSAGE("Testing: Ignore leftovers?");
+          break;
+        default:
+          cerr << "Networking message handled incorrectly:" << endl;
+					cerr << "Invalid channel id " << (int)event.channelID << endl;
+          exit(1);
+      }
+			enet_packet_destroy(event.packet);
+      break;
+    case ENET_EVENT_TYPE_DISCONNECT:
+      cerr << "Disconnected from host." << endl;
+      exit(1);
+      break;
+    case ENET_EVENT_TYPE_CONNECT:
+      cerr << "Received an additional connection..." << endl;
+      exit(1);
+      break;
+    case ENET_EVENT_TYPE_NONE:
+      MESSAGE("Nothing to see here... move along.");
+      break;
+  }
+  if (code < 0) {
+    cerr << "Unknown networking failure." << endl;
+    exit(1);
+  }
+}
+
+void Communicator::handlePlayRecvBoard ( ENetEvent event ) 
+{
+  cerr << "Currently not handling board events." << endl;
+  exit(1);
+}
+
+void Communicator::handlePlayRecvGarbage ( ENetEvent event )
+{
+  fillGarbageBuffer(event.packet);
+
+  // add new garbage to the queue
+  GarbageGenerator::addToQueue(recv_garb_buffer);
+}
+
+void Communicator::handlePlayRecvStatus ( ENetEvent event  )
+{
+  fillCommunicationBuffer(event.packet);
+
+  MESSAGE("Receiving other player status");
+
+  // handle the recved level light data
+  LevelLights::handleRecvBuffer();
+
+  // if we have been remotely paused
+  if (recv_buffer.game_state & GS_PAUSED)
+    Game::netSignalPause();
+
+  // if we have been remotely unpaused
+  else if (recv_buffer.game_state & GS_UNPAUSED)
+    Game::netSignalUnpause();
+
+  // store the current sync state
+  last_recv_sync = recv_buffer.sync;
+  last_own_sync = time_step - Game::time_step;
+
+  // if we're out of sync with our opponent, enter a sync pause
+  if (last_recv_sync > last_own_sync && (Game::state & GS_NORMAL))
+    Game::syncPause(last_recv_sync - last_own_sync);
+
+  // if our opponent thinks he may have lost
+  if (recv_buffer.game_state & GS_MAY_HAVE_LOST) {
+    MESSAGE("Opponent may have lost");
+    // if it's a concession
+    if (recv_buffer.game_state & GS_CONCESSION) {
+      MetaState::state |= MS_CONCESSION;
+      MESSAGE("by concession");
+    }
+
+    // if we also think we may have lost
+    if (Game::state & GS_MAY_HAVE_LOST) {
+      MESSAGE("We also think we may have lost");
+      // pick a winner
+      if (recv_buffer.loss_time_stamp < send_buffer.loss_time_stamp
+       || (recv_buffer.loss_time_stamp == send_buffer.loss_time_stamp
+       && win_ties)) {
+        MESSAGE("Chose myself as the winner");
+        Game::won();
+      }
+
+    // otherwise, we win
+    } else {
+      MESSAGE("I win");
+      Game::won();
+    }
+
+  // if the opponent has confirmed our loss
+  } else if (recv_buffer.game_state & GS_MUST_CONFIRM_LOSS) {
+    MESSAGE("Opponent has confirmed my loss");
+    Game::lossConfirmation();
+    no_communication = true;
+    return;
+  }
+
+  // if we were waiting a cycle for our opponent to recv his loss confirmation
+  if (Game::state & GS_CONFIRMATION_HOLD) {
+    Game::state &= ~GS_CONFIRMATION_HOLD;
+    no_communication = true;
+    Game::state |= GS_END_PLAY;
+    return;
+  }
+}
+
 void Communicator::timeStepPlay_inline_split_ (   )
 {
   // recv
-
-  if (have_communicated) {
-    commRecv(recv_buffer);
-
-    // add new garbage to the queue
-    GarbageGenerator::addToQueue(recv_buffer);
-
-    // handle the recved level light data
-    LevelLights::handleRecvBuffer();
-
-    // if we have been remotely paused
-    if (recv_buffer.game_state & GS_PAUSED)
-      Game::netSignalPause();
-
-    // if we have been remotely unpaused
-    else if (recv_buffer.game_state & GS_UNPAUSED)
-      Game::netSignalUnpause();
-
-    // store the current sync state
-    last_recv_sync = recv_buffer.sync;
-    last_own_sync = time_step - Game::time_step;
-
-    // if we're out of sync with our opponent, enter a sync pause
-    if (last_recv_sync > last_own_sync && (Game::state & GS_NORMAL))
-      Game::syncPause(last_recv_sync - last_own_sync);
-
-    // if our opponent thinks he may have lost
-    if (recv_buffer.game_state & GS_MAY_HAVE_LOST) {
-
-      // if it's a concession
-      if (recv_buffer.game_state & GS_CONCESSION)
-        MetaState::state |= MS_CONCESSION;
-
-      // if we also think we may have lost
-      if (Game::state & GS_MAY_HAVE_LOST) {
-
-        // pick a winner
-        if (recv_buffer.loss_time_stamp < send_buffer.loss_time_stamp
-         || (recv_buffer.loss_time_stamp == send_buffer.loss_time_stamp
-         && win_ties))
-          Game::won();
-
-      // otherwise, we win
-      } else
-        Game::won();
-
-    // if the opponent has confirmed our loss
-    } else if (recv_buffer.game_state & GS_MUST_CONFIRM_LOSS) {
-      Game::lossConfirmation();
-      no_communication = true;
-      return;
-    }
-
-    // if we were waiting a cycle for our opponent to recv his loss confirmation
-    if (Game::state & GS_CONFIRMATION_HOLD) {
-      Game::state &= ~GS_CONFIRMATION_HOLD;
-      no_communication = true;
-      Game::state |= GS_END_PLAY;
-      return;
-    }
+  if(have_communicated) {
+    handlePlayRecv();
   } else
     have_communicated = true;
+  if(no_communication) return;
 
   // send
+  handlePlaySend();
+}
 
+void Communicator::handlePlaySend (   )
+{
+  // send
   // ready the level light data for sending
   LevelLights::readySendBuffer();
 
   // ready the game state information for sending - pause and unpause
   // information have already been set
   if (Game::state & GS_MAY_HAVE_LOST) {
+    MESSAGE("May have lost");
     send_buffer.game_state |= GS_MAY_HAVE_LOST;
-    if (MetaState::state & MS_CONCESSION)
+    if (MetaState::state & MS_CONCESSION) {
+      MESSAGE("Conceeding");
       send_buffer.game_state |= GS_CONCESSION;
+    }
   } else if (Game::state & GS_MUST_CONFIRM_LOSS) {
+    MESSAGE("Must confirm loss");
     send_buffer.game_state |= GS_MUST_CONFIRM_LOSS;
     Game::state &= ~GS_MUST_CONFIRM_LOSS;
     Game::state |= GS_CONFIRMATION_HOLD;
   }
 
   // ready the sync for sending
-  send_buffer.sync = (uint32) (time_step - Game::time_step);
+  if (!(Game::state & GS_PAUSED))
+    send_buffer.sync = (uint32) (time_step - Game::time_step);
 
-  commSend(send_buffer);
+#ifdef DEVELOPMENT
+  send_buffer.print();
+#endif
+
+  if(send_garb_buffer.count > 0) 
+    commSendGarbage();
+  commSendStatus();
 
   // reset send buffer
-  send_buffer.count = 0;
+  send_garb_buffer.count = 0;
   send_buffer.level_lights = 0;
   send_buffer.game_state = 0;
 }
@@ -403,33 +504,34 @@ void Communicator::timeStepPlay_inline_split_ (   )
 void Communicator::timeStepMeta_inline_split_ (   )
 {
   uint32 state;
+  bool state_available;
 
-  if (have_communicated) {
-    commRecv(state);
-
-    // handle recved state data
-    if (state & MS_REMOTE_KEY_WAIT)
-      MetaState::remoteKeyPressed();
-    else if (state & MS_READY_GAME_START)
-      MetaState::remoteReady();
-
-    if (MetaState::state & MS_GAME_PLAY) return;
-
-  } else
+  if(have_communicated) {
+    state_available = commGetRelNoBlock(state);
+    if (state_available) {
+      // handle recved state data
+     if (state & MS_REMOTE_KEY_WAIT)
+       MetaState::remoteKeyPressed();
+     else if (state & MS_READY_GAME_START)
+       MetaState::remoteReady();
+    }
+  } else 
     have_communicated = true;
+
+  if (MetaState::state & MS_GAME_PLAY) return;
 
   // ready state data for sending
   state = MetaState::state & (MS_REMOTE_KEY_WAIT | MS_READY_GAME_START);
 
-  commSend(state);
+  commSendRel(state);
 }
 
 void Communicator::barrier (   )
 {
   uint32 c = CO_TEST_INT;
 
-  commSend(c);
-  commRecv(c);
+  commSendRel(c);
+  commGetRel(c);
 
   assert(c == CO_TEST_INT);
 }

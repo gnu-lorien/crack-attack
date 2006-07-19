@@ -144,25 +144,32 @@ on_winNetworking_destroy               (GtkObject       *object,
 gboolean networking_output (
 		GIOChannel *source, GIOCondition condition, gpointer data)
 {
-	if (condition == G_IO_HUP) {
+	if (condition & G_IO_IN) {
+		GtkWidget *win = GTK_WIDGET(data);
+		GtkTextView *txtOutput = NULL;
+		GtkTextIter iter;
+		GtkTextBuffer *buffer = NULL;
+		gchar *out = NULL;
+		gsize length = 0;
+
+		txtOutput = GTK_TEXT_VIEW(
+				lookup_widget(GTK_WIDGET(win), "txtOutput"));
+		buffer = gtk_text_view_get_buffer(txtOutput);
+		gtk_text_buffer_get_end_iter(buffer, &iter);
+		g_io_channel_read_line(source, &out, &length, NULL, NULL);
+		if (length > 0 && out[0] != '\33') {
+			g_print(out);
+			gtk_text_buffer_insert(buffer, &iter, out, length);
+		}
+		g_free(out);
+		return true;
+	}
+
+	if (condition & G_IO_HUP) {
 		g_source_remove(source_id);
 		return false;
 	}
-	GtkWidget *win = GTK_WIDGET(data);
-	GtkTextView *txtOutput = NULL;
-	GtkTextIter iter;
-	GtkTextBuffer *buffer = NULL;
-	gchar *out = NULL;
-	gsize length = 0;
 
-	txtOutput = GTK_TEXT_VIEW(
-			lookup_widget(GTK_WIDGET(win), "txtOutput"));
-	buffer = gtk_text_view_get_buffer(txtOutput);
-	gtk_text_buffer_get_end_iter(buffer, &iter);
-	g_io_channel_read_line(source, &out, &length, NULL, NULL);
-	g_print(out);
-	gtk_text_buffer_insert(buffer, &iter, out, length);
-	g_free(out);
 	return true;
 }
 

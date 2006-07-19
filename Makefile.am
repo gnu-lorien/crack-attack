@@ -1,1 +1,1 @@
-SUBDIRS = src data doc
+SUBDIRS = enet src data doc
