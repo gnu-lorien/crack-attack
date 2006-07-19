@@ -9,4 +9,3 @@ libenetinclude_HEADERS = \
 	win32.h \
 	protocol.h \
 	enet.h
-	
