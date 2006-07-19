@@ -78,8 +78,10 @@ using namespace std;
 #ifndef _WIN32
 #  ifndef DATA_DIRECTORY
 #    define GC_DATA_DIRECTORY(x)         "." GC_DD "data/" x
+#    define GC_MODEL_DIRECTORY(x)        "." GC_DD "data/" x
 #  else
 #    define GC_DATA_DIRECTORY(x)          DATA_DIRECTORY x
+#    define GC_MODEL_DIRECTORY(x)         DATA_DIRECTORY x
 #  endif
 #  define GC_LOCAL_DATA_DIRECTORY        GC_DD "." GC_BINARY GC_DD
 #  define GC_BINARY_LOCATION             BINARY_DIRECTORY GC_DD GC_BINARY
