@@ -191,7 +191,6 @@ void Displayer::gameFinish (   )
 
 void Displayer::cleanUp (   )
 {
-  glutDestroyWindow(main_window);
   for (int n = DC_NUMBER_USE_GARBAGE_TEX; n--; )
     if (garbage_texture_data[n] != null) {
       delete [] garbage_texture_data[n];
