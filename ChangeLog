@@ -1,3 +1,10 @@
+2006-08-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/String.cxx, src/obj_clock.cxx, src/obj_sign.cxx, data/*,
+	windows/package_script.nsi: Reverted three big sets of small images
+	back to TGA, since the PNG versions load unacceptably slow compared to
+	the instantly loading TGA versions.
+
 2006-08-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* NEWS: Moved contents of ChangeLog here.

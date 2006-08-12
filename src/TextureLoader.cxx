@@ -150,6 +150,8 @@ GLubyte *TextureLoader::loadImage ( const char *file_name, int _height,
 
   SDL_FreeSurface(tmp);
 
+  //cout << "Succesfully loaded '" << file_name << "'." << endl;
+
   return texture;
 }
 
