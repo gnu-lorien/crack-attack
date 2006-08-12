@@ -64,9 +64,14 @@ const char *sign_large_subtexture_files[DC_NUMBER_LARGE_SIGN_SUBTEXTURES]
      GC_DATA_DIRECTORY("sign_x12.tga"),
      GC_DATA_DIRECTORY("sign_bonus.tga") };
 
+
+#ifndef MAX
+#define MAX(a, b)     ((a) > (b) ? (a) : (b))
+#endif
+
 void Displayer::generateSignList (   )
 {
-  GLubyte *subtextures[std::max(
+  GLubyte *subtextures[MAX(
       DC_NUMBER_SMALL_SIGN_SUBTEXTURES,
       DC_NUMBER_LARGE_SIGN_SUBTEXTURES)];
 
@@ -84,7 +89,7 @@ void Displayer::generateSignList (   )
   for (int n = DC_NUMBER_SMALL_SIGN_SUBTEXTURES; n--; )
     subtextures[n] = TextureLoader::loadAlphaTGA(sign_small_subtexture_files[n],
      DC_SIGN_SMALL_SUBTEX_LENGTH_S, DC_SIGN_SMALL_SUBTEX_LENGTH_T);
-  
+
   GLubyte small_texture[DC_SIGN_SMALL_TEX_LENGTH_S][DC_SIGN_SMALL_TEX_LENGTH_T];
 
   for (int s = 0; s < DC_SIGN_SMALL_TEX_LENGTH_S; s++)
@@ -123,7 +128,7 @@ void Displayer::generateSignList (   )
   for (int n = DC_NUMBER_LARGE_SIGN_SUBTEXTURES; n--; )
     subtextures[n] = TextureLoader::loadAlphaTGA(sign_large_subtexture_files[n],
      DC_SIGN_LARGE_SUBTEX_LENGTH_S, DC_SIGN_LARGE_SUBTEX_LENGTH_T);
-  
+
   GLubyte large_texture[DC_SIGN_LARGE_TEX_LENGTH_S][DC_SIGN_LARGE_TEX_LENGTH_T];
 
   for (int s = 0; s < DC_SIGN_LARGE_TEX_LENGTH_S; s++)

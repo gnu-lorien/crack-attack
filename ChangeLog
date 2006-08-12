@@ -14,4 +14,13 @@
 	* src/sstream.h: Removed this file since it was only solving a
 	compatibility issue for old versions of MSVC. Modern compilers should
 	support the sstream header fine.
+	* configure.ac, enet/*: Updated enet to the 1.0 release.
+	* src/obj_sign.cxx: Still define a static MAX because ANSI C++ doesn't
+	support dynamic arrays on the stack.
+	* src/gtk-gui/modeparser.cxx: Introduced a const_cast to work around a
+	compiler warning. Is probably bad practice, should be checked.
+	* src/gtk-gui/persist.cxx: Fixed compile errors related to std
+	namespace caused by the earlier cleanup.
+	* src/stamp-h.in, src/config.h.in: Removed these dynamically generated
+	files.
 

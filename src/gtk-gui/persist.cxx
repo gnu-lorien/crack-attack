@@ -34,7 +34,7 @@ gui_data_save                    (GtkWidget *widget)
 {
 	gchar file_name[256];
 	GtkEntry *entPlayerName;
-	gchar *tmp = NULL;
+	const gchar *tmp = NULL;
 	gchar player_name[GC_PLAYER_NAME_LENGTH];
 	gint resolution = 0;
 	gint quality = 0;
@@ -43,7 +43,7 @@ gui_data_save                    (GtkWidget *widget)
 	// Get the current name in the name text box.
 	entPlayerName = GTK_ENTRY(lookup_widget(GTK_WIDGET(widget), "entPlayerName"));
 	if (entPlayerName) {
-		tmp = (gchar *) gtk_entry_get_text(entPlayerName);
+		tmp = gtk_entry_get_text(entPlayerName);
 		if (tmp) {
 			if (strlen(tmp) == 0) {
 				gtk_entry_set_text(entPlayerName, g_get_user_name());
@@ -65,16 +65,16 @@ gui_data_save                    (GtkWidget *widget)
 	// Generate the file name and write the data,
 	TextureLoader::buildLocalDataFileName(GC_GUI_FILE_NAME, file_name);
 
-	ofstream file(file_name);
+	std::ofstream file(file_name);
 	if (file.fail()) {
-		cerr << "Unable to write gui data to file!\n";
+		std::cerr << "Unable to write gui data to file!\n";
 		return;
 	}
 
-	file << player_name << endl;
-	file << resolution << endl;
-	file << quality << endl;
-	file << ai_difficulty << endl;
+	file << player_name << std::endl;
+	file << resolution << std::endl;
+	file << quality << std::endl;
+	file << ai_difficulty << std::endl;
 
 	file.close();
 }
@@ -96,7 +96,7 @@ gui_data_read                    (GtkWidget *widget)
 	// Generate the name of the file and read the data.
 	TextureLoader::buildLocalDataFileName(GC_GUI_FILE_NAME, file_name);
 
-	ifstream file(file_name);
+	std::ifstream file(file_name);
 	if (file.fail()) {
 #ifdef DEVELOPMENT
 		cerr << "Unable to find gui data file!\n";

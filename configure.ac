@@ -38,10 +38,16 @@ AC_CHECK_HEADER(inttypes.h, break, echo "Must have inttypes.h for enet. Exiting.
 
 dnl enet checks
 AC_CHECK_MEMBER(
-  struct msghdr.msg_flags, 
+  struct msghdr.msg_flags,
   AC_DEFINE([HAS_MSGHDR_FLAGS], [], [has msghdr flags]),
   [],
   [sys/socket.h])
+
+AC_CHECK_TYPE(socklen_t, [AC_DEFINE([HAS_SOCKLEN_T], [], [has socklen t])], ,
+              #include <sys/types.h>
+              #include <sys/socket.h>
+)
+
 
 dnl BinReloc source additions
 AM_BINRELOC

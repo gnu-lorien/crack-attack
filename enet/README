@@ -1,4 +1,4 @@
-Please visit the ENet homepage at http://enet.cubik.org for installation
+Please visit the ENet homepage at http://enet.bespin.org for installation
 and usage instructions.
 
 If you obtained this package from CVS, the quick description on how to build
@@ -12,5 +12,3 @@ aclocal && automake -a -c --foreign && autoconf
 
 ./configure && make && make install
 
-See pyenet/readme.txt for further information on Ling Lo's Python wrapper for
-ENet.

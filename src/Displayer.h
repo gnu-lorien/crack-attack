@@ -30,7 +30,6 @@
 #include <GL/glut.h>
 #include "glext.h"
 
-
 #include "Game.h"
 #include "Garbage.h"
 #include "CountDownManager.h"

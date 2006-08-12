@@ -150,7 +150,7 @@ generate_array(int mode, const gchar *start, GtkWidget *widget) {
 	}
 #endif
 
-	return (gchar **) result;
+	return const_cast<gchar **>(result);
 }
 
 gboolean

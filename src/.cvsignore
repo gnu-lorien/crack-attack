@@ -1,5 +1,6 @@
 .deps
 Makefile.in
 Makefile
+crack-attack
 config.h
 stamp-h1

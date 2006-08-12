@@ -8,11 +8,16 @@
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <sys/time.h>
+#include <arpa/inet.h>
 #include <netdb.h>
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
 #include <time.h>
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #define ENET_BUILDING_LIB 1
 #include "enet/enet.h"
@@ -21,8 +26,16 @@
 #include <fcntl.h>
 #endif
 
+#ifdef __APPLE__
+#undef HAS_POLL
+#endif
+
 #ifdef HAS_POLL
 #include <sys/poll.h>
+#endif
+
+#ifndef HAS_SOCKLEN_T
+typedef int socklen_t;
 #endif
 
 #ifndef MSG_NOSIGNAL
@@ -82,7 +95,15 @@ enet_address_set_host (ENetAddress * address, const char * name)
 
     if (hostEntry == NULL ||
         hostEntry -> h_addrtype != AF_INET)
-      return -1;
+    {
+#ifdef HAS_INET_PTON
+        if (! inet_pton (AF_INET, name, & address -> host))
+#else
+        if (! inet_aton (name, (struct in_addr *) & address -> host))
+#endif
+            return -1;
+        return 0;
+    }
 
     address -> host = * (enet_uint32 *) hostEntry -> h_addr_list [0];
 
@@ -113,7 +134,18 @@ enet_address_get_host (const ENetAddress * address, char * name, size_t nameLeng
 #endif
 
     if (hostEntry == NULL)
-      return -1;
+    {
+#ifdef HAS_INET_NTOP
+        if (inet_ntop (AF_INET, & address -> host, name, nameLength) == NULL)
+#else
+        char * addr = inet_ntoa (* (struct in_addr *) & address -> host);
+        if (addr != NULL)
+            strncpy (name, addr, nameLength);
+        else
+#endif
+            return -1;
+        return 0;
+    }
 
     strncpy (name, hostEntry -> h_name, nameLength);
 
@@ -124,7 +156,8 @@ ENetSocket
 enet_socket_create (ENetSocketType type, const ENetAddress * address)
 {
     ENetSocket newSocket = socket (PF_INET, type == ENET_SOCKET_TYPE_DATAGRAM ? SOCK_DGRAM : SOCK_STREAM, 0);
-    int receiveBufferSize = ENET_HOST_RECEIVE_BUFFER_SIZE;
+    int receiveBufferSize = ENET_HOST_RECEIVE_BUFFER_SIZE,
+        allowBroadcasting = 1;
 #ifndef HAS_FCNTL
     int nonBlocking = 1;
 #endif
@@ -142,6 +175,7 @@ enet_socket_create (ENetSocketType type, const ENetAddress * address)
 #endif
 
         setsockopt (newSocket, SOL_SOCKET, SO_RCVBUF, (char *) & receiveBufferSize, sizeof (int));
+        setsockopt (newSocket, SOL_SOCKET, SO_BROADCAST, (char *) & allowBroadcasting, sizeof (int));
     }
     
     if (address == NULL)
