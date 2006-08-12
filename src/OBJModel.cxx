@@ -15,10 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: OBJModel.cxx,v 1.2 2006/08/12 01:26:55 b_lindeijer Exp $
+ * $Id: OBJModel.cxx,v 1.3 2006/08/12 21:36:09 b_lindeijer Exp $
  */
 
 #include "OBJModel.h"
+
+#include "TextureLoader.h"
 
 #include <GL/gl.h>
 #include <iostream>
@@ -43,18 +45,27 @@ static string stripFilename(const string& path)
 
 static GLuint loadImage(const string& filename)
 {
-  if (true) {
+  // TODO: Support other sizes than just 128x128
+  GLubyte *imgData = TextureLoader::loadImage(filename.c_str(), 128, 128);
+
+  if (!imgData) {
     cerr << "Error loading image " << filename << std::endl;
     return 0;
-  } else {
-    GLuint tid;
-
-    glGenTextures(1, &tid);
-    glBindTexture(GL_TEXTURE_2D, tid);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    return tid;
   }
+
+  GLuint tid;
+
+  glGenTextures(1, &tid);
+  glBindTexture(GL_TEXTURE_2D, tid);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexImage2D(
+      GL_TEXTURE_2D, 0, 3, 128, 128,
+      0, GL_RGBA, GL_UNSIGNED_BYTE, imgData);
+
+  delete[] imgData;
+
+  return tid;
 }
 
 OBJModel::OBJModel(const string &filename)
@@ -265,7 +276,7 @@ void OBJModel::load(const string &filename)
     }
   }
 
-  cout << "Loaded model " << name << " (" << faces.size() << " faces)\n";
+  //cout << "Loaded model " << name << " (" << faces.size() << " faces)\n";
 }
 
 

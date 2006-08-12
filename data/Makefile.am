@@ -1,4 +1,5 @@
-pkgdata_DATA = clock_0.png \
+pkgdata_DATA = bjorn.png \
+	       clock_0.png \
 	       clock_1.png \
 	       clock_2.png \
 	       clock_3.png \

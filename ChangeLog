@@ -37,4 +37,9 @@
 	* data/Makefile.am, data/*.tga, data/*.png,
 	windows/package_script.nsi: Converted all textures from TGA to PNG,
 	reducing the size of the game by about 3.5 MB.
+	* data/Makefile.am, data/bjorn.png, data/models/Makefile.am,
+	data/models/cube.mtl, data/models/cube.obj, src/OBJModel.cxx:
+	Implemented support for loading textures on models and added a simple
+	cube with a silly picture of me as texture (needs to be hacked in, not
+	available from the GUI).
 

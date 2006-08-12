@@ -1,0 +1,9 @@
+# Exported from Wings 3D 0.98.19a
+newmtl bjorn_foto
+Ns 0.000
+d 1.00000
+illum 2
+Kd 1.00000 1.00000 1.00000
+Ka 0.50000 0.50000 0.50000
+Ks 0.00000 0.00000 0.00000
+map_Kd bjorn.png
