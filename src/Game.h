@@ -108,8 +108,8 @@
                                           "_net.tga"
 #define GC_GARBAGE_MY_TEX_FILE_NAME      GC_GARBAGE_TEX_FILE_NAME_BASE \
                                           "_my.tga"
-#define GC_LOGO_TEX_FILE_NAME            GC_DATA_DIRECTORY("logo.tga")
-#define GC_X_LOGO_TEX_FILE_NAME          GC_DATA_DIRECTORY("logo_x.tga")
+#define GC_LOGO_TEX_FILE_NAME            GC_DATA_DIRECTORY("logo.png")
+#define GC_X_LOGO_TEX_FILE_NAME          GC_DATA_DIRECTORY("logo_x.png")
 #define GC_GARBAGE_LOGO_TEX_FILE_NAME    GC_DATA_DIRECTORY(\
                                           GC_GARBAGE_TEX_FILE_NAME_BASE \
                                           "_logo.tga")

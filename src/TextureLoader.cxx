@@ -33,6 +33,7 @@
 #include <iostream>
 #include <cstring>
 #include <sys/stat.h>
+#include <SDL/SDL_image.h>
 
 #ifndef _WIN32
 #  include <unistd.h>
@@ -47,10 +48,10 @@ using namespace std;
 // the header of an uncompressed TGA file
 const GLubyte header_image[11] = { 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-GLubyte *TextureLoader::loadAlphaTGA ( const char *tga_file_name, int _height,
+GLubyte *TextureLoader::loadImageAlpha ( const char *file_name, int _height,
  int _width )
 {
-  GLubyte *full_texture = loadTGA(tga_file_name, _height, _width);
+  GLubyte *full_texture = loadImage(file_name, _height, _width);
 
   int texture_size = _width * _height;
 
@@ -67,10 +68,10 @@ GLubyte *TextureLoader::loadAlphaTGA ( const char *tga_file_name, int _height,
   return alpha_texture;
 }
 
-GLubyte *TextureLoader::loadNoAlphaTGA ( const char *tga_file_name, int _height,
- int _width )
+GLubyte *TextureLoader::loadImageNoAlpha ( const char *file_name,
+    int _height, int _width )
 {
-  GLubyte *full_texture = loadTGA(tga_file_name, _height, _width);
+  GLubyte *full_texture = loadImage(file_name, _height, _width);
 
   int texture_size = _width * _height;
 
@@ -91,71 +92,63 @@ GLubyte *TextureLoader::loadNoAlphaTGA ( const char *tga_file_name, int _height,
   return no_alpha_texture;
 }
 
-GLubyte *TextureLoader::loadTGA ( const char *tga_file_name, int _height,
- int _width, int _color_depth )
+GLubyte *TextureLoader::loadImage ( const char *file_name, int _height,
+    int _width)
 {
-#ifndef _WIN32
-  ifstream file(tga_file_name);
-#else
-  ifstream file(tga_file_name, ios::binary);
-#endif
-  if (file.fail()) {
-    cerr << "Error opening texture file '" << tga_file_name << "'." << endl;
+  SDL_Surface *img = IMG_Load(file_name);
+
+  if (!img) {
+    cerr << "Error opening texture file '" << file_name << "'." << endl;
     exit(1);
   }
 
-  GLubyte id_length;
-  file.read((char *) &id_length, 1);
-
-  GLubyte static_header[11];
-  file.read((char *) static_header, sizeof(static_header));
-  if (memcmp(static_header, header_image, sizeof(static_header)) != 0) {
-    cerr << "Texture file '" << tga_file_name << "' is not in uncompressed "
-     "TGA format." << endl;
-    exit(1);
-  }
-
-  GLubyte header[6];
-  file.read((char *) header, sizeof(header));
-
-  int width = header[1] * 256 + header[0];
-  int height = header[3] * 256 + header[2];
+  int width = img->w;
+  int height = img->h;
 
   if (width != _width || height != _height) {
-    cerr << "Texture file '" << tga_file_name << "' does not have the expected "
+    cerr << "Texture file '" << file_name << "' does not have the expected "
      "height and width.  [" << height << 'x' << width << "] vs expected ["
      << _height << 'x' << _width << "]." << endl;
     exit(1);
   }
 
-  int color_depth = header[4];
-  if (color_depth != 24 && color_depth != 32) {
-    cerr << "Texture file '" << tga_file_name << "' has an unsupported color "
-     "depth." << endl;
+  // Convert the loaded image to a standard 32 bit format
+
+  Uint32 rmask, gmask, bmask, amask;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+  rmask = 0xff000000;
+  gmask = 0x00ff0000;
+  bmask = 0x0000ff00;
+  amask = 0x000000ff;
+#else
+  rmask = 0x000000ff;
+  gmask = 0x0000ff00;
+  bmask = 0x00ff0000;
+  amask = 0xff000000;
+#endif
+
+  SDL_Surface *formatImg = SDL_CreateRGBSurface(
+      SDL_SWSURFACE, 0, 0, 32, rmask, gmask, bmask, amask);
+
+  if (formatImg == NULL) {
+    cerr << "Out of memory while opening texture file '" << file_name
+      << "'." << endl;
+    SDL_FreeSurface(img);
     exit(1);
   }
-  if (_color_depth != 0 && _color_depth != color_depth) {
-    cerr << "Texture file '" << tga_file_name << "' does not have the expected "
-     "color depth." << endl;
-    exit(1);
-  }
 
-  GLubyte b;
-  while (id_length--)
-    file.read((char *) &b, 1);
+  SDL_Surface *tmp = SDL_ConvertSurface(img, formatImg->format, SDL_SWSURFACE);
 
-  int texture_size = width * height * color_depth / 8;
+  SDL_FreeSurface(img);
+  SDL_FreeSurface(formatImg);
 
+  // TODO: This memcpy is rather pointless. Maybe find a way to avoid it.
+
+  int texture_size = width * height * 32 / 8;
   GLubyte *texture = new GLubyte[texture_size];
+  memcpy(texture, tmp->pixels, texture_size);
 
-  file.read((char *) texture, texture_size);
-
-  // tga is BGR
-  for (int n = 0; n < texture_size; n += color_depth / 8) {
-    GLubyte swap = texture[n];
-    texture[n] = texture[n + 2];
-    texture[n + 2] = swap;
-  }
+  SDL_FreeSurface(tmp);
 
   return texture;
 }
@@ -209,8 +202,8 @@ bool TextureLoader::fileExists ( const char *file_name )
 {
   struct stat file_stats;
 
-#ifndef _WIN32
-#else // stat fails to find directories with trailing delimiters in _WIN32
+  // stat fails to find directories with trailing delimiters in _WIN32
+#ifdef _WIN32
   if (file_name[strlen(file_name) - 1] == GC_DD[0]) {
     char truncated_file_name[256];
     strncpy(truncated_file_name, file_name, 256);
@@ -221,10 +214,10 @@ bool TextureLoader::fileExists ( const char *file_name )
   return !stat(file_name, &file_stats);
 }
 
-unsigned long TextureLoader::determineTGACheckSum ( const char *tga_file_name,
+unsigned long TextureLoader::determineImageCheckSum ( const char *file_name,
  int _height, int _width )
 {
-  GLubyte *texture = loadTGA(tga_file_name, _height, _width);
+  GLubyte *texture = loadImage(file_name, _height, _width);
 
   unsigned long check_sum = 0;
   for (int n = _width * _height * 4; n--; )
@@ -238,33 +231,18 @@ unsigned long TextureLoader::determineTGACheckSum ( const char *tga_file_name,
   return check_sum;
 }
 
-void TextureLoader::determineTGASize ( const char *tga_file_name, int &height,
- int &width )
+void TextureLoader::determineImageSize ( const char *file_name, int &height,
+    int &width )
 {
-#ifndef _WIN32
-  ifstream file(tga_file_name);
-#else
-  ifstream file(tga_file_name, ios::binary);
-#endif
-  if (file.fail()) {
-    cerr << "Error opening texture file '" << tga_file_name << "'." << endl;
+  SDL_Surface *img = IMG_Load(file_name);
+
+  if (!img) {
+    cerr << "Error opening texture file '" << file_name << "'." << endl;
     exit(1);
   }
 
-  GLubyte id_length;
-  file.read((char *) &id_length, 1);
+  width = img->w;
+  height = img->h;
 
-  GLubyte static_header[11];
-  file.read((char *) static_header, sizeof(static_header));
-  if (memcmp(static_header, header_image, sizeof(static_header)) != 0) {
-    cerr << "Texture file '" << tga_file_name << "' is not in uncompressed "
-     "TGA format." << endl;
-    exit(1);
-  }
-
-  GLubyte header[6];
-  file.read((char *) header, sizeof(header));
-
-  width = header[1] * 256 + header[0];
-  height = header[3] * 256 + header[2];
+  SDL_FreeSurface(img);
 }

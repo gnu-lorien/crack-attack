@@ -15,20 +15,18 @@ AC_PROG_INSTALL
 AC_PROG_RANLIB
 
 dnl Checks for libraries.
-# FIXME: Replace `main' with a function in `-lGL':
 AC_CHECK_LIB([GL], [glBegin])
-# FIXME: Replace `main' with a function in `-lGLU':
 AC_CHECK_LIB([GLU], [gluLookAt])
 # I don't know how to check these.
 # FIXME: Replace `main' with a function in `-lX11':
 #AC_CHECK_LIB([X11], [main])
 # FIXME: Replace `main' with a function in `-lXi':
 #AC_CHECK_LIB([Xi], [main])
-# FIXME: Replace `main' with a function in `-lXmu':
-#AC_CHECK_LIB([Xmu], [main])
-# FIXME: Replace `main' with a function in `-lglut':
 AC_CHECK_LIB([glut], [glutInit])
 
+AC_CHECK_LIB(SDL_image, IMG_LoadPNG_RW, ,
+AC_MSG_ERROR([ *** Unable to find SDL_image library with PNG support
+(http://www.libsdl.org/projects/SDL_image/)]))
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -169,10 +167,10 @@ AC_FUNC_STAT
 AC_CHECK_FUNCS([atexit gethostbyname gethostbyname_r gethostbyaddr_r fcntl inet_ntoa mkdir pow socket sqrt strchr strcspn strstr poll])
 
 AC_CONFIG_FILES(
-  Makefile 
-  src/Makefile 
+  Makefile
+  src/Makefile
   src/gtk-gui/Makefile
-  data/Makefile 
+  data/Makefile
   data/models/Makefile
   doc/Makefile
   autopackage/default.apspec

@@ -2,5 +2,6 @@
 Makefile.in
 Makefile
 crack-attack
+config.h.in
 config.h
 stamp-h1

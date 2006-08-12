@@ -57,7 +57,7 @@ void GarbageFlavorImage::initialize (   )
       GarbageFlavorImage::buildOriginalGarbageTextureFileName(
        original_file_name, n);
 
-      GLubyte *texture = TextureLoader::loadTGA(original_file_name,
+      GLubyte *texture = TextureLoader::loadImage(original_file_name,
        DC_GARBAGE_TEX_LENGTH, DC_GARBAGE_TEX_LENGTH);
       TextureLoader::createTGA(file_name, texture, DC_GARBAGE_TEX_LENGTH,
        DC_GARBAGE_TEX_LENGTH, TL_GARBAGE_TEXTURE_TGA_ID);
@@ -90,7 +90,7 @@ GLubyte *GarbageFlavorImage::loadPersonalGarbageFlavorImage (   )
   TextureLoader::buildLocalDataFileName(GC_GARBAGE_MY_TEX_FILE_NAME, file_name);
 
   int width, height;
-  TextureLoader::determineTGASize(file_name, width, height);
+  TextureLoader::determineImageSize(file_name, width, height);
 
   if (width > DC_GARBAGE_TEX_LENGTH || height > DC_GARBAGE_TEX_LENGTH) {
     std::cerr << "Texture file '" << file_name << "' exceeds allowed size of "
@@ -99,7 +99,7 @@ GLubyte *GarbageFlavorImage::loadPersonalGarbageFlavorImage (   )
     exit(1);
   }
 
-  GLubyte *original_texture = TextureLoader::loadTGA(file_name, width, height);
+  GLubyte *original_texture = TextureLoader::loadImage(file_name, width, height);
 
   if (width == DC_GARBAGE_TEX_LENGTH && height == DC_GARBAGE_TEX_LENGTH)
     return original_texture;
@@ -155,7 +155,7 @@ void GarbageFlavorImage::handleNetworkGarbageFlavorImage ( GLubyte *texture )
 
   // determine it's check sum
   unsigned long check_sum
-   = TextureLoader::determineTGACheckSum(net_tex_file_name,
+   = TextureLoader::determineImageCheckSum(net_tex_file_name,
    DC_GARBAGE_TEX_LENGTH, DC_GARBAGE_TEX_LENGTH);
 
   // check to see if we already have a copy of it in our main list
@@ -166,7 +166,7 @@ void GarbageFlavorImage::handleNetworkGarbageFlavorImage ( GLubyte *texture )
     GarbageFlavorImage::buildGarbageTextureFileName(file_name, n);
 
     if (TextureLoader::fileExists(file_name)) {
-      if (check_sum == TextureLoader::determineTGACheckSum(file_name,
+      if (check_sum == TextureLoader::determineImageCheckSum(file_name,
        DC_GARBAGE_TEX_LENGTH, DC_GARBAGE_TEX_LENGTH))
         break;
     } else

@@ -229,7 +229,7 @@ void String::readyLetterTextures (   )
   for (int n = DC_FONT_NUMBER; n--; )
     for (int m = DC_LETTER_NUMBER; m--; )
       letter_textures[n][m]
-       = TextureLoader::loadAlphaTGA(letter_texture_files[n][m],
+       = TextureLoader::loadImageAlpha(letter_texture_files[n][m],
        DC_LETTER_TEX_LENGTH, DC_LETTER_TEX_LENGTH);
 }
 

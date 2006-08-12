@@ -25,4 +25,14 @@
 	files.
 	* INSTALL: Updated.
 	* mkinstalldirs: Removed this generated file.
+	* src/Makefile.am: Removed "-lGL -lGLU -lglut" since they are
+	automatically added because they are checked in configure.ac.
+	* configure.ac, cracksplash.glade, data/Makefile.am, src/Game.h,
+	src/GarbageFlavorImage.cxx, src/Makefile.am, src/String.cxx,
+	src/TextureLoader.cxx, src/TextureLoader.h, src/obj_clock.cxx,
+	src/obj_external_candy.cxx, src/obj_garbage.cxx, src/obj_messages.cxx,
+	src/obj_sign.cxx: Images are now loaded using SDL_image, so that
+	not only uncompressed TGA is supported but many formats. Some of the
+	textures have been converted to PNG.
+	* COPYRIGHT: Added my email address.
 

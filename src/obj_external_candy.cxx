@@ -56,10 +56,10 @@ void Displayer::generateExternalCandy (   )
 
   GLubyte *texture;
   if (MetaState::mode & CM_X)
-    texture = TextureLoader::loadNoAlphaTGA(GC_X_LOGO_TEX_FILE_NAME,
+    texture = TextureLoader::loadImageNoAlpha(GC_X_LOGO_TEX_FILE_NAME,
      DC_LOGO_TEX_LENGTH, DC_LOGO_TEX_LENGTH);
   else
-    texture = TextureLoader::loadNoAlphaTGA(GC_LOGO_TEX_FILE_NAME,
+    texture = TextureLoader::loadImageNoAlpha(GC_LOGO_TEX_FILE_NAME,
      DC_LOGO_TEX_LENGTH, DC_LOGO_TEX_LENGTH);
 
 #if 0 // use to see the first entry in the garbage flavor texture set

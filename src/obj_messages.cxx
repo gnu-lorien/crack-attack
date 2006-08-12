@@ -62,34 +62,34 @@ void Displayer::generateMessages (   )
 {
   // load count down messages
   message_texture_data[MS_COUNT_DOWN_1]
-   = TextureLoader::loadAlphaTGA(GC_COUNT_DOWN_1_TEX_FILE_NAME,
+   = TextureLoader::loadImageAlpha(GC_COUNT_DOWN_1_TEX_FILE_NAME,
    message_height[MS_COUNT_DOWN_1], message_width[MS_COUNT_DOWN_1]);
   message_texture_data[MS_COUNT_DOWN_2]
-   = TextureLoader::loadAlphaTGA(GC_COUNT_DOWN_2_TEX_FILE_NAME,
+   = TextureLoader::loadImageAlpha(GC_COUNT_DOWN_2_TEX_FILE_NAME,
    message_height[MS_COUNT_DOWN_2], message_width[MS_COUNT_DOWN_2]);
   message_texture_data[MS_COUNT_DOWN_3]
-   = TextureLoader::loadAlphaTGA(GC_COUNT_DOWN_3_TEX_FILE_NAME,
+   = TextureLoader::loadImageAlpha(GC_COUNT_DOWN_3_TEX_FILE_NAME,
    message_height[MS_COUNT_DOWN_3], message_width[MS_COUNT_DOWN_3]);
   message_texture_data[MS_COUNT_DOWN_GO]
-   = TextureLoader::loadAlphaTGA(GC_COUNT_DOWN_GO_TEX_FILE_NAME,
+   = TextureLoader::loadImageAlpha(GC_COUNT_DOWN_GO_TEX_FILE_NAME,
    message_height[MS_COUNT_DOWN_GO], message_width[MS_COUNT_DOWN_GO]);
   message_texture_data[MS_ANYKEY]
-   = TextureLoader::loadAlphaTGA(GC_ANYKEY_TEX_FILE_NAME,
+   = TextureLoader::loadImageAlpha(GC_ANYKEY_TEX_FILE_NAME,
    message_height[MS_ANYKEY], message_width[MS_ANYKEY]);
   message_texture_data[MS_WAITING]
-   = TextureLoader::loadAlphaTGA(GC_WAITING_TEX_FILE_NAME,
+   = TextureLoader::loadImageAlpha(GC_WAITING_TEX_FILE_NAME,
    message_height[MS_WAITING], message_width[MS_WAITING]);
   message_texture_data[MS_PAUSED]
-   = TextureLoader::loadAlphaTGA(GC_PAUSED_TEX_FILE_NAME,
+   = TextureLoader::loadImageAlpha(GC_PAUSED_TEX_FILE_NAME,
    message_height[MS_PAUSED], message_width[MS_PAUSED]);
   message_texture_data[MS_WINNER]
-   = TextureLoader::loadAlphaTGA(GC_WINNER_TEX_FILE_NAME,
+   = TextureLoader::loadImageAlpha(GC_WINNER_TEX_FILE_NAME,
    message_height[MS_WINNER], message_width[MS_WINNER]);
   message_texture_data[MS_LOSER]
-   = TextureLoader::loadAlphaTGA(GC_LOSER_TEX_FILE_NAME,
+   = TextureLoader::loadImageAlpha(GC_LOSER_TEX_FILE_NAME,
    message_height[MS_LOSER], message_width[MS_LOSER]);
   message_texture_data[MS_GAME_OVER]
-   = TextureLoader::loadAlphaTGA(GC_GAME_OVER_TEX_FILE_NAME,
+   = TextureLoader::loadImageAlpha(GC_GAME_OVER_TEX_FILE_NAME,
    message_height[MS_GAME_OVER], message_width[MS_GAME_OVER]);
 
   // generic message lists

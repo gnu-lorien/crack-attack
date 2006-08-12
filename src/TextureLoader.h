@@ -40,19 +40,18 @@
 
 /* static */ class TextureLoader {
 public:
-  static GLubyte *loadAlphaTGA ( const char *tga_file_name, int _height,
-   int _width );
-  static GLubyte *loadNoAlphaTGA ( const char *tga_file_name, int _height,
-   int _width );
-  static GLubyte *loadTGA ( const char *tga_file_name, int _height, int _width,
-   int _color_depth = 32 );
+  static GLubyte *loadImageAlpha ( const char *file_name, int _height,
+      int _width );
+  static GLubyte *loadImageNoAlpha ( const char *file_name, int _height,
+      int _width );
+  static GLubyte *loadImage ( const char *file_name, int _height, int _width);
   static void createTGA ( const char *tga_file_name, GLubyte *texture,
-   int _height, int _width, const char *tga_id );
+      int _height, int _width, const char *tga_id );
   static bool fileExists ( const char *file_name );
-  static unsigned long determineTGACheckSum ( const char *tga_file_name,
-   int _height, int _width );
-  static void determineTGASize ( const char *tga_file_name, int &height,
-   int &width );
+  static unsigned long determineImageCheckSum ( const char *tga_file_name,
+      int _height, int _width );
+  static void determineImageSize ( const char *tga_file_name, int &height,
+      int &width );
 
   static inline void buildLocalDataDirectoryName ( char dir_name[256] )
   {

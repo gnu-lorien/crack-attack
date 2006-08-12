@@ -70,7 +70,7 @@ void Displayer::generateGarbageExtras (   )
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
   // choose a random lightmap for this game
-  GLubyte *texture = TextureLoader::loadAlphaTGA(
+  GLubyte *texture = TextureLoader::loadImageAlpha(
    garbage_lightmap_files[Random::number(DC_NUMBER_GARBAGE_LIGHTMAPS)],
    DC_GARBAGE_LIGHTMAP_LENGTH, DC_GARBAGE_LIGHTMAP_LENGTH);
 
@@ -117,7 +117,7 @@ void Displayer::generateGarbageExtras (   )
     GarbageFlavorImage::buildGarbageTextureFileName(file_name, 0);
 
     for (int n = 0; n < DC_NUMBER_USE_GARBAGE_TEX; n++) {
-      garbage_texture_data[n] = TextureLoader::loadTGA(file_name,
+      garbage_texture_data[n] = TextureLoader::loadImage(file_name,
        DC_GARBAGE_TEX_LENGTH, DC_GARBAGE_TEX_LENGTH);
     }
 
@@ -139,7 +139,7 @@ void Displayer::generateGarbageExtras (   )
         TextureLoader::buildLocalDataFileName(GC_GARBAGE_NET_TEX_FILE_NAME,
          net_tex_file_name);
 
-        garbage_texture_data[0] = TextureLoader::loadTGA(net_tex_file_name,
+        garbage_texture_data[0] = TextureLoader::loadImage(net_tex_file_name,
          DC_GARBAGE_TEX_LENGTH, DC_GARBAGE_TEX_LENGTH);
 
       } else {
@@ -164,7 +164,7 @@ void Displayer::generateGarbageExtras (   )
         GarbageFlavorImage::buildGarbageTextureFileName(file_name,
          use_textures[n]);
 
-        garbage_texture_data[n] = TextureLoader::loadTGA(file_name,
+        garbage_texture_data[n] = TextureLoader::loadImage(file_name,
          DC_GARBAGE_TEX_LENGTH, DC_GARBAGE_TEX_LENGTH);
       }
     }
@@ -179,11 +179,11 @@ void Displayer::generateGarbageExtras (   )
 
     if (MetaState::mode & CM_X)
       garbage_texture_data[1]
-       = TextureLoader::loadTGA(GC_GARBAGE_X_LOGO_TEX_FILE_NAME,
+       = TextureLoader::loadImage(GC_GARBAGE_X_LOGO_TEX_FILE_NAME,
        DC_GARBAGE_TEX_LENGTH, DC_GARBAGE_TEX_LENGTH);
     else
       garbage_texture_data[1]
-       = TextureLoader::loadTGA(GC_GARBAGE_LOGO_TEX_FILE_NAME,
+       = TextureLoader::loadImage(GC_GARBAGE_LOGO_TEX_FILE_NAME,
        DC_GARBAGE_TEX_LENGTH, DC_GARBAGE_TEX_LENGTH);
   }
 
