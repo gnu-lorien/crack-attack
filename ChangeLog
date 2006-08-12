@@ -32,7 +32,9 @@
 	src/TextureLoader.cxx, src/TextureLoader.h, src/obj_clock.cxx,
 	src/obj_external_candy.cxx, src/obj_garbage.cxx, src/obj_messages.cxx,
 	src/obj_sign.cxx: Images are now loaded using SDL_image, so that
-	not only uncompressed TGA is supported but many formats. Some of the
-	textures have been converted to PNG.
+	not only uncompressed TGA is supported but many formats.
 	* COPYRIGHT: Added my email address.
+	* data/Makefile.am, data/*.tga, data/*.png,
+	windows/package_script.nsi: Converted all textures from TGA to PNG,
+	reducing the size of the game by about 3.5 MB.
 

@@ -105,28 +105,28 @@
 #define GC_NUMBER_STANDARD_GARBAGE_TEX   (6)
 #define GC_GARBAGE_TEX_MAX_NUMBER        (1000)
 #define GC_GARBAGE_NET_TEX_FILE_NAME     GC_GARBAGE_TEX_FILE_NAME_BASE \
-                                          "_net.tga"
+                                          "_net.png"
 #define GC_GARBAGE_MY_TEX_FILE_NAME      GC_GARBAGE_TEX_FILE_NAME_BASE \
-                                          "_my.tga"
+                                          "_my.png"
 #define GC_LOGO_TEX_FILE_NAME            GC_DATA_DIRECTORY("logo.png")
 #define GC_X_LOGO_TEX_FILE_NAME          GC_DATA_DIRECTORY("logo_x.png")
 #define GC_GARBAGE_LOGO_TEX_FILE_NAME    GC_DATA_DIRECTORY(\
                                           GC_GARBAGE_TEX_FILE_NAME_BASE \
-                                          "_logo.tga")
+                                          "_logo.png")
 #define GC_GARBAGE_X_LOGO_TEX_FILE_NAME  GC_DATA_DIRECTORY(\
                                           GC_GARBAGE_TEX_FILE_NAME_BASE \
-                                          "_logo_x.tga")
-#define GC_COUNT_DOWN_GO_TEX_FILE_NAME   GC_DATA_DIRECTORY("count_down_go.tga")
-#define GC_COUNT_DOWN_1_TEX_FILE_NAME    GC_DATA_DIRECTORY("count_down_1.tga")
-#define GC_COUNT_DOWN_2_TEX_FILE_NAME    GC_DATA_DIRECTORY("count_down_2.tga")
-#define GC_COUNT_DOWN_3_TEX_FILE_NAME    GC_DATA_DIRECTORY("count_down_3.tga")
-#define GC_ANYKEY_TEX_FILE_NAME          GC_DATA_DIRECTORY("message_anykey.tga")
-#define GC_WAITING_TEX_FILE_NAME         GC_DATA_DIRECTORY("message_waiting.tga")
-#define GC_PAUSED_TEX_FILE_NAME          GC_DATA_DIRECTORY("message_paused.tga")
-#define GC_WINNER_TEX_FILE_NAME          GC_DATA_DIRECTORY("message_winner.tga")
-#define GC_LOSER_TEX_FILE_NAME           GC_DATA_DIRECTORY("message_loser.tga")
+                                          "_logo_x.png")
+#define GC_COUNT_DOWN_GO_TEX_FILE_NAME   GC_DATA_DIRECTORY("count_down_go.png")
+#define GC_COUNT_DOWN_1_TEX_FILE_NAME    GC_DATA_DIRECTORY("count_down_1.png")
+#define GC_COUNT_DOWN_2_TEX_FILE_NAME    GC_DATA_DIRECTORY("count_down_2.png")
+#define GC_COUNT_DOWN_3_TEX_FILE_NAME    GC_DATA_DIRECTORY("count_down_3.png")
+#define GC_ANYKEY_TEX_FILE_NAME          GC_DATA_DIRECTORY("message_anykey.png")
+#define GC_WAITING_TEX_FILE_NAME         GC_DATA_DIRECTORY("message_waiting.png")
+#define GC_PAUSED_TEX_FILE_NAME          GC_DATA_DIRECTORY("message_paused.png")
+#define GC_WINNER_TEX_FILE_NAME          GC_DATA_DIRECTORY("message_winner.png")
+#define GC_LOSER_TEX_FILE_NAME           GC_DATA_DIRECTORY("message_loser.png")
 #define GC_GAME_OVER_TEX_FILE_NAME       GC_DATA_DIRECTORY(\
-                                          "message_game_over.tga")
+                                          "message_game_over.png")
 #define GC_X_REC_FILE_NAME               "score_record_x"
 #define GC_REC_FILE_NAME                 "score_record"
 #define GC_MULT_FILE_NAME                "multiplier_record"

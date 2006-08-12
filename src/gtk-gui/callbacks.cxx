@@ -256,19 +256,19 @@ on_cmbQuality_changed                  (GtkComboBox     *cmb,
   gchar *filename = NULL;
   switch (tmp) {
     case 0: {
-              filename = find_pixmap_file("preview_normal.tga");
+              filename = find_pixmap_file("preview_normal.png");
               break;
             }
     case 1: {
-              filename = find_pixmap_file("preview_reduced.tga");
+              filename = find_pixmap_file("preview_reduced.png");
               break;
             }
     case 2: {
-              filename = find_pixmap_file("preview_extremely_reduced.tga");
+              filename = find_pixmap_file("preview_extremely_reduced.png");
               break;
             }
     default: {
-              filename = find_pixmap_file("preview_normal.tga");
+              filename = find_pixmap_file("preview_normal.png");
              }
   }
   gtk_image_set_from_file(imgLogo, filename);

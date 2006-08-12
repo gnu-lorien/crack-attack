@@ -164,7 +164,7 @@ create_winCrackAttackSplash (void)
   gtk_widget_show (vbox4);
   gtk_container_add (GTK_CONTAINER (alignment1), vbox4);
 
-  imgLogo = create_pixmap (winCrackAttackSplash, "preview_normal.tga");
+  imgLogo = create_pixmap (winCrackAttackSplash, "preview_normal.png");
   gtk_widget_set_name (imgLogo, "imgLogo");
   gtk_widget_show (imgLogo);
   gtk_box_pack_start (GTK_BOX (vbox4), imgLogo, FALSE, FALSE, 0);
