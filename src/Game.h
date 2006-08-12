@@ -92,6 +92,7 @@
 #ifdef ENABLE_BINRELOC
 #  undef GC_DATA_DIRECTORY
 #  undef GC_BINARY_LOCATION
+#  undef GC_MODEL_DIRECTORY
 #  include "prefix.h"
 #  define GC_DATA_DIRECTORY_INTER        br_strcat(DATADIR, GC_DD GC_BINARY GC_DD)
 #  define GC_MODEL_DIRECTORY_INTER       br_strcat(DATADIR, GC_DD GC_BINARY GC_DD)
