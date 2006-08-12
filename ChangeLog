@@ -23,4 +23,6 @@
 	namespace caused by the earlier cleanup.
 	* src/stamp-h.in, src/config.h.in: Removed these dynamically generated
 	files.
+	* INSTALL: Updated.
+	* mkinstalldirs: Removed this generated file.
 
