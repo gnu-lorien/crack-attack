@@ -8,6 +8,9 @@ v 1.1.15-cvs
   - Better Windows install script. (Thanks Till Schuberth)
   - Added --enable-more-warnings for those that want to test things out.
     Code borrowed from Nautilus, suggested by davyd.
+  - Fixed #16736 (configure fails to detect missing -lXmu)
+  - Fixed #15821 (freeglut ERROR: Function <glutDestroyWindow> called without
+    first calling 'glutInit')
 
 v 1.1.14
   - Some fixes to the build system. (Thanks Mike Frysinger)
