@@ -38,10 +38,10 @@
 
 #include "glext.h"
 
-using namespace std;
-
 #include "TextureLoader.h"
 #include "Game.h"
+
+using namespace std;
 
 // the header of an uncompressed TGA file
 const GLubyte header_image[11] = { 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 };

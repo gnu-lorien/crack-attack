@@ -27,8 +27,6 @@
 #ifndef METASTATE_H
 #define METASTATE_H
 
-using namespace std;
-
 #include "Game.h"
 
 // program states

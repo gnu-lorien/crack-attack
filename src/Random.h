@@ -26,7 +26,6 @@
 #ifndef RANDOM_H
 #define RANDOM_H
 
-using namespace std;
 
 #include "Game.h"
 

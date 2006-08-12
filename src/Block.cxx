@@ -37,7 +37,6 @@
 #include "X.h"
 #include "Sound.h"
 
-using namespace std;
 
 void Block::initializeStatic ( int _x, int _y, int _flavor )
 {

@@ -26,7 +26,6 @@
 
 #include <vector>
 
-using namespace std;
 
 class GarbageQueue {
 public:

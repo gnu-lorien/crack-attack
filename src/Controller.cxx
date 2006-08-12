@@ -40,7 +40,6 @@
 #include "Displayer.h"
 #endif
 
-using namespace std;
 
 int Controller::state;
 

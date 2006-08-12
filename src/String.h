@@ -26,7 +26,6 @@
 #ifndef STRING_H
 #define STRING_H
 
-using namespace std;
 
 #include "Displayer.h"
 

@@ -31,7 +31,6 @@
 
 #include "glext.h"
 
-using namespace std;
 
 #include "Game.h"
 #include "Random.h"

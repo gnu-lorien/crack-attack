@@ -33,7 +33,6 @@
 
 #include "glext.h"
 
-using namespace std;
 
 #include "Game.h"
 #include "Block.h"

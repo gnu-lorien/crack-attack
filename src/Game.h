@@ -50,8 +50,6 @@
 
 #include "Mode.h"
 
-using namespace std;
-
 // null
 #define null                             (0)
 

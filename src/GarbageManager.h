@@ -28,7 +28,6 @@
 
 #include <cassert>
 
-using namespace std;
 
 #include "Garbage.h"
 #include "GarbageFlavorImage.h"

@@ -25,7 +25,6 @@
  * Allocates and frees blocks.
  */
 
-using namespace std;
 
 #include "Game.h"
 #include "BlockManager.h"

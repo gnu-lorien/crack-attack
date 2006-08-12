@@ -30,7 +30,6 @@
 
 #include "glext.h"
 
-using namespace std;
 
 #include "WinRecord.h"
 #include "Displayer.h"

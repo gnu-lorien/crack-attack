@@ -25,7 +25,6 @@
  * Holds the X-treme state.
  */
 
-using namespace std;
 
 #include "Game.h"
 #include "Grid.h"

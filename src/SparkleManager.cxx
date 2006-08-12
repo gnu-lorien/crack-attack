@@ -25,7 +25,6 @@
  * Handles all the pretty sparkles!
  */
 
-using namespace std;
 
 #include "Game.h"
 #include "Displayer.h"

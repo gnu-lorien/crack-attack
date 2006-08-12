@@ -33,7 +33,6 @@
 #include "glext.h"
 #include "sstream.h"
 
-using namespace std;
 
 #include "TextureLoader.h"
 #include "Game.h"

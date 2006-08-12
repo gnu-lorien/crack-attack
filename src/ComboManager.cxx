@@ -32,7 +32,6 @@
 #include "GarbageGenerator.h"
 #include "Score.h"
 
-using namespace std;
 
 ComboTabulator ComboManager::tabulatorStore[GC_COMBO_TABULATOR_STORE_SIZE];
 bool ComboManager::storeMap[GC_COMBO_TABULATOR_STORE_SIZE];

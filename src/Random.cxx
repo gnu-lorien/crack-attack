@@ -27,7 +27,6 @@
 
 #include <ctime>
 
-using namespace std;
 
 #include "Game.h"
 #include "Random.h"

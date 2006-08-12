@@ -19,6 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 #include "GarbageQueue.h"
 #include "GarbageGenerator.h"
 #include "GarbageManager.h"
@@ -55,7 +56,7 @@ int GarbageQueue::removeToFirst ( int flavor )
   int num_removed = 0;
   assert((*(garbage_queue.begin())).flavor != flavor);
   if (garbage_queue.empty()) return 0;
-  vector<GarbageQueueElement>::iterator iter;
+  std::vector<GarbageQueueElement>::iterator iter;
   for (iter = garbage_queue.begin(); iter != garbage_queue.end(); ++iter) {
     if ((*iter).flavor == flavor) break;
     ++num_removed;
@@ -73,12 +74,12 @@ int GarbageQueue::removeToFirst ( int flavor )
   int current_height = height();
   MESSAGE("Height after erase " << current_height);
   //assert((prev_height - num_removed)==current_height);
-	if (prev_height - num_removed != current_height) {
-		MESSAGE("***********Assertion would've failed here in GarbageQueue.cxx:75***********");
-		MESSAGE("prev_height - num_removed != current_height (" <<
-				prev_height << " - " << num_removed << " != " <<
-				current_height << ")");
-	}
+  if (prev_height - num_removed != current_height) {
+    MESSAGE("***********Assertion would've failed here in GarbageQueue.cxx:75***********");
+    MESSAGE("prev_height - num_removed != current_height (" <<
+        prev_height << " - " << num_removed << " != " <<
+        current_height << ")");
+  }
 #endif
   return num_removed;
 }
@@ -118,7 +119,7 @@ void GarbageQueue::add ( GarbageQueueElement &element )
 int GarbageQueue::height ( )
 {
   int garbage_height = 0;
-  vector<GarbageQueueElement>::iterator iter;
+  std::vector<GarbageQueueElement>::iterator iter;
   if (cached_height != -1) return cached_height;
   for (iter = garbage_queue.begin(); iter != garbage_queue.end(); ++iter) {
     garbage_height += (*iter).height;
@@ -130,7 +131,7 @@ int GarbageQueue::height ( )
 int GarbageQueue::specialHeight ( )
 {
   int garbage_height = 0;
-  vector<GarbageQueueElement>::iterator iter;
+  std::vector<GarbageQueueElement>::iterator iter;
   if (cached_height != -1) return cached_height;
   for (iter = garbage_queue.begin(); iter != garbage_queue.end(); ++iter) {
     if (GarbageManager::isSpecialFlavor((*iter).flavor))
@@ -141,7 +142,7 @@ int GarbageQueue::specialHeight ( )
 
 void GarbageQueue::sendToGenerator ( ) 
 {
-  vector<GarbageQueueElement>::iterator iter;
+  std::vector<GarbageQueueElement>::iterator iter;
   for (iter = garbage_queue.begin(); iter != garbage_queue.end(); ++iter) {
     GarbageGenerator::addToQueue(*iter);
   }

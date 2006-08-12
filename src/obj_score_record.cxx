@@ -29,7 +29,6 @@
 #include "sstream.h"
 #include "glext.h"
 
-using namespace std;
 
 #include "Game.h"
 #include "Displayer.h"
@@ -66,8 +65,8 @@ void Displayer::rerankScoreRecord (   )
    = new GLubyte[DC_LETTER_TEX_LENGTH * DC_SCORE_REC_RANK_STRING_TEX_WIDTH * 4];
 
   for (int n = Score::player_rank; n--; ) {
-    ostringstream rank_string;
-    rank_string << (GC_SCORE_REC_LENGTH - n) << ends;
+    std::ostringstream rank_string;
+    rank_string << (GC_SCORE_REC_LENGTH - n) << std::ends;
 
     for (int i = DC_LETTER_TEX_LENGTH * DC_SCORE_REC_RANK_STRING_TEX_WIDTH * 4;
      i--; )
@@ -89,11 +88,11 @@ void Displayer::rerankScoreRecord (   )
 void Displayer::generateScoreRankTexture ( int rank, int score,
  const char *name, GLubyte *texture )
 {
-  ostringstream score_string;
-  score_string << score << ends;
+  std::ostringstream score_string;
+  score_string << score << std::ends;
 
-  ostringstream rank_string;
-  rank_string << (GC_SCORE_REC_LENGTH - rank) << ends;
+  std::ostringstream rank_string;
+  rank_string << (GC_SCORE_REC_LENGTH - rank) << std::ends;
 
   int score_width
    = String::stringWidth(score_string.str().data(), DC_SCORE_REC_TEX_LENGTH_S -
@@ -188,8 +187,8 @@ void Displayer::generateScoreRecord (   )
     subtexture = null;
   }
 
-  ostringstream score;
-  score << Score::record[GC_SCORE_REC_LENGTH - 1].score << ends;
+  std::ostringstream score;
+  score << Score::record[GC_SCORE_REC_LENGTH - 1].score << std::ends;
 
   width = String::stringWidth(score.str().data(), DC_SCORE_TO_BEAT_TEX_LENGTH_S);
   subtexture = new GLubyte[DC_LETTER_TEX_LENGTH * width * 4];

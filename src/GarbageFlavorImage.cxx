@@ -30,7 +30,6 @@
 
 #include "sstream.h"
 
-using namespace std;
 
 #include "TextureLoader.h"
 #include "Game.h"
@@ -95,11 +94,12 @@ GLubyte *GarbageFlavorImage::loadPersonalGarbageFlavorImage (   )
   TextureLoader::determineTGASize(file_name, width, height);
 
   if (width > DC_GARBAGE_TEX_LENGTH || height > DC_GARBAGE_TEX_LENGTH) {
-    cerr << "Texture file '" << file_name << "' exceeds allowed " "size of [" <<
-     DC_GARBAGE_TEX_LENGTH << 'x' << DC_GARBAGE_TEX_LENGTH << "]." << endl;
+    std::cerr << "Texture file '" << file_name << "' exceeds allowed size of "
+      << "[" << DC_GARBAGE_TEX_LENGTH << 'x' << DC_GARBAGE_TEX_LENGTH << "]."
+      << std::endl;
     exit(1);
   }
-  
+
   GLubyte *original_texture = TextureLoader::loadTGA(file_name, width, height);
 
   if (width == DC_GARBAGE_TEX_LENGTH && height == DC_GARBAGE_TEX_LENGTH)
@@ -185,9 +185,10 @@ void GarbageFlavorImage::handleNetworkGarbageFlavorImage ( GLubyte *texture )
 void GarbageFlavorImage::buildGarbageTextureFileName ( char file_name[256],
  const char *dir_name, int n )
 {
-  ostringstream s;
+  std::ostringstream s;
   s << dir_name << GC_GARBAGE_TEX_FILE_NAME_BASE "_"
-   << setw(GC_GARBAGE_TEX_NUMBER_DIGITS) << setfill('0') << n << ".tga" << ends;
+   << std::setw(GC_GARBAGE_TEX_NUMBER_DIGITS) << std::setfill('0') << n
+   << ".tga" << std::ends;
   strncpy(file_name, s.str().data(), 256);
 }
 

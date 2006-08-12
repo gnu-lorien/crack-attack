@@ -26,7 +26,6 @@
 #ifndef GARBAGEGENERATOR_H
 #define GARBAGEGENERATOR_H
 
-using namespace std;
 
 #include "Game.h"
 #include "MetaState.h"

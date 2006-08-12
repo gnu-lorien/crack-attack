@@ -25,8 +25,6 @@
  * Approximates sin(x) with a table and interpolation.
  */
 
-using namespace std;
-
 #include "Game.h"
 #include "MetaState.h"
 #include "Sine.h"

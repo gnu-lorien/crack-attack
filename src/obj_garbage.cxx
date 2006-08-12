@@ -34,7 +34,6 @@
 
 #include "glext.h"
 
-using namespace std;
 
 #include "TextureLoader.h"
 #include "Game.h"

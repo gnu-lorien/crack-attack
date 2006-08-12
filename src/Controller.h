@@ -26,7 +26,6 @@
 #ifndef CONTORLLER_H
 #define CONTORLLER_H
 
-using namespace std;
 
 #define CC_LEFT                     (1 << 0)
 #define CC_RIGHT                    (1 << 1)

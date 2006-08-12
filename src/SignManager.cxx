@@ -25,7 +25,6 @@
  * Handles all the little reward signs.
  */
 
-using namespace std;
 
 #include "Game.h"
 #include "SignManager.h"

@@ -26,7 +26,6 @@
 #ifndef CLOCK_H
 #define CLOCK_H
 
-using namespace std;
 
 #include "Game.h"
 

@@ -26,7 +26,6 @@
 #ifndef SCORE_H
 #define SCORE_H
 
-using namespace std;
 
 #include "Game.h"
 #include "ComboTabulator.h"

@@ -25,7 +25,6 @@
  * Handles the level lights' states.
  */
 
-using namespace std;
 
 #include "Game.h"
 #include "LevelLights.h"

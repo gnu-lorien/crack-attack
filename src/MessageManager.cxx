@@ -25,7 +25,6 @@
  * Not too much to this guy.
  */
 
-using namespace std;
 
 #include "Game.h"
 #include "MessageManager.h"

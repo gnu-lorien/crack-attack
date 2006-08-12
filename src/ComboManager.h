@@ -28,7 +28,6 @@
 
 #include <cassert>
 
-using namespace std;
 
 #include "ComboTabulator.h"
 #include "BlockManager.h"

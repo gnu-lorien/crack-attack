@@ -34,7 +34,6 @@
 #include "Music.h"
 #endif
 
-using namespace std;
 
 int CountDownManager::state;
 int CountDownManager::start_pause_alarm;

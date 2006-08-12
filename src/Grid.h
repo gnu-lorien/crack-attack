@@ -28,7 +28,6 @@
 
 #include <cassert>
 
-using namespace std;
 
 #include "BlockManager.h"
 #include "GarbageManager.h"
@@ -72,25 +71,25 @@ public:
 
   static inline void dump (   )
   {
-    cout << '\n';
+    std::cout << std::endl;
     for (int y = GC_PLAY_HEIGHT; y--; ) {
       for (int x = 0; x < GC_PLAY_WIDTH; x++)
         switch (grid[x][y].state) {
-        case GR_EMPTY: cout << ' '; break;
-        case GR_BLOCK: cout << 'B'; break;
-        case GR_GARBAGE: cout << '@'; break;
-        case GR_FALLING: cout << '*'; break;
-        case GR_IMMUTABLE: cout << '#'; break;
-        case GR_SHATTERING: cout << 'X'; break;
-        case GR_HANGING: cout << '+'; break;
-        default: cout << '!'; break;
+          case GR_EMPTY: std::cout << ' '; break;
+          case GR_BLOCK: std::cout << 'B'; break;
+          case GR_GARBAGE: std::cout << '@'; break;
+          case GR_FALLING: std::cout << '*'; break;
+          case GR_IMMUTABLE: std::cout << '#'; break;
+          case GR_SHATTERING: std::cout << 'X'; break;
+          case GR_HANGING: std::cout << '+'; break;
+          default: std::cout << '!'; break;
         }
-      cout << '\n';
+      std::cout << std::endl;
     }
-    cout << endl;
+    std::cout << std::endl;
 
     for (int n = 0; n < GC_PLAY_WIDTH; n++)
-      cout << blockAt(n, 0).state << endl;
+      std::cout << blockAt(n, 0).state << std::endl;
   }
 
   static inline int stateAt ( int x, int y )

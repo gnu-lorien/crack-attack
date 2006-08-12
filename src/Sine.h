@@ -26,8 +26,6 @@
 #ifndef SINE_H
 #define SINE_H
 
-using namespace std;
-
 #include "Game.h"
 
 /* static */ class Sine {
@@ -47,7 +45,7 @@ public:
 
     float estimate = table[n] + (table[n + 1] - table[n])
      * remainder * (1.0f / GC_SINE_TABLE_STEP_WIDTH);
-                    
+
     return estimate;
   }
 

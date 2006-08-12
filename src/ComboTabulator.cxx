@@ -34,7 +34,6 @@
 #include "BlockManager.h"
 #include "Score.h"
 
-using namespace std;
 
 void ComboTabulator::initialize (   )
 {

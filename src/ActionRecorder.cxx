@@ -23,15 +23,12 @@
 #include <fstream>
 #include "TextureLoader.h"
 
-using namespace std;
-
 #include "ActionRecorder.h"
 
 std::vector<Action> ActionRecorder::actions;
 
-struct offset_subtract : 
-  public unary_function< 
-    Action, void >
+struct offset_subtract :
+  public std::unary_function< Action, void >
 {
   offset_subtract(int b) : base(b) {}
   int base;
@@ -49,11 +46,11 @@ void ActionRecorder::gameFinish (  )
     actions[i].time_step -= base_ts;
   }
   TextureLoader::buildLocalDataFileName(GC_REPLAY_FILE_NAME, file_name);
-  ofstream mult(file_name);
+  std::ofstream mult(file_name);
   if(!mult.fail()) {
     size_t size = actions.size();
     for (size_t i=0; i < size; ++i) {
-      mult << actions[i].name << "\n" << actions[i].time_step << endl;
+      mult << actions[i].name << "\n" << actions[i].time_step << std::endl;
     }
     mult.close();
   }

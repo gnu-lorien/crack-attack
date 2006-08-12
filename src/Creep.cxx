@@ -39,7 +39,6 @@
 #include "LevelLights.h"
 #include "LoseBar.h"
 
-using namespace std;
 
 int Creep::creep;
 int Creep::creep_timer_step;

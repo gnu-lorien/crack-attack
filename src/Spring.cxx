@@ -25,7 +25,6 @@
  * Handles the garbage block impacts.
  */
 
-using namespace std;
 
 #include "Game.h"
 #include "Spring.h"

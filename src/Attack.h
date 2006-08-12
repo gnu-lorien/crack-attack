@@ -29,8 +29,6 @@
 
 #include "Game.h"
 
-using namespace std;
-
 void run_crack_attack (int mode, int port, char *host_name, char *player_name, int width, int height);
 void usage (   );
 void parseCommandLine ( int argc, char **argv, int &mode, int &port,

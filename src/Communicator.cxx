@@ -44,8 +44,6 @@
 #  define sleep(x) Sleep(x)
 #endif
 
-using namespace std;
-
 #include "Game.h"
 #include "Communicator.h"
 #include "Displayer.h"
@@ -54,6 +52,8 @@ using namespace std;
 #include "LevelLights.h"
 #include "MetaState.h"
 #include "Random.h"
+
+using namespace std;
 
 ENetHost *Communicator::host;
 ENetPeer *Communicator::peer;
@@ -168,7 +168,7 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
             break;
           }
           case ENET_EVENT_TYPE_RECEIVE: {
-						enet_packet_destroy(event.packet);
+            enet_packet_destroy(event.packet);
             break;
           }
           case ENET_EVENT_TYPE_DISCONNECT: {
@@ -186,7 +186,7 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
       cerr << "Time out." << endl;
       exit(1);
     }
-            
+
     // check version id
 
     commSendRel(CO_VERSION, strlen(CO_VERSION) + 1);
@@ -204,7 +204,7 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
     cout << endl;
     break;
 
-  } 
+  }
   case CM_CLIENT: {
     host = enet_host_create(NULL, 1, 57600, 14400);
     if(NULL == host) {
@@ -335,18 +335,18 @@ void Communicator::handlePlayRecv (  )
           handlePlayRecvStatus (event);
           break;
         case CO_CHANNEL_BOARD:
-					MESSAGE("Receiving board data (unimplemented)");
+          MESSAGE("Receiving board data (unimplemented)");
           handlePlayRecvBoard  (event);
         case CO_CHANNEL_REL:
-					MESSAGE("Channel reliable used! Should not be during play!");
+          MESSAGE("Channel reliable used! Should not be during play!");
           MESSAGE("Testing: Ignore leftovers?");
           break;
         default:
           cerr << "Networking message handled incorrectly:" << endl;
-					cerr << "Invalid channel id " << (int)event.channelID << endl;
+          cerr << "Invalid channel id " << (int)event.channelID << endl;
           exit(1);
       }
-			enet_packet_destroy(event.packet);
+      enet_packet_destroy(event.packet);
       break;
     case ENET_EVENT_TYPE_DISCONNECT:
       cerr << "Disconnected from host." << endl;

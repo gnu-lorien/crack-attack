@@ -26,7 +26,6 @@
 #ifndef MESSAGEMANAGER_H
 #define MESSAGEMANAGER_H
 
-using namespace std;
 
 #include "Displayer.h"
 

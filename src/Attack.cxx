@@ -23,7 +23,7 @@
  * 174 W. 18th Ave.
  * Columbus, OH  43210
  */
-     
+
 #include <cstring>
 #include <cctype>
 #include <sys/stat.h>
@@ -37,7 +37,6 @@
 #  endif
 #endif
 
-using namespace std;
 
 #include "TextureLoader.h"
 #include "Attack.h"
@@ -92,8 +91,8 @@ int main ( int argc, char **argv )
 
 inline void usage (   )
 {
-  cerr << "Usage: " GC_BINARY " --server [PORT] [--low] [--extreme] [--wait] "
-   "[--name 'NAME']\n"
+  std::cerr << "Usage: " GC_BINARY " --server [PORT] [--low] [--extreme] "
+   "[--wait] [--name 'NAME']\n"
    "        <or>\n"
    "       " GC_BINARY " SERVER PORT [[--really] --low] [--name 'NAME']\n"
    "        <or>\n"
@@ -104,7 +103,7 @@ inline void usage (   )
    "       " GC_BINARY " --solo [--hard] [--easy] [--medium] [[--really] --low]"
    " [--name 'NAME']\n"
    "        <etc...>"
-   << endl;
+   << std::endl;
   exit(1);
 }
 
@@ -116,7 +115,7 @@ void run_crack_attack (
     int width,
     int height) {
   if (!player_name) {
-    cerr << "Player name not properly allocated" << endl;
+    std::cerr << "Player name not properly allocated" << std::endl;
     return;
   }
 
@@ -134,7 +133,7 @@ void run_crack_attack (
 #endif
   }
 
-  cout << GC_MESSAGE << endl;
+  std::cout << GC_MESSAGE << std::endl;
 
   if (!(mode & CM_SOLO))
     Communicator::initialize(mode, port, host_name, player_name);
@@ -229,14 +228,14 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
 
       mode |= CM_CLIENT;
       strncpy(host_name, argv[n], GC_HOST_NAME_SIZE);
-			++n;
-			if (n < argc) {
-				port = atoi(argv[n]);
-			} else {
-				port = 0;
-				cerr << "No port specified.\n";
-				usage();
-			}		
+      ++n;
+      if (n < argc) {
+        port = atoi(argv[n]);
+      } else {
+        port = 0;
+        std::cerr << "No port specified.\n";
+        usage();
+      }
     }
   }
 
@@ -251,7 +250,6 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
 
   if ((mode & CM_AI && (mode & CM_X)))
     usage();
-
 }
 
 #define MKDIR(x,y) (mkdir(x, y))
@@ -266,10 +264,10 @@ void setupLocalDataDirectory (   )
   char local_directory[256];
   TextureLoader::buildLocalDataDirectoryName(local_directory);
   if (!TextureLoader::fileExists(local_directory)
-   && MKDIR(local_directory, 0777)
-   ) {
-   cerr << "Error creating local data directory '" << local_directory
-    << "'." << endl;
-   exit(1);
+      && MKDIR(local_directory, 0777)
+     ) {
+    std::cerr << "Error creating local data directory '" << local_directory
+      << "'." << std::endl;
+    exit(1);
   }
 }

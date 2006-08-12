@@ -25,7 +25,6 @@
  * Holds a map of the play area and also deals with elimination checks.
  */
 
-using namespace std;
 
 #include "Game.h"
 #include "Grid.h"

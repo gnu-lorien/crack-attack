@@ -23,7 +23,7 @@
  * 174 W. 18th Ave.
  * Columbus, OH  43210
  */
-     
+
 #include <GL/glut.h>
 #include <cstring>
 #include <cctype>
@@ -39,8 +39,6 @@
 
 #include <gtk/gtk.h>
 
-using namespace std;
-
 #include "../MetaState.h"
 #include "support.h"
 #include "interface.h"
@@ -50,15 +48,15 @@ using namespace std;
 int glut_argc;
 char **glut_argv;
 
-/* 
+/*
  * Call this when the window is unexpectedly destroyed to make sure the
  * hidden gui process doesn't hang around in the background.
  */
 static void destroy_window(GtkObject *object, gpointer data) {
 #ifdef DEVELOPMENT
-	g_print("\nOh no! We've been nexpectedly destroyed! :(\n");
+  g_print("\nOh no! We've been unexpectedly destroyed! :(\n");
 #endif
-	gtk_main_quit();
+  gtk_main_quit();
 }
 
 
@@ -78,19 +76,19 @@ static void destroy_window(GtkObject *object, gpointer data) {
 int gui_main ( int argc, char **argv )
 {
   GtkWidget *winCrackAttackSplash = NULL;
-  
+
   // Backup argc and argv to initialize glut in the child process
   glut_argc = argc;
   glut_argv = argv;
 
-    gtk_init(&argc, &argv);
-    add_pixmap_directory (GC_DATA_DIRECTORY(""));
-    winCrackAttackSplash = create_winCrackAttackSplash ();
-		gui_data_read(winCrackAttackSplash);
-    gtk_widget_show (winCrackAttackSplash);
-		g_signal_connect(GTK_OBJECT(winCrackAttackSplash), "destroy",
-				G_CALLBACK(destroy_window), NULL);
-    gtk_main ();
+  gtk_init(&argc, &argv);
+  add_pixmap_directory (GC_DATA_DIRECTORY(""));
+  winCrackAttackSplash = create_winCrackAttackSplash ();
+  gui_data_read(winCrackAttackSplash);
+  gtk_widget_show (winCrackAttackSplash);
+  g_signal_connect(GTK_OBJECT(winCrackAttackSplash), "destroy",
+      G_CALLBACK(destroy_window), NULL);
+  gtk_main ();
 
   return 0;
 }

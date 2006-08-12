@@ -34,7 +34,6 @@
 
 #include "Game.h"
 
-using namespace std;
 
 #define TL_GARBAGE_TEXTURE_TGA_ID     "Crack Attack! garbage texture"
 #define TL_SCREEN_SHOT_TGA_ID         "Crack Attack! screen shot"
@@ -57,11 +56,11 @@ public:
 
   static inline void buildLocalDataDirectoryName ( char dir_name[256] )
   {
-    ostringstream s;
+    std::ostringstream s;
 #ifndef _WIN32
-    s << getenv("HOME") << GC_LOCAL_DATA_DIRECTORY << ends;
+    s << getenv("HOME") << GC_LOCAL_DATA_DIRECTORY << std::ends;
 #else
-    s << GC_LOCAL_DATA_DIRECTORY << ends;
+    s << GC_LOCAL_DATA_DIRECTORY << std::ends;
 #endif
     strncpy(dir_name, s.str().data(), 256);
   }
@@ -69,11 +68,11 @@ public:
   static inline void buildLocalDataFileName ( const char base_name[256],
    char file_name[256] )
   {
-    ostringstream s;
+    std::ostringstream s;
 #ifndef _WIN32
-    s << getenv("HOME") << GC_LOCAL_DATA_DIRECTORY << base_name << ends;
+    s << getenv("HOME") << GC_LOCAL_DATA_DIRECTORY << base_name << std::ends;
 #else
-    s << GC_LOCAL_DATA_DIRECTORY << base_name << ends;
+    s << GC_LOCAL_DATA_DIRECTORY << base_name << std::ends;
 #endif
     strncpy(file_name, s.str().data(), 256);
   }

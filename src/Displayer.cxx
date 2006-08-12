@@ -40,7 +40,6 @@
 
 #include <sys/time.h>
 
-using namespace std;
 
 #include "TextureLoader.h"
 #include "Game.h"

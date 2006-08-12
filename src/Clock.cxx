@@ -29,7 +29,6 @@
 #include "Clock.h"
 #include "WinRecord.h"
 
-using namespace std;
 
 short Clock::digits[4];
 short Clock::previous_digits[4];

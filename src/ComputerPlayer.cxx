@@ -24,7 +24,6 @@
 #include "ComputerPlayer.h"
 #include "Score.h"
 
-using namespace std;
 
 //#define WAIT_TIME ( GC_STEPS_PER_SECOND * 10 )
 

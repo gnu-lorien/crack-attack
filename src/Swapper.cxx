@@ -25,7 +25,6 @@
  * The thingy you swap blocks with.
  */
 
-using namespace std;
 
 #include "Game.h"
 #include "Swapper.h"

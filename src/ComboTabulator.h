@@ -26,7 +26,6 @@
 #ifndef COMBOTABULATOR_H
 #define COMBOTABULATOR_H
 
-using namespace std;
 
 #include "Game.h"
 

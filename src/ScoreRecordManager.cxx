@@ -25,7 +25,6 @@
  * Handles the complexities of displaying the score record.
  */
 
-using namespace std;
 
 #include "Game.h"
 #include "Displayer.h"

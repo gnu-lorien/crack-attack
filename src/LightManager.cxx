@@ -28,7 +28,6 @@
 #include <GL/glut.h>
 #include "glext.h"
 
-using namespace std;
 
 #include "Game.h"
 #include "Displayer.h"

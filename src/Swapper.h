@@ -26,7 +26,6 @@
 #ifndef SWAPPER_H
 #define SWAPPER_H
 
-using namespace std;
 
 #include "BlockManager.h"
 

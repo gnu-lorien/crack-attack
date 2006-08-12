@@ -26,7 +26,6 @@
 #ifndef SPRING_H
 #define SPRING_H
 
-using namespace std;
 
 // spring constants, if you will
 #define SP_IMPACT_VELOCITY                      (0.1f)

@@ -76,9 +76,9 @@ public:
 
   inline void print() const {
     /*
-    cout << "lights: " << level_lights << " state: " 
+    std::cout << "lights: " << level_lights << " state: " 
       << game_state << " stamp: " << loss_time_stamp
-      << " sync: " << sync << endl;
+      << " sync: " << sync << std::endl;
     */
   }
 };
@@ -196,7 +196,7 @@ private:
         message, size, (reliable ? ENET_PACKET_FLAG_RELIABLE : 0));
     DOT((int)channelId + 10);
     if(enet_peer_send(peer, channelId, packet)!=0) {
-      cerr << "Connection lost on send" << endl;
+      std::cerr << "Connection lost on send" << std::endl;
       exit(1);
     }
   }
@@ -218,7 +218,7 @@ private:
     while (enet_host_service(host, &event, CO_SERVER_TIME_OUT * 1000) > 0) {
       DOT(4);
       if (event.type == ENET_EVENT_TYPE_DISCONNECT) {
-        cerr << "Disconnected from host." << endl;
+        std::cerr << "Disconnected from host." << std::endl;
         exit(1);
       }
       else if (event.type == ENET_EVENT_TYPE_RECEIVE) {
@@ -244,7 +244,7 @@ private:
     ENetEvent event;
     if (enet_host_service(host, &event, 0) > 0) {
       if (event.type == ENET_EVENT_TYPE_DISCONNECT) {
-        cerr << "Disconnected from host." << endl;
+        std::cerr << "Disconnected from host." << std::endl;
         exit(1);
       }
       else if (event.type == ENET_EVENT_TYPE_RECEIVE) {

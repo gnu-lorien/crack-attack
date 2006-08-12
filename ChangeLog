@@ -5,4 +5,5 @@
 	is already being cleaned up automatically once the program exists.
 	* src/Makefile.am, src/gtk-gui/Makefile.am: Removed linking with the
 	Xmu library, since we don't seem to use it anywhere.
+	* src/*: Cleaned up most occurances of "using namespace std;".
 

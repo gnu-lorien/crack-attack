@@ -26,7 +26,6 @@
 #ifndef WINRECORD_H
 #define WINRECORD_H
 
-using namespace std;
 
 #include "Game.h"
 #include "MetaState.h"

@@ -29,12 +29,12 @@
 #include <cstring>
 #include <fstream>
 
-using namespace std;
-
 #include "TextureLoader.h"
 #include "Game.h"
 #include "MetaState.h"
 #include "Score.h"
+
+using namespace std;
 
 int Score::score;
 int Score::backlog;

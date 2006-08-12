@@ -26,7 +26,6 @@
 #ifndef SPARKMANAGER_H
 #define SPARKMANAGER_H
 
-using namespace std;
 
 #include "Displayer.h"
 

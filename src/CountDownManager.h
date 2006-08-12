@@ -26,7 +26,6 @@
 #ifndef COUNTDOWNMANAGER_H
 #define COUNTDOWNMANAGER_H
 
-using namespace std;
 
 /* static */ class CountDownManager {
 public:

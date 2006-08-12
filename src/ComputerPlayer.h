@@ -25,7 +25,6 @@
 
 //class ComputerPlayerAI;
 
-using namespace std;
 
 /* static */ class ComputerPlayer {
 private:

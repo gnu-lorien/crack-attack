@@ -38,7 +38,6 @@
 #include "Music.h"
 #endif
 
-using namespace std;
 
 bool CelebrationManager::draw_game;
 GLfloat CelebrationManager::light_level;

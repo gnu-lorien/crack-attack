@@ -28,8 +28,6 @@
 
 #include <cassert>
 
-using namespace std;
-
 #include "Game.h"
 #include "Block.h"
 #include "Random.h"
@@ -202,7 +200,7 @@ public:
   static bool storeMap[GC_BLOCK_STORE_SIZE];
 
   static int last_row_c[GC_PLAY_WIDTH], second_to_last_row_c[GC_PLAY_WIDTH];
-  
+
 private:
   static void newCreepBlock ( int x );
 

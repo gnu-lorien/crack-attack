@@ -26,7 +26,6 @@
 #ifndef SIGNMANAGER_H
 #define SIGNMANAGER_H
 
-using namespace std;
 
 #include "Displayer.h"
 

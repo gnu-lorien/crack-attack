@@ -102,15 +102,15 @@ void Displayer::generateBlockDisplayList (   )
 
   const GLubyte* renderer = glGetString(GL_RENDERER);
   if (strstr((char*) renderer, "DRI 20020221 Voodoo3")) {
-    cerr << "**********\nWARNING:"
+    std::cerr << "**********\nWARNING:"
       "disabling call to 1d texturing on DRI 20020221 Voodoo3 renderer "
-      "since it segfaults\n**********" << endl;
+      "since it segfaults\n**********" << std::endl;
     return;
   }
   if (strstr((char*) renderer, "865G 20021115")) {
-    cerr << "**********\nWARNING:"
+    std::cerr << "**********\nWARNING:"
       "disabling call to 1d texturing on 865G 20021115 renderer "
-      "since it segfaults\n**********" << endl;
+      "since it segfaults\n**********" << std::endl;
     return;
   }
 

@@ -26,7 +26,6 @@
 #ifndef LEVELLIGHTS_H
 #define LEVELLIGHTS_H
 
-using namespace std;
 
 #include "Game.h"
 #include "Displayer.h"

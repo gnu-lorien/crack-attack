@@ -26,8 +26,6 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-using namespace std;
-
 #include "Game.h"
 #include "ComboTabulator.h"
 

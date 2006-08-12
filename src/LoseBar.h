@@ -28,7 +28,6 @@
 
 #include <cassert>
 
-using namespace std;
 
 #define LB_INACTIVE                  (1 << 0)
 #define LB_LOW_ALERT                 (1 << 1)

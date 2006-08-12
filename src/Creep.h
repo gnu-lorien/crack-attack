@@ -26,7 +26,6 @@
 #ifndef CREAP_H
 #define CREAP_H
 
-using namespace std;
 
 /* static */ class Creep {
 public:

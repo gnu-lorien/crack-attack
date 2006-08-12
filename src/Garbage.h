@@ -30,7 +30,6 @@
 
 #include "glext.h"
 
-using namespace std;
 
 // flavor of garbage
 #define GF_NORMAL                      (0)
