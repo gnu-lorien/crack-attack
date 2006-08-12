@@ -25,13 +25,14 @@
  * Keeps track of the button pressing.
  */
 
+#include "Controller.h"
+
 #include <GL/glut.h>
 #include <cassert>
 
 #include "glext.h"
 
 #include "Game.h"
-#include "Controller.h"
 #include "ActionRecorder.h"
 #include "MetaState.h"
 #include "Grid.h"

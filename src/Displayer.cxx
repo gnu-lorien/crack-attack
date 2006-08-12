@@ -26,6 +26,8 @@
  * Handles all the prettyness; or uglyness, as it now stands.
  */
 
+#include "Displayer.h"
+
 #include <cstring>
 #include <cctype>
 #include <GL/glut.h>
@@ -35,15 +37,13 @@
 
 #ifdef DEVELOPMENT
 #include <iomanip>
-#include "sstream.h"
+#include <sstream>
 #endif
 
 #include <sys/time.h>
 
-
 #include "TextureLoader.h"
 #include "Game.h"
-#include "Displayer.h"
 #include "CelebrationManager.h"
 #include "GarbageFlavorImage.h"
 #include "SignManager.h"

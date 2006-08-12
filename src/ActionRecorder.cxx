@@ -20,10 +20,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "ActionRecorder.h"
+
 #include <fstream>
+
 #include "TextureLoader.h"
 
-#include "ActionRecorder.h"
 
 std::vector<Action> ActionRecorder::actions;
 

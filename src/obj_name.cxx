@@ -29,7 +29,6 @@
 
 #include "glext.h"
 
-
 #include "Game.h"
 #include "Displayer.h"
 #include "String.h"

@@ -25,13 +25,13 @@
  * Handles all the random number tables.
  */
 
-#include <ctime>
-
-
-#include "Game.h"
 #include "Random.h"
 
+#include <ctime>
 #include <cmath>
+
+#include "Game.h"
+
 
 Angle Random::angle_table[GC_SIZE_RANDOM_ANGLE_TABLE];
 Angle Random::angle_death_spark_table[GC_SIZE_RANDOM_ANGLE_TABLE];

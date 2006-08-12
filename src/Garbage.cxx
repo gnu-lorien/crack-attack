@@ -25,9 +25,10 @@
  * The garbage blocks is what this details.
  */
 
+#include "Garbage.h"
+
 #include "Game.h"
 #include "Grid.h"
-#include "Garbage.h"
 #include "BlockManager.h"
 #include "GarbageManager.h"
 #include "Displayer.h"

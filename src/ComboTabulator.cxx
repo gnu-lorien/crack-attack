@@ -25,10 +25,11 @@
  * Each one keeps track of a set of or potential set of elimination combos.
  */
 
+#include "ComboTabulator.h"
+
 #include "Game.h"
 #include "Block.h"
 #include "GarbageGenerator.h"
-#include "ComboTabulator.h"
 #include "SparkleManager.h"
 #include "SignManager.h"
 #include "BlockManager.h"

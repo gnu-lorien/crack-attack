@@ -26,6 +26,8 @@
  * Loads textures from uncompressed TGA files.
  */
 
+#include "TextureLoader.h"
+
 #include <GL/glut.h>
 #include <fstream>
 #include <iostream>
@@ -38,7 +40,6 @@
 
 #include "glext.h"
 
-#include "TextureLoader.h"
 #include "Game.h"
 
 using namespace std;

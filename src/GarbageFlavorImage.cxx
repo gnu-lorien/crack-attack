@@ -26,15 +26,14 @@
  * Handles the the garbage flavor image.
  */
 
+#include "GarbageFlavorImage.h"
+
 #include <iomanip>
-
-#include "sstream.h"
-
+#include <sstream>
 
 #include "TextureLoader.h"
 #include "Game.h"
 #include "Displayer.h"
-#include "GarbageFlavorImage.h"
 #include "Random.h"
 
 int GarbageFlavorImage::current_texture;

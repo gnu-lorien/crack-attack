@@ -25,8 +25,6 @@
  * Handles the garbage block impacts.
  */
 
-
-#include "Game.h"
 #include "Spring.h"
 
 float Spring::y;

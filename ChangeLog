@@ -5,5 +5,13 @@
 	is already being cleaned up automatically once the program exists.
 	* src/Makefile.am, src/gtk-gui/Makefile.am: Removed linking with the
 	Xmu library, since we don't seem to use it anywhere.
-	* src/*: Cleaned up most occurances of "using namespace std;".
+	* src/*: Cleaned up most occurances of "using namespace std;". Also
+	made sure that each module includes its own header first, in order to
+	ensure that no header silently depends on another header to be
+	included first.
+	* src/Game.h: Removed definition of max since it conflicts with the
+	definition of std::max.
+	* src/sstream.h: Removed this file since it was only solving a
+	compatibility issue for old versions of MSVC. Modern compilers should
+	support the sstream header fine.
 

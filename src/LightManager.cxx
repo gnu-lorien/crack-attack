@@ -25,13 +25,13 @@
  * Handles turning on and off the required lights during drawing.
  */
 
+#include "LightManager.h"
+
 #include <GL/glut.h>
 #include "glext.h"
 
-
 #include "Game.h"
 #include "Displayer.h"
-#include "LightManager.h"
 #include "SparkleManager.h"
 #include "CountDownManager.h"
 #include "CelebrationManager.h"

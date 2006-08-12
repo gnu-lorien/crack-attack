@@ -27,6 +27,8 @@
  * integers on various systems.
  */
 
+#include "Communicator.h"
+
 #include <cassert>
 #include <iostream>
 #include <sys/types.h>
@@ -45,7 +47,6 @@
 #endif
 
 #include "Game.h"
-#include "Communicator.h"
 #include "Displayer.h"
 #include "GarbageGenerator.h"
 #include "GarbageFlavorImage.h"

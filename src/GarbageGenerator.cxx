@@ -25,11 +25,11 @@
  * Displays and sends garbage to the opponent.
  */
 
+#include "GarbageGenerator.h"
+
 #include <iostream>
 
-
 #include "Game.h"
-#include "GarbageGenerator.h"
 #include "Block.h"
 #include "BlockManager.h"
 #include "Garbage.h"

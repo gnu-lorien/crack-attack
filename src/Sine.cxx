@@ -25,9 +25,10 @@
  * Approximates sin(x) with a table and interpolation.
  */
 
+#include "Sine.h"
+
 #include "Game.h"
 #include "MetaState.h"
-#include "Sine.h"
 
 float Sine::table[GC_SINE_TABLE_LENGTH];
 

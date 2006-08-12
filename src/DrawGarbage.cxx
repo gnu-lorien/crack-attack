@@ -29,10 +29,8 @@
 #define GL_GLEXT_PROTOTYPES
 
 #include <GL/glut.h>
-#include <GL/glext.h>
 
 #include "glext.h"
-
 
 #include "Game.h"
 #include "Block.h"

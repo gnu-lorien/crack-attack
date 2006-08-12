@@ -25,10 +25,11 @@
  * Miguel Ángel Vilela García - www.miguev.net
  */
 
+#include "Music.h"
+
 #include "TextureLoader.h"
 #include "Random.h"
 #include "Sound.h"
-#include "Music.h"
 
 Mix_Music *music    = NULL;
 int music_available = 0;

@@ -56,4 +56,4 @@ private:
   static std::vector<Action> actions;
 };
 
-#endif 
+#endif

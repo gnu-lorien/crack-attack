@@ -26,8 +26,9 @@
 #ifndef LOSEBAR_H
 #define LOSEBAR_H
 
-#include <cassert>
+#include "Displayer.h"
 
+#include <cassert>
 
 #define LB_INACTIVE                  (1 << 0)
 #define LB_LOW_ALERT                 (1 << 1)

@@ -26,13 +26,14 @@
  * Handles the score for solo games.
  */
 
+#include "Score.h"
+
 #include <cstring>
 #include <fstream>
 
 #include "TextureLoader.h"
 #include "Game.h"
 #include "MetaState.h"
-#include "Score.h"
 
 using namespace std;
 

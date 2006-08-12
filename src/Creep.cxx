@@ -29,8 +29,9 @@
  * worth the extra dereference we'd have to do each time we access the grid?
  */
 
-#include "Game.h"
 #include "Creep.h"
+
+#include "Game.h"
 #include "Grid.h"
 #include "BlockManager.h"
 #include "Controller.h"

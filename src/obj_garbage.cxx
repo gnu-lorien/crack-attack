@@ -34,7 +34,6 @@
 
 #include "glext.h"
 
-
 #include "TextureLoader.h"
 #include "Game.h"
 #include "Displayer.h"
@@ -243,10 +242,10 @@ void Displayer::generateGarbageExtras (   )
   if (Displayer::state & DS_MULTITEXTURING) {
 
     glActiveTextureARB(GL_TEXTURE1_ARB);
-    
+
     glBindTexture(GL_TEXTURE_2D, garbage_lightmap);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    
+
     glActiveTextureARB(GL_TEXTURE0_ARB);
 
     glNewList(garbage_flavor_list, GL_COMPILE);
@@ -292,7 +291,7 @@ void Displayer::generateGarbageExtras (   )
       }
 
       glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
-  
+
     glEndList();
 #ifndef NO_MULTITEXTURING
   }

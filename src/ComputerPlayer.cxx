@@ -19,9 +19,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "ComputerPlayer.h"
+
 #include <cassert>
 #include "LevelLights.h"
-#include "ComputerPlayer.h"
 #include "Score.h"
 
 

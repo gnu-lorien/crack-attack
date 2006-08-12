@@ -26,8 +26,9 @@
  * blocks.  Handles the combo tabulator free store.
  */
 
-#include "Game.h"
 #include "ComboManager.h"
+
+#include "Game.h"
 #include "ComboTabulator.h"
 #include "GarbageGenerator.h"
 #include "Score.h"

@@ -25,9 +25,9 @@
  * The thingy you swap blocks with.
  */
 
+#include "Swapper.h"
 
 #include "Game.h"
-#include "Swapper.h"
 #include "Grid.h"
 #include "Block.h"
 #include "Controller.h"

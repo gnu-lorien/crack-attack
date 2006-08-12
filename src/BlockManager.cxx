@@ -25,9 +25,9 @@
  * Allocates and frees blocks.
  */
 
+#include "BlockManager.h"
 
 #include "Game.h"
-#include "BlockManager.h"
 #include "ComboTabulator.h"
 #include "Random.h"
 #include "X.h"

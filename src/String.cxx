@@ -26,17 +26,17 @@
  * Holds string display utilities.
  */
 
+#include "String.h"
+
 #include <cctype>
 #include <cstring>
 #include <GL/glut.h>
 
 #include "glext.h"
 
-
 #include "TextureLoader.h"
 #include "Game.h"
 #include "Displayer.h"
-#include "String.h"
 
 const char *String::letter_texture_files[DC_FONT_NUMBER][DC_LETTER_NUMBER]
  = { { GC_DATA_DIRECTORY("font0_0.tga"),

@@ -25,8 +25,9 @@
  * Handles the timer state.
  */
 
-#include "Game.h"
 #include "Clock.h"
+
+#include "Game.h"
 #include "WinRecord.h"
 
 

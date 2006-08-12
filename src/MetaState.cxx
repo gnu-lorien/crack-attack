@@ -26,14 +26,14 @@
  * Handles the program's state and transfers between them.
  */
 
+#include "MetaState.h"
+
 #include <GL/glut.h>
 #include <cstring>
 
 #include "glext.h"
 
-
 #include "Game.h"
-#include "MetaState.h"
 #include "Displayer.h"
 #include "CelebrationManager.h"
 #include "Controller.h"

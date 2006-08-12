@@ -25,12 +25,12 @@
  * Handles all the pretty sparkles!
  */
 
+#include "SparkleManager.h"
 
 #include "Game.h"
 #include "Displayer.h"
 #include "MetaState.h"
 #include "Random.h"
-#include "SparkleManager.h"
 
 int SparkleManager::spark_count;
 Spark SparkleManager::sparks[DC_MAX_SPARK_NUMBER];

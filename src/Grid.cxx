@@ -25,9 +25,9 @@
  * Holds a map of the play area and also deals with elimination checks.
  */
 
+#include "Grid.h"
 
 #include "Game.h"
-#include "Grid.h"
 #include "Garbage.h"
 #include "ComboManager.h"
 #include "LevelLights.h"

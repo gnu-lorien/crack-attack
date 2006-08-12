@@ -26,6 +26,8 @@
  * Remove dying_count_2.
  */
 
+#include "Game.h"
+
 #include <GL/glut.h>
 
 #include "glext.h"
@@ -34,8 +36,6 @@
 
 #include <cassert>
 
-
-#include "Game.h"
 #include "BlockManager.h"
 #include "CelebrationManager.h"
 #include "Clock.h"

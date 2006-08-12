@@ -25,13 +25,13 @@
  * Handles the win/loss record.
  */
 
+#include "WinRecord.h"
+
 #include <GL/glut.h>
 
 #include "glext.h"
 
-
 #include "Game.h"
-#include "WinRecord.h"
 #include "Displayer.h"
 #include "Random.h"
 

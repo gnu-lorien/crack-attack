@@ -30,7 +30,6 @@
 
 #include "glext.h"
 
-
 #include "TextureLoader.h"
 #include "Game.h"
 #include "Displayer.h"
@@ -67,8 +66,9 @@ const char *sign_large_subtexture_files[DC_NUMBER_LARGE_SIGN_SUBTEXTURES]
 
 void Displayer::generateSignList (   )
 {
-  GLubyte *subtextures
-   [max(DC_NUMBER_SMALL_SIGN_SUBTEXTURES, DC_NUMBER_LARGE_SIGN_SUBTEXTURES)];
+  GLubyte *subtextures[std::max(
+      DC_NUMBER_SMALL_SIGN_SUBTEXTURES,
+      DC_NUMBER_LARGE_SIGN_SUBTEXTURES)];
 
   // load and pack the small sign textures
 

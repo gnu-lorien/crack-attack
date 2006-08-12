@@ -25,12 +25,12 @@
  * Holds the X-treme state.
  */
 
+#include "X.h"
 
 #include "Game.h"
 #include "Grid.h"
 #include "Block.h"
 #include "Swapper.h"
-#include "X.h"
 
 int X::reverse_controls;
 int X::invisible_swapper;

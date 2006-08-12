@@ -29,10 +29,9 @@
 
 #include <GL/glut.h>
 #include <cmath>
+#include <sstream>
 
 #include "glext.h"
-#include "sstream.h"
-
 
 #include "TextureLoader.h"
 #include "Game.h"

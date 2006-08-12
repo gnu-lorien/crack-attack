@@ -25,9 +25,9 @@
  * Handles all the little reward signs.
  */
 
+#include "SignManager.h"
 
 #include "Game.h"
-#include "SignManager.h"
 #include "Random.h"
 
 int SignManager::sign_count;

@@ -25,9 +25,9 @@
  * Allocates and frees blocks.
  */
 
+#include "GarbageManager.h"
 
 #include "Game.h"
-#include "GarbageManager.h"
 #include "Grid.h"
 #include "Random.h"
 

@@ -25,10 +25,11 @@
  * Handles the celebration after a game.
  */
 
+#include "CelebrationManager.h"
+
 #include "Game.h"
 #include "MetaState.h"
 #include "Displayer.h"
-#include "CelebrationManager.h"
 #include "SparkleManager.h"
 #include "MessageManager.h"
 #include "WinRecord.h"

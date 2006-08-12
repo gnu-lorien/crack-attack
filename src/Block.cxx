@@ -25,8 +25,9 @@
  * The block object, of which each block is one.
  */
 
-#include "Game.h"
 #include "Block.h"
+
+#include "Game.h"
 #include "BlockManager.h"
 #include "ComboTabulator.h"
 #include "Garbage.h"

@@ -26,7 +26,6 @@
 #ifndef CONTORLLER_H
 #define CONTORLLER_H
 
-
 #define CC_LEFT                     (1 << 0)
 #define CC_RIGHT                    (1 << 1)
 #define CC_UP                       (1 << 2)

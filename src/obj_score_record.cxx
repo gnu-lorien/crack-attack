@@ -25,10 +25,9 @@
 
 #include <GL/glut.h>
 #include <cmath>
+#include <sstream>
 
-#include "sstream.h"
 #include "glext.h"
-
 
 #include "Game.h"
 #include "Displayer.h"

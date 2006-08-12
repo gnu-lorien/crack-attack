@@ -24,6 +24,8 @@
  * Columbus, OH  43210
  */
 
+#include "Attack.h"
+
 #include <cstring>
 #include <cctype>
 #include <sys/stat.h>
@@ -37,9 +39,7 @@
 #  endif
 #endif
 
-
 #include "TextureLoader.h"
-#include "Attack.h"
 #include "Communicator.h"
 #include "MetaState.h"
 #include "Random.h"

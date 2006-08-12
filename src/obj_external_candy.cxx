@@ -30,7 +30,6 @@
 
 #include "glext.h"
 
-
 #include "TextureLoader.h"
 #include "Game.h"
 #include "Displayer.h"

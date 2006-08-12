@@ -25,9 +25,11 @@
  * Miguel Ángel Vilela García - www.miguev.net
  */
 
+#include "Sound.h"
+
 #include "TextureLoader.h"
 #include "Random.h"
-#include "Sound.h"
+
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 

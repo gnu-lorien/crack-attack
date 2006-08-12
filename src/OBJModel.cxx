@@ -15,15 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Id: OBJModel.cxx,v 1.1 2006/07/19 01:56:21 lorien420 Exp $
+ * $Id: OBJModel.cxx,v 1.2 2006/08/12 01:26:55 b_lindeijer Exp $
  */
+
+#include "OBJModel.h"
 
 #include <GL/gl.h>
 #include <iostream>
-#include <vector>
 #include <list>
-
-#include "OBJModel.h"
 
 using namespace std;
 

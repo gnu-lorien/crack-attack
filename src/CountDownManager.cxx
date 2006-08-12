@@ -25,8 +25,9 @@
  * Very simple, but I need somewhere to put this code.
  */
 
-#include "Game.h"
 #include "CountDownManager.h"
+
+#include "Game.h"
 #include "MessageManager.h"
 #include "Displayer.h"
 #ifdef AUDIO_ENABLED

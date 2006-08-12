@@ -25,6 +25,7 @@
  * Handles the complexities of displaying the score record.
  */
 
+#include "ScoreRecordManager.h"
 
 #include "Game.h"
 #include "Displayer.h"
@@ -32,7 +33,6 @@
 #include "WinRecord.h"
 #include "Score.h"
 #include "Controller.h"
-#include "ScoreRecordManager.h"
 
 int ScoreRecordManager::top_rank;
 int ScoreRecordManager::top_texture;

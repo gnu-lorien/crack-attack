@@ -25,8 +25,6 @@
  * Not too much to this guy.
  */
 
-
-#include "Game.h"
 #include "MessageManager.h"
 
 int MessageManager::message_shape;

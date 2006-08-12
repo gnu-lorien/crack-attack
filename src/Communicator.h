@@ -28,7 +28,7 @@
 
 //#include <sys/types.h>
 
-//#include "Game.h"
+#include "Game.h"
 #include "enet/enet.h"
 
 // default communication port

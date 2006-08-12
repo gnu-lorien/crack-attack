@@ -25,9 +25,9 @@
  * Handles the level lights' states.
  */
 
+#include "LevelLights.h"
 
 #include "Game.h"
-#include "LevelLights.h"
 #include "Grid.h"
 #include "Communicator.h"
 #include "MetaState.h"

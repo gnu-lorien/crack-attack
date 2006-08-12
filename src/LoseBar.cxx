@@ -25,15 +25,15 @@
  * Handles the losebar.
  */
 
+#include "LoseBar.h"
+
 #include <GL/glut.h>
 
 #include "glext.h"
 
-
 #include "Game.h"
 #include "Creep.h"
 #include "Displayer.h"
-#include "LoseBar.h"
 
 GLfloat LoseBar::bar;
 int LoseBar::fade_timer;
