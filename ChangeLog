@@ -1,3 +1,12 @@
+2006-08-14  Andrew Sayman <lorien420@myrealbox.com>
+
+	* src/gtk-gui/persist.cxx, src/Game.h, src/ComputerPlayer.cxx,
+	src/ComputerPlayerAI.cxx, src/Displayer.cxx: Previous "using namespace std;"
+	clean up missed some of the debug-only usages. The biggest violators were
+	the output macros defined in Game.h.
+	* src/ComputerPlayerAI.cxx: Removed remnants of more_gray since it's not
+	used at all anymore. Put back gray_height because it is used in debug mode.
+
 2006-08-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/String.cxx, src/obj_clock.cxx, src/obj_sign.cxx, data/*,

@@ -286,37 +286,38 @@
 #    define COLOR(n)                     ""
 #    define NOCOLOR                      ""
 #  endif
-#  define DOT(n)                         { cerr << COLOR(37 - n) \
-                                            << "." NOCOLOR << flush; }
-#  define DUMP(a)                        { cerr << COLOR(32) << "Dump: " \
+#  define DOT(n)                         { std::cerr << COLOR(37 - n) \
+                                            << "." NOCOLOR << std::flush; }
+#  define DUMP(a)                        { std::cerr << COLOR(32) << "Dump: " \
                                             __FILE__ ":" << __LINE__ << ": " \
                                             NOCOLOR #a \
-                                            " = " << (a) << endl; }
+                                            " = " << (a) << std::endl; }
 #  define PERIODIC_DUMP(a, b)            { if (!(Game::time_step % a)) \
-                                            cerr << COLOR(32) << "Dump: " \
+                                            std::cerr << COLOR(32) << "Dump: " \
                                             __FILE__ ":" << __LINE__ << ": " \
                                             NOCOLOR #b \
-                                            " = " << (b) << endl; }
-#  define MESSAGE(a)                     { cerr << COLOR(33) << "Mesg: " \
+                                            " = " << (b) << std::endl; }
+#  define MESSAGE(a)                     { std::cerr << COLOR(33) << "Mesg: " \
                                             __FILE__ ":" << __LINE__ << ": " \
-                                            NOCOLOR << a << endl; }
+                                            NOCOLOR << a << std::endl; }
 #  ifndef _WIN32
-#    define MARK()                       { cerr << COLOR(35) << "Mark: " \
+#    define MARK()                       { std::cerr << COLOR(35) << "Mark: " \
                                             __FILE__ ":" << __LINE__ << ": " \
                                             << __PRETTY_FUNCTION__ << NOCOLOR \
-                                            << endl; }
+                                            << std::endl; }
 #  else
-#    define MARK()                       { cerr << COLOR(35) << "Mark: " \
+#    define MARK()                       { std::cerr << COLOR(35) << "Mark: " \
                                             __FILE__ ":" << __LINE__ << ":" \
-                                            NOCOLOR << endl; }
+                                            NOCOLOR << std::endl; }
 #  endif
-#  define ENDL()                         { cerr << COLOR(34) << "Endl: " \
+#  define ENDL()                         { std::cerr << COLOR(34) << "Endl: " \
                                             __FILE__ ":" << __LINE__ << ":" \
-                                            NOCOLOR << endl; }
-#  define LOG(a)                         { ofstream log("log", ios::app); \
+                                            NOCOLOR << std::endl; }
+#  define LOG(a)                         { std::ofstream log("log", \
+                                            std::ios::app); \
                                             log << "Log: " __FILE__ ":" \
                                             << __LINE__ << ": " << a \
-                                            << endl; }
+                                            << std::endl; }
 #else
 #  define DOT(n)                         ((void) 0)
 #  define DUMP(a)                        ((void) 0)

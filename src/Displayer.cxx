@@ -407,9 +407,9 @@ void Displayer::screenShot (   )
   glReadPixels(0, 0, screen_length, screen_length, GL_RGBA, GL_UNSIGNED_BYTE,
    image);
 
-  ostringstream file_name;
-  file_name << DC_SCREEN_SHOT_FILE_NAME_BASE "_" << setw(GC_GARBAGE_TEX_NUMBER_DIGITS)
-   << setfill('0') << count << ".tga" << ends;
+	std::ostringstream file_name;
+  file_name << DC_SCREEN_SHOT_FILE_NAME_BASE "_" << std::setw(GC_GARBAGE_TEX_NUMBER_DIGITS)
+   << std::setfill('0') << count << ".tga" << std::ends;
   TextureLoader::createTGA(file_name.str().c_str(), image, screen_length, screen_length,
    TL_SCREEN_SHOT_TGA_ID);
 

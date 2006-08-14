@@ -3,6 +3,7 @@
  * Kevin Webb - 3/21/05
  *
  * Copyright (C) 2005  Kevin Webb
+ * Copyright (C) 2006  Andrew Sayman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -99,7 +100,7 @@ gui_data_read                    (GtkWidget *widget)
 	std::ifstream file(file_name);
 	if (file.fail()) {
 #ifdef DEVELOPMENT
-		cerr << "Unable to find gui data file!\n";
+		std::cerr << "Unable to find gui data file!\n";
 #endif
 		return;
 	}

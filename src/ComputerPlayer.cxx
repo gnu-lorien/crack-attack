@@ -75,9 +75,9 @@ void ComputerPlayer::timeStep()
   if (Game::time_step >= localAi.alarm()) {
     localAi.garbageAmount()->sendToGenerator();
 #ifndef NDEBUG
-    cout << "init pop: " << GC_INITIAL_POP_DELAY << endl;
-    cout << "steps per second: " << GC_STEPS_PER_SECOND << endl;
-    cout << "Height: " << ai->garbageQueue()->height() << endl;
+    std::cout << "init pop: " << GC_INITIAL_POP_DELAY << std::endl;
+    std::cout << "steps per second: " << GC_STEPS_PER_SECOND << std::endl;
+    std::cout << "Height: " << ai->garbageQueue()->height() << std::endl;
 #endif
     localAi.resetAlarm();
     MESSAGE("AI will drop again in " << ((localAi.alarm() - Game::time_step) / GC_STEPS_PER_SECOND) << " seconds");
