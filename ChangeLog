@@ -5,6 +5,11 @@
 	back to TGA, since the PNG versions load unacceptably slow compared to
 	the instantly loading TGA versions.
 
+2006-08-12  Andrew Sayman <lorien420@myrealbox.com>
+
+	* src/Game.h: Properly undefined the new model property when using 
+	BINRELOC.
+
 2006-08-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* NEWS: Moved contents of ChangeLog here.
