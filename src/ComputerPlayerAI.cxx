@@ -120,7 +120,9 @@ void ComputerPlayerAI::shatter()
   MESSAGE("Resetting garbageQueue " << garbageQueue()->height());
   if (garbageQueue()->height() > 0) {
     state = AI_SHATTERING; 
+#ifndef NDEBUG
     int gray_height = garbageQueue()->specialHeight();
+#endif
     last_shatter_height = garbageQueue()->removeWithSpecials();
     MESSAGE(last_shatter_height << " shattered and " << garbageQueue()->height() << " remaining grays:" << gray_height);
     loopi(last_shatter_height) {
