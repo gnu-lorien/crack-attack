@@ -173,6 +173,7 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
             break;
           }
           case ENET_EVENT_TYPE_DISCONNECT: {
+            event.peer->data = NULL;
             break;
           }
           case ENET_EVENT_TYPE_NONE: {
@@ -207,7 +208,7 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
 
   }
   case CM_CLIENT: {
-    host = enet_host_create(NULL, 1, 57600, 14400);
+    host = enet_host_create(NULL, 1, 57600 / 8, 14400 / 8);
     if(NULL == host) {
       cerr << "Could not create ENet host." << endl;
       exit(1);

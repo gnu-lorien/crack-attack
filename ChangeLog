@@ -1,3 +1,9 @@
+2006-09-24  Andrew Sayman <lorien420@myrealbox.com>
+
+	* src/Communicator.cxx: Set the bandwidth usage to be lower, hopefully
+	reducing the number of packets tossed around. This is more of an
+	experiment than anything.
+
 2006-08-15  Andrew Sayman <lorien420@myrealbox.com>
 
 	* src/ComputerPlayerAI.cxx: Only define gray_height in development
