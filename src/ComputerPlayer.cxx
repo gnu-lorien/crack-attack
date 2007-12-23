@@ -107,7 +107,7 @@ static std::vector<int> row_flavors(int row, int flavor)
 {
   std::vector<int> locations;
   for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
-    if (GR_BLOCK == Grid::residentTypeAt(x, row)) {
+    if (GR_BLOCK == Grid::stateAt(x, row)) {
       if (Grid::flavorAt(x, row) == flavor) {
         locations.push_back(x);
       }
@@ -272,7 +272,7 @@ static void path_all_for_flavor(std::vector< PathPortion > &my_path, int hunting
 
   for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
     for (int y = 1; y < (Grid::top_effective_row + 1); ++y) {
-      if (GR_BLOCK == Grid::residentTypeAt(x, y)) {
+      if (GR_BLOCK == Grid::stateAt(x, y)) {
         if (Grid::flavorAt(x, y) == hunting_for_flavor) {
           std::vector< PathPortion > additional_path = path_between(
               swap_x, swap_y,
@@ -337,7 +337,7 @@ void ComputerPlayer::gameStart()
   for (int y = Grid::top_effective_row; y >= 3; --y) {
     bool found_path = false;
     for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
-      if (GR_BLOCK == Grid::residentTypeAt(x, y)) {
+      if (GR_BLOCK == Grid::stateAt(x, y)) {
         int current_flavor = Grid::flavorAt(x, y);
         std::vector<int> locations = row_flavors(y - 1, current_flavor);
         if (locations.empty()) {
@@ -425,7 +425,42 @@ void ComputerPlayer::timeStep()
             Swapper::x,
             Swapper::y);
         MESSAGE(lame);
-        alarm = -1;
+        int swap_x = Swapper::x, swap_y = Swapper::y;
+        for (int y = Grid::top_effective_row; y >= 3; --y) {
+          bool found_path = false;
+          for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
+            if (GR_BLOCK == Grid::stateAt(x, y)) {
+              int current_flavor = Grid::flavorAt(x, y);
+              std::vector<int> locations = row_flavors(y - 1, current_flavor);
+              if (locations.empty()) {
+                continue;
+              }
+              std::vector<bool> has_path;
+              for (unsigned int i = 0; i < locations.size(); ++i) {
+                has_path.push_back(
+                    has_row_path_between(
+                      x, locations[i], y - 1));
+              }
+              for (unsigned int i = 0; i < has_path.size(); ++i) {
+                if (has_path[i]) {
+                  if (!path.empty())
+                  {
+                    PathPortion p = path[path.size() - 1];
+                    swap_x = p.target_x;
+                    swap_y = p.target_y;
+                  }
+                  std::vector< PathPortion > additional_path = swap_between(
+                      swap_x, swap_y,
+                      locations[i], x, y - 1);
+                  if (!additional_path.empty())
+                    path.insert(path.end(), additional_path.begin(), additional_path.end());
+                  found_path = true;
+                }
+              }
+            }
+          }
+        }
+        alarm = Game::time_step + 1;
         target_x = -1;
         target_y = -1;
       }
