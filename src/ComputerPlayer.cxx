@@ -117,7 +117,7 @@ static std::vector< PathPortion > path_between(int start_x, int start_y, int end
 
 static void path_all_for_flavor(std::vector< PathPortion > &my_path, int hunting_for_flavor)
 {
-  int move_delay = GC_MOVE_DELAY;
+  int move_delay = GC_MOVE_DELAY - 1;
   int swap_x = Swapper::x, swap_y = Swapper::y;
 
   if (!my_path.empty())
@@ -133,7 +133,8 @@ static void path_all_for_flavor(std::vector< PathPortion > &my_path, int hunting
         if (Grid::flavorAt(x, y) == hunting_for_flavor) {
           std::vector< PathPortion > additional_path = path_between(
               swap_x, swap_y,
-              x, y);
+              x, y,
+              move_delay);
           if (!additional_path.empty())
             my_path.insert(my_path.end(), additional_path.begin(), additional_path.end());
           swap_x = x; swap_y = y;
