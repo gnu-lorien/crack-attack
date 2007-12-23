@@ -64,7 +64,7 @@ void ComputerPlayer::gameStart()
   lost = false;
   //path.push_back(std::make_pair(50, GC_LEFT_KEY));
   static int hunting_for_flavor = 1;
-  int move_delay = GC_MOVE_DELAY + 50;
+  int move_delay = GC_MOVE_DELAY;
   int swap_x = Swapper::x, swap_y = Swapper::y;
   for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
     for (int y = 1; y < (Grid::top_effective_row + 1); ++y) {
