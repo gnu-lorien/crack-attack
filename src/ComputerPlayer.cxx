@@ -96,9 +96,6 @@ static bool has_row_path_between(int x1, int x2, int row)
   return true;
 }
 
-static int flavor_has_row_path_to(int x, int row, int flavor) {
-}
-
 static std::vector<int> row_flavors(int row, int flavor)
 {
   std::vector<int> locations;
