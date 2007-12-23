@@ -394,29 +394,25 @@ void ComputerPlayer::timeStep()
   if (Game::time_step >= alarm && alarm != -1) {
     char lame[255];
     if (!need_key_up) {
-      if (!path.empty()) {
-        snprintf(lame, 255, "Executing %d on alarm %d at step %d (%d,%d)",
-            path[0].key_action,
-            alarm,
-            Game::time_step,
-            Swapper::x,
-            Swapper::y);
-        MESSAGE(lame);
-        Controller::keyboardPlay(path[0].key_action, 0, 0);
-        target_x = path[0].target_x;
-        target_y = path[0].target_y;
-        snprintf(lame, 255, "Target (%d,%d)", target_x, target_y);
-        MESSAGE(lame);
-        alarm = Game::time_step + 1;
-        need_key_up = true;
-      } else {
-        MESSAGE("Trying to activate an empty path!");
-      }
+      assert(!path.empty());
+      snprintf(lame, 255, "Executing %d on alarm %d at step %d (%d,%d)",
+          path[0].key_action,
+          alarm,
+          Game::time_step,
+          Swapper::x,
+          Swapper::y);
+      MESSAGE(lame);
+      Controller::keyboardPlay(path[0].key_action, 0, 0);
+      target_x = path[0].target_x;
+      target_y = path[0].target_y;
+      snprintf(lame, 255, "Target (%d,%d)", target_x, target_y);
+      MESSAGE(lame);
+      alarm = Game::time_step + 1;
+      need_key_up = true;
     } else {
-      if (!path.empty()) {
-        Controller::keyboardUpPlay(path[0].key_action, 0, 0);
-        need_key_up = false;
-      }
+      assert(!path.empty());
+      Controller::keyboardUpPlay(path[0].key_action, 0, 0);
+      need_key_up = false;
       path.erase(path.begin());
       if (!path.empty()) {
         alarm = alarm + path[0].alarm;
@@ -460,7 +456,11 @@ void ComputerPlayer::timeStep()
             }
           }
         }
-        alarm = Game::time_step + 1;
+        if (!path.empty()) {
+          alarm = alarm + path[0].alarm;
+        } else {
+          alarm = -1;
+        }
         target_x = -1;
         target_y = -1;
       }
