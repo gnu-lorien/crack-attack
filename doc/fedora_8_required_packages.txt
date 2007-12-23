@@ -1,0 +1,4 @@
+SDL-devel
+SDL_image-devel
+gtk2-devel
+freeglut-devel # We don't detect the missing GL/glut.h
