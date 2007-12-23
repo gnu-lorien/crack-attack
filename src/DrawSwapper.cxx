@@ -44,7 +44,19 @@ const GLfloat swapper_colors[4][3]
 
 void Displayer::drawComputerPlayerTarget (   )
 {
-  glColor3fv(swapper_colors[0]);
+  // blocks have already been drawn, so we use their material calls
+
+  if (!X::invisibleSwapper())
+    glColor3fv(swapper_colors[1]);
+
+  else {
+    if (!X::needDrawSwapper()) return;
+
+    glEnable(GL_BLEND);
+    glColor4f(swapper_colors[Swapper::color][0],
+     swapper_colors[Swapper::color][1], swapper_colors[Swapper::color][2],
+     X::swapperAlpha());
+  }
 
   glPushMatrix();
 
@@ -54,6 +66,75 @@ void Displayer::drawComputerPlayerTarget (   )
 
     LightManager::setupGarbageLights(x - (0.5f * DC_GRID_ELEMENT_LENGTH), y,
      1, 2);
+
+/*
+    if (Swapper::state & SS_SWAPPING) {
+
+      glTranslatef(x, y, DC_PLAY_OFFSET_Z);
+      glRotatef(180.0f * Swapper::swap_factor, 0.0f, 1.0f, 0.0f);
+
+      glPushMatrix();
+
+        glTranslatef(-DC_SWAPPER_GRAB_LENGTH, DC_SWAPPER_GRAB_LENGTH, 0.0f);
+        glCallList(swapper_list);
+
+        glTranslatef(2.0f * DC_SWAPPER_GRAB_LENGTH,
+         -2.0f * DC_SWAPPER_GRAB_LENGTH, 0.0f);
+        glScalef(-1.0f, -1.0f, 1.0f);
+        glCallList(swapper_list);
+
+        glTranslatef(2.0f * DC_SWAPPER_GRAB_LENGTH, 0.0f, 0.0f);
+        glScalef(-1.0f, 1.0f, 1.0f);
+        glCallList(swapper_list);
+
+        glTranslatef(2.0f * DC_SWAPPER_GRAB_LENGTH,
+         -2.0f * DC_SWAPPER_GRAB_LENGTH, 0.0f);
+        glScalef(-1.0f, -1.0f, 1.0f);
+        glCallList(swapper_list);
+
+      glPopMatrix();
+
+      glScalef(1.0f, 1.0f, -1.0f);
+
+      glTranslatef(-DC_SWAPPER_GRAB_LENGTH, DC_SWAPPER_GRAB_LENGTH, 0.0f);
+      glCallList(swapper_list);
+
+      glTranslatef(2.0f * DC_SWAPPER_GRAB_LENGTH,
+       -2.0f * DC_SWAPPER_GRAB_LENGTH, 0.0f);
+      glScalef(-1.0f, -1.0f, 1.0f);
+      glCallList(swapper_list);
+
+      glTranslatef(2.0f * DC_SWAPPER_GRAB_LENGTH, 0.0f, 0.0f);
+      glScalef(-1.0f, 1.0f, 1.0f);
+      glCallList(swapper_list);
+
+      glTranslatef(2.0f * DC_SWAPPER_GRAB_LENGTH,
+       -2.0f * DC_SWAPPER_GRAB_LENGTH, 0.0f);
+      glScalef(-1.0f, -1.0f, 1.0f);
+      glCallList(swapper_list);
+
+      glPopMatrix();
+
+      return;
+    }
+*/
+
+/*
+    if (Swapper::state & SS_MOVE_PAUSE) {
+      GLfloat shift = (Game::time_step - Swapper::move_pause_alarm)
+       * (1.0f / (GLfloat) GC_MOVE_DELAY);
+      shift *= shift;
+
+      if ((Swapper::state & SS_MOVE_MASK) & SS_MOVE_LEFT)
+        x += shift;
+      else if ((Swapper::state & SS_MOVE_MASK) & SS_MOVE_RIGHT)
+        x -= shift;
+      else if ((Swapper::state & SS_MOVE_MASK) & SS_MOVE_UP)
+        y -= shift;
+      else
+        y += shift;
+    }
+*/
 
     glTranslatef(x, y, DC_PLAY_OFFSET_Z);
 
@@ -69,6 +150,9 @@ void Displayer::drawComputerPlayerTarget (   )
     glCallList(swapper_list);
 
   glPopMatrix();
+
+  if (X::invisibleSwapper())
+    glDisable(GL_BLEND);
 }
 
 void Displayer::drawSwapper (   )

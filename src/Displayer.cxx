@@ -348,6 +348,7 @@ void Displayer::displayPlay (   )
     glDisable(GL_TEXTURE_2D);
 
     drawSwapper();
+    drawComputerPlayerTarget();
 
     glDisable(GL_DEPTH_TEST);
 
