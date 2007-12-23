@@ -24,29 +24,39 @@
 #include <cassert>
 #include "LevelLights.h"
 #include "Score.h"
-
+#include "Controller.h"
 
 //#define WAIT_TIME ( GC_STEPS_PER_SECOND * 10 )
 
 bool ComputerPlayer::lost;
 bool ComputerPlayer::_impact;
 ComputerPlayerAI *ComputerPlayer::ai;
+int ComputerPlayer::start_time = 0;
+int ComputerPlayer::alarm = 0;
 
 void ComputerPlayer::gameStart()
 {
+  /*
   if (!(MetaState::mode & CM_AI))
     return;
+  */
 
+  /*
   if ((MetaState::mode & CM_AI_EASY))
     ai = new EasyAI();
   if ((MetaState::mode & CM_AI_MEDIUM))
     ai = new MediumAI();
   if ((MetaState::mode & CM_AI_HARD))
     ai = new HardAI();
+  */
+  ai = new EasyAI();
 
   assert(ai != NULL);
   
+  start_time = Game::time_step;
+  alarm = start_time + GC_MOVE_DELAY;
   lost = false;
+  //path.push_back(std::make_pair(50, GC_LEFT_KEY));
 }
 
 int ComputerPlayer::gameFinish()
@@ -57,15 +67,40 @@ int ComputerPlayer::gameFinish()
 void ComputerPlayer::timeStep()
 {
   static bool first_time = true;
+  static int alternating = 0;
+  /*
   if (!(MetaState::mode & CM_AI))
     return;
   if (!ai) {
     return;
   }
+  */
   
+  if (Game::time_step >= alarm) {
+    Controller::entry(GLUT_LEFT);
+    ++alternating;
+    switch (alternating) {
+    case 1:
+      Controller::keyboardPlay(GC_LEFT_KEY, 0, 0);
+      break;
+    case 2:
+      Controller::keyboardPlay(GC_RIGHT_KEY, 0, 0);
+      break;
+    case 3:
+      Controller::keyboardPlay(GC_UP_KEY, 0, 0);
+      break;
+    case 4:
+      Controller::keyboardPlay(GC_DOWN_KEY, 0, 0);
+      break;
+    default:
+      alternating = 0;
+    }
+    alarm += GC_MOVE_DELAY - 1;
+  }
   // handle the lights
   LevelLights::handleAI();
 
+	/*
   ComputerPlayerAI &localAi = *ai;
   if (first_time) {
     MESSAGE("AI will drop again in " << ((localAi.alarm() - Game::time_step) / GC_STEPS_PER_SECOND) << " seconds");
@@ -86,6 +121,7 @@ void ComputerPlayer::timeStep()
   if(localAi.determineLoss()) {
     Game::aiPlayerLoss();
   }
+	*/
 }
 
 void ComputerPlayer::addGarbage ( int height, int width, int flavor ) {
