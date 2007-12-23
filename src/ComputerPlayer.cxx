@@ -61,7 +61,14 @@ static std::vector< PathPortion > path_between(int start_x, int start_y, int end
       dir = GC_LEFT_KEY;
       inc = -1;
     }
-    t_move = x_move;
+    for (; x_move != 0; x_move += inc) {
+      PathPortion p;
+      p.alarm = move_delay;
+      p.key_action = dir;
+      p.target_x = end_x;
+      p.target_y = end_y;
+      ret_path.push_back(p);
+    }
   }
   if (!(0 == y_move)) {
     if (y_move < 0) {
@@ -71,16 +78,16 @@ static std::vector< PathPortion > path_between(int start_x, int start_y, int end
       dir = GC_DOWN_KEY;
       inc = -1;
     }
-    t_move = y_move;
+    for (; y_move != 0; y_move += inc) {
+      PathPortion p;
+      p.alarm = move_delay;
+      p.key_action = dir;
+      p.target_x = end_x;
+      p.target_y = end_y;
+      ret_path.push_back(p);
+    }
   }
-  for (; t_move != 0; t_move += inc) {
-    PathPortion p;
-    p.alarm = move_delay;
-    p.key_action = dir;
-    p.target_x = end_x;
-    p.target_y = end_y;
-    ret_path.push_back(p);
-  }
+
 
   return ret_path;
 }
@@ -101,61 +108,19 @@ static void path_all_for_flavor(std::vector< PathPortion > &my_path, int hunting
     for (int y = 1; y < (Grid::top_effective_row + 1); ++y) {
       if (GR_BLOCK == Grid::residentTypeAt(x, y)) {
         if (Grid::flavorAt(x, y) == hunting_for_flavor) {
-          // Path to this one and swap it!
-          int x_move = 0, y_move = 0;
-
           int bound_x = x;
           if (bound_x > GC_PLAY_WIDTH - 2) {
             bound_x = GC_PLAY_WIDTH - 2;
           }
 
-          int dir, inc;
-          x_move = swap_x - bound_x;
-          y_move = swap_y - y;
-          char lame[255];
-          snprintf(lame, 255, "Move from (%d,%d) to (%d,%d)",
+          std::vector< PathPortion > additional_path = path_between(
               swap_x, swap_y,
               bound_x, y);
-          MESSAGE(lame);
-
+          if (!additional_path.empty())
+            my_path.insert(my_path.end(), additional_path.begin(), additional_path.end());
           swap_x = x; swap_y = y;
           if (swap_x > GC_PLAY_WIDTH - 2) {
             swap_x = GC_PLAY_WIDTH - 2;
-          }
-
-          if (!(0 == x_move)) {
-            if (x_move < 0) {
-              dir = GC_RIGHT_KEY;
-              inc = 1;
-            } else {
-              dir = GC_LEFT_KEY;
-              inc = -1;
-            }
-            for (; x_move != 0; x_move += inc) {
-              PathPortion p;
-              p.alarm = move_delay;
-              p.key_action = dir;
-              p.target_x = bound_x;
-              p.target_y = y;
-              my_path.push_back(p);
-            }
-          }
-          if (!(0 == y_move)) {
-            if (y_move < 0) {
-              dir = GC_UP_KEY;
-              inc = 1;
-            } else {
-              dir = GC_DOWN_KEY;
-              inc = -1;
-            }
-            for (; y_move != 0; y_move += inc) {
-              PathPortion p;
-              p.alarm = move_delay;
-              p.key_action = dir;
-              p.target_x = bound_x;
-              p.target_y = y;
-              my_path.push_back(p);
-            }
           }
         }
       }
@@ -190,6 +155,7 @@ void ComputerPlayer::gameStart()
     path_all_for_flavor(path, i);
   }
 
+  assert(!path.empty());
   alarm = start_time + path[0].alarm;
 }
 
