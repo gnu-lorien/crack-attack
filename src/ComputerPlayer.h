@@ -33,7 +33,6 @@ private:
   static ComputerPlayerAI *ai;
   static int start_time;
   static int alarm;
-  static int up_alarm;
   static std::vector< std::pair< int, int > > path;
 
   static int findTopRed (  );
