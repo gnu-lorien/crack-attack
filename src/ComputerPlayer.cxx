@@ -65,7 +65,7 @@ void ComputerPlayer::gameStart()
   int move_delay = GC_MOVE_DELAY;
   int swap_x = Swapper::x, swap_y = Swapper::y;
   for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
-    for (int y = 1; y < Grid::top_effective_row; ++y) {
+    for (int y = 1; y < (Grid::top_effective_row + 1); ++y) {
       if (GR_BLOCK == Grid::residentTypeAt(x, y)) {
         if (Grid::flavorAt(x, y) == hunting_for_flavor) {
           // Path to this one and swap it!
