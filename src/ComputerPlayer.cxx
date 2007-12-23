@@ -37,6 +37,8 @@ ComputerPlayerAI *ComputerPlayer::ai;
 int ComputerPlayer::start_time = 0;
 int ComputerPlayer::alarm = 0;
 std::vector< PathPortion > ComputerPlayer::path;
+int ComputerPlayer::target_x = -1;
+int ComputerPlayer::target_y = -1;
 
 void ComputerPlayer::gameStart()
 {
@@ -162,6 +164,8 @@ void ComputerPlayer::timeStep()
             Swapper::y);
         MESSAGE(lame);
         Controller::keyboardPlay(path[0].key_action, 0, 0);
+        target_x = path[0].target_x;
+        target_y = path[0].target_y;
         alarm = Game::time_step + 1;
         need_key_up = true;
       } else {
@@ -181,6 +185,8 @@ void ComputerPlayer::timeStep()
             Swapper::y);
         MESSAGE(lame);
         alarm = -1;
+        target_x = -1;
+        target_y = -1;
       }
     }
   }
