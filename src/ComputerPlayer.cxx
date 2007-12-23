@@ -63,7 +63,7 @@ void ComputerPlayer::gameStart()
   //path.push_back(std::make_pair(50, GC_LEFT_KEY));
   static int hunting_for_flavor = 1;
   for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
-    for (int y = 0; y < GC_PLAY_HEIGHT; ++x) {
+    for (int y = 0; y < GC_PLAY_HEIGHT; ++y) {
       if (GR_BLOCK == Grid::residentTypeAt(x, y)) {
         if (Grid::flavorAt(x, y) == hunting_for_flavor) {
           // Path to this one and swap it!
@@ -79,7 +79,7 @@ void ComputerPlayer::gameStart()
               dir = GC_LEFT_KEY;
               inc = -1;
             }
-            for (; x_move != 0; x += inc) {
+            for (; x_move != 0; x_move += inc) {
               path.push_back(std::make_pair(GC_MOVE_DELAY - 1, dir));
             }
           }
@@ -91,7 +91,7 @@ void ComputerPlayer::gameStart()
               dir = GC_DOWN_KEY;
               inc = -1;
             }
-            for (; y_move != 0; y += inc) {
+            for (; y_move != 0; y_move += inc) {
               path.push_back(std::make_pair(GC_MOVE_DELAY - 1, dir));
             }
           }
@@ -99,6 +99,7 @@ void ComputerPlayer::gameStart()
       }
     }
   }
+  alarm = start_time + path[0].first;
 }
 
 int ComputerPlayer::gameFinish()
@@ -121,24 +122,13 @@ void ComputerPlayer::timeStep()
   
   if (Game::time_step >= alarm) {
     Controller::entry(GLUT_LEFT);
-    ++alternating;
-    switch (alternating) {
-    case 1:
-      Controller::keyboardPlay(GC_LEFT_KEY, 0, 0);
-      break;
-    case 2:
-      Controller::keyboardPlay(GC_RIGHT_KEY, 0, 0);
-      break;
-    case 3:
-      Controller::keyboardPlay(GC_UP_KEY, 0, 0);
-      break;
-    case 4:
-      Controller::keyboardPlay(GC_DOWN_KEY, 0, 0);
-      break;
-    default:
-      alternating = 0;
+    if (!path.empty()) {
+      Controller::keyboardPlay(path[0].second, 0, 0);
     }
-    alarm += GC_MOVE_DELAY - 1;
+    path.erase(path.begin());
+    if (!path.empty()) {
+      alarm = Game::time_step + path[0].first;
+    }
   }
   // handle the lights
   LevelLights::handleAI();
