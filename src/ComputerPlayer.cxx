@@ -191,6 +191,73 @@ static std::vector< PathPortion > path_between(int start_x, int start_y, int end
   return ret_path;
 }
 
+static std::vector< PathPortion > swap_between(int swap_x, int swap_y, int start_x, int end_x, int row, int swap_delay = GC_SWAP_DELAY, int move_delay = GC_MOVE_DELAY)
+{
+  std::vector< PathPortion > ret_path;
+  int x_move = 0, current_x, current_y;
+  int dir, inc;
+
+  x_move = start_x - end_x;
+
+  if (0 == x_move) {
+    return ret_path;
+  } else {
+    if (start_x > end_x) {
+      current_x = start_x - 1;
+      current_y = row;
+      std::vector< PathPortion > additional_path = path_between(
+          swap_x, swap_y,
+          current_x, current_y);
+      if (!additional_path.empty())
+        ret_path.insert(ret_path.end(), additional_path.begin(), additional_path.end());
+    } else {
+      current_x = start_x;
+      current_y = row;
+      std::vector< PathPortion > additional_path = path_between(
+          swap_x, swap_y,
+          current_x, current_y);
+      if (!additional_path.empty())
+        ret_path.insert(ret_path.end(), additional_path.begin(), additional_path.end());
+    }
+  }
+
+  if (x_move < 0) {
+    dir = GC_RIGHT_KEY;
+    inc = 1;
+  } else {
+    dir = GC_LEFT_KEY;
+    inc = -1;
+  }
+  while (x_move != 0) {
+    PathPortion p;
+    p.alarm = swap_delay;
+    p.key_action = GC_SWAP_KEY;
+    p.target_x = end_x;
+    p.target_y = row;
+    p.current_x = p.after_x = current_x;
+    p.current_y = p.after_y = current_y;
+
+    ret_path.push_back(p);
+
+    x_move += inc;
+    if (x_move != 0) {
+      PathPortion p;
+      p.alarm = move_delay;
+      p.key_action = dir;
+      p.target_x = end_x;
+      p.target_y = row;
+
+      p.current_x = current_x;
+      p.current_y = current_y;
+      current_x += inc;
+      p.after_x = current_x;
+      p.after_y = current_y;
+
+      ret_path.push_back(p);
+    }
+  }
+}
+
 static void path_all_for_flavor(std::vector< PathPortion > &my_path, int hunting_for_flavor)
 {
   int move_delay = GC_MOVE_DELAY - 1;
@@ -290,14 +357,10 @@ void ComputerPlayer::gameStart()
               swap_x = p.target_x;
               swap_y = p.target_y;
             }
-            std::vector< PathPortion > additional_path = path_between(
+            std::vector< PathPortion > additional_path = swap_between(
                 swap_x, swap_y,
-                locations[i], y - 1);
-            if (!additional_path.empty())
-              path.insert(path.end(), additional_path.begin(), additional_path.end());
-            additional_path = path_between(
-                locations[i], y - 1,
-                x, y - 1);
+                locations[i], x,
+                y - 1);
             if (!additional_path.empty())
               path.insert(path.end(), additional_path.begin(), additional_path.end());
             found_path = true;
