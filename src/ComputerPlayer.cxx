@@ -359,19 +359,14 @@ void ComputerPlayer::gameStart()
             }
             std::vector< PathPortion > additional_path = swap_between(
                 swap_x, swap_y,
-                locations[i], x,
-                y - 1);
+                locations[i], x, y - 1);
             if (!additional_path.empty())
               path.insert(path.end(), additional_path.begin(), additional_path.end());
             found_path = true;
           }
         }
-        if (found_path)
-          break;
       }
     }
-    if (found_path)
-      break;
   }
 
   assert(!path.empty());
