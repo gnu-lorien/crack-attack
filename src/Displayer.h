@@ -584,6 +584,7 @@ private:
   static void drawGarbage (   );
   static void drawCandy (   );
   static void drawSwapper (   );
+  static void drawComputerPlayerTarget (   );
   static void drawExternalCandy (   );
   static void drawLevelLights (   );
   static void drawMessage (   );

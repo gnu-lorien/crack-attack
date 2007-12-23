@@ -34,12 +34,42 @@
 #include "Swapper.h"
 #include "LightManager.h"
 #include "X.h"
+#include "ComputerPlayer.h"
 
 const GLfloat swapper_colors[4][3]
  = { { 1.0f, 1.0f, 1.0f },         // normal
      { 0.85f, 0.85f, 0.0f },       // reverse control
      { 0.0f, 0.6f, 0.05f },        // invisible swapper
      { 0.425f, 0.725f, 0.025f } }; // both
+
+void Displayer::drawComputerPlayerTarget (   )
+{
+  glColor3fv(swapper_colors[0]);
+
+  glPushMatrix();
+
+    GLfloat x = ComputerPlayer::target_x * DC_GRID_ELEMENT_LENGTH
+     + (DC_PLAY_OFFSET_X + 0.5f * DC_GRID_ELEMENT_LENGTH);
+    GLfloat y = ComputerPlayer::target_y * DC_GRID_ELEMENT_LENGTH + play_offset_y;
+
+    LightManager::setupGarbageLights(x - (0.5f * DC_GRID_ELEMENT_LENGTH), y,
+     1, 2);
+
+    glTranslatef(x, y, DC_PLAY_OFFSET_Z);
+
+    glCallList(swapper_list);
+
+    glScalef(-1.0f, -1.0f, 1.0f);
+    glCallList(swapper_list);
+
+    glScalef(-1.0f, 1.0f, 1.0f);
+    glCallList(swapper_list);
+
+    glScalef(-1.0f, -1.0f, 1.0f);
+    glCallList(swapper_list);
+
+  glPopMatrix();
+}
 
 void Displayer::drawSwapper (   )
 {
