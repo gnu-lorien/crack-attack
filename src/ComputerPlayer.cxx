@@ -63,6 +63,7 @@ void ComputerPlayer::gameStart()
   //path.push_back(std::make_pair(50, GC_LEFT_KEY));
   static int hunting_for_flavor = 1;
   int move_delay = GC_MOVE_DELAY;
+  int swap_x = Swapper::x, swap_y = Swapper::y;
   for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
     for (int y = 1; y < Grid::top_effective_row; ++y) {
       if (GR_BLOCK == Grid::residentTypeAt(x, y)) {
@@ -70,13 +71,19 @@ void ComputerPlayer::gameStart()
           // Path to this one and swap it!
           int x_move = 0, y_move = 0;
           int dir, inc;
-          x_move = Swapper::x - x;
-          y_move = Swapper::y - y;
+          x_move = swap_x - x;
+          y_move = swap_y - y;
           char lame[255];
           snprintf(lame, 255, "Move from (%d,%d) to (%d,%d)",
-              Swapper::x, Swapper::y,
+              swap_x, swap_y,
               x, y);
           MESSAGE(lame);
+
+          swap_x = x; swap_y = y;
+          if (swap_x > GC_PLAY_WIDTH - 2) {
+            swap_x = GC_PLAY_WIDTH - 2;
+          }
+
           if (!(0 == x_move)) {
             if (x_move < 0) {
               dir = GC_RIGHT_KEY;
