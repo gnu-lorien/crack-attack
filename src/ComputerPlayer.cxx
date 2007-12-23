@@ -40,32 +40,18 @@ std::vector< PathPortion > ComputerPlayer::path;
 int ComputerPlayer::target_x = -1;
 int ComputerPlayer::target_y = -1;
 
-void ComputerPlayer::gameStart()
+static void path_all_for_flavor(std::vector< PathPortion > &my_path, int hunting_for_flavor)
 {
-  /*
-  if (!(MetaState::mode & CM_AI))
-    return;
-  */
-
-  /*
-  if ((MetaState::mode & CM_AI_EASY))
-    ai = new EasyAI();
-  if ((MetaState::mode & CM_AI_MEDIUM))
-    ai = new MediumAI();
-  if ((MetaState::mode & CM_AI_HARD))
-    ai = new HardAI();
-  */
-  ai = new EasyAI();
-
-  assert(ai != NULL);
-  
-  start_time = Game::time_step;
-  alarm = start_time + GC_MOVE_DELAY;
-  lost = false;
-  //path.push_back(std::make_pair(50, GC_LEFT_KEY));
-  static int hunting_for_flavor = 1;
   int move_delay = GC_MOVE_DELAY;
   int swap_x = Swapper::x, swap_y = Swapper::y;
+
+  if (!my_path.empty())
+  {
+    PathPortion p = my_path[my_path.size() - 1];
+    swap_x = p.target_x;
+    swap_y = p.target_y;
+  }
+
   for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
     for (int y = 1; y < (Grid::top_effective_row + 1); ++y) {
       if (GR_BLOCK == Grid::residentTypeAt(x, y)) {
@@ -106,7 +92,7 @@ void ComputerPlayer::gameStart()
               p.key_action = dir;
               p.target_x = bound_x;
               p.target_y = y;
-              path.push_back(p);
+              my_path.push_back(p);
             }
           }
           if (!(0 == y_move)) {
@@ -123,13 +109,42 @@ void ComputerPlayer::gameStart()
               p.key_action = dir;
               p.target_x = bound_x;
               p.target_y = y;
-              path.push_back(p);
+              my_path.push_back(p);
             }
           }
         }
       }
     }
   }
+}
+
+void ComputerPlayer::gameStart()
+{
+  /*
+  if (!(MetaState::mode & CM_AI))
+    return;
+  */
+
+  /*
+  if ((MetaState::mode & CM_AI_EASY))
+    ai = new EasyAI();
+  if ((MetaState::mode & CM_AI_MEDIUM))
+    ai = new MediumAI();
+  if ((MetaState::mode & CM_AI_HARD))
+    ai = new HardAI();
+  */
+  ai = new EasyAI();
+
+  assert(ai != NULL);
+  
+  start_time = Game::time_step;
+  alarm = start_time + GC_MOVE_DELAY;
+  lost = false;
+  //path.push_back(std::make_pair(50, GC_LEFT_KEY));
+  for (int i = 0; i < 5; ++i) {
+    path_all_for_flavor(path, i);
+  }
+
 cunt:
   alarm = start_time + path[0].alarm;
 }
