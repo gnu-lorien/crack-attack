@@ -145,7 +145,6 @@ void ComputerPlayer::gameStart()
     path_all_for_flavor(path, i);
   }
 
-cunt:
   alarm = start_time + path[0].alarm;
 }
 
