@@ -31,9 +31,9 @@ private:
   static bool lost;
   static bool _impact;
   static ComputerPlayerAI *ai;
-	static int start_time;
-	static int alarm;
-	static std::vector< std::pair< int, int > > path;
+  static int start_time;
+  static int alarm;
+  static std::vector< std::pair< int, int > > path;
 
   static int findTopRed (  );
   static double lightPartition ( int block );

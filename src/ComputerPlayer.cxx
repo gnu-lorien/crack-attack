@@ -25,6 +25,9 @@
 #include "LevelLights.h"
 #include "Score.h"
 #include "Controller.h"
+#include "BlockManager.h"
+#include "Grid.h"
+#include "Swapper.h"
 
 //#define WAIT_TIME ( GC_STEPS_PER_SECOND * 10 )
 
@@ -33,6 +36,7 @@ bool ComputerPlayer::_impact;
 ComputerPlayerAI *ComputerPlayer::ai;
 int ComputerPlayer::start_time = 0;
 int ComputerPlayer::alarm = 0;
+std::vector< std::pair< int, int > > ComputerPlayer::path;
 
 void ComputerPlayer::gameStart()
 {
@@ -57,6 +61,44 @@ void ComputerPlayer::gameStart()
   alarm = start_time + GC_MOVE_DELAY;
   lost = false;
   //path.push_back(std::make_pair(50, GC_LEFT_KEY));
+  static int hunting_for_flavor = 1;
+  for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
+    for (int y = 0; y < GC_PLAY_HEIGHT; ++x) {
+      if (GR_BLOCK == Grid::residentTypeAt(x, y)) {
+        if (Grid::flavorAt(x, y) == hunting_for_flavor) {
+          // Path to this one and swap it!
+          int x_move = 0, y_move = 0;
+          int dir, inc;
+          x_move = Swapper::x - x;
+          y_move = Swapper::y - y;
+          if (!(0 == x_move)) {
+            if (x_move < 0) {
+              dir = GC_RIGHT_KEY;
+              inc = 1;
+            } else {
+              dir = GC_LEFT_KEY;
+              inc = -1;
+            }
+            for (; x_move != 0; x += inc) {
+              path.push_back(std::make_pair(GC_MOVE_DELAY - 1, dir));
+            }
+          }
+          if (!(0 == y_move)) {
+            if (y_move < 0) {
+              dir = GC_UP_KEY;
+              inc = 1;
+            } else {
+              dir = GC_DOWN_KEY;
+              inc = -1;
+            }
+            for (; y_move != 0; y += inc) {
+              path.push_back(std::make_pair(GC_MOVE_DELAY - 1, dir));
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 int ComputerPlayer::gameFinish()
@@ -75,6 +117,7 @@ void ComputerPlayer::timeStep()
     return;
   }
   */
+
   
   if (Game::time_step >= alarm) {
     Controller::entry(GLUT_LEFT);
@@ -100,7 +143,7 @@ void ComputerPlayer::timeStep()
   // handle the lights
   LevelLights::handleAI();
 
-	/*
+  /*
   ComputerPlayerAI &localAi = *ai;
   if (first_time) {
     MESSAGE("AI will drop again in " << ((localAi.alarm() - Game::time_step) / GC_STEPS_PER_SECOND) << " seconds");
@@ -121,7 +164,7 @@ void ComputerPlayer::timeStep()
   if(localAi.determineLoss()) {
     Game::aiPlayerLoss();
   }
-	*/
+  */
 }
 
 void ComputerPlayer::addGarbage ( int height, int width, int flavor ) {
@@ -165,7 +208,7 @@ int ComputerPlayer::findTopRed()
     if (lightPartition(i) >= ai->garbageQueue()->height())
       return i;
   }
-	return 0;
+  return 0;
 }
 
 int ComputerPlayer::levelLightImpact (  )
@@ -173,7 +216,7 @@ int ComputerPlayer::levelLightImpact (  )
   if (impact(true))
     return findTopRed();
 
-	return 0;
+  return 0;
 }
 
 bool ComputerPlayer::impact (bool reset)
