@@ -76,6 +76,13 @@ static std::vector< PathPortion > path_between(int start_x, int start_y, int end
       p.key_action = dir;
       p.target_x = bound_end_x;
       p.target_y = end_y;
+
+      p.current_x = current_x;
+      p.current_y = current_y;
+      current_x += inc;
+      p.after_x = current_x;
+      p.after_y = current_y;
+
       ret_path.push_back(p);
     }
   }
@@ -93,6 +100,13 @@ static std::vector< PathPortion > path_between(int start_x, int start_y, int end
       p.key_action = dir;
       p.target_x = bound_end_x;
       p.target_y = end_y;
+
+      p.current_x = current_x;
+      p.current_y = current_y;
+      current_y += inc;
+      p.after_x = current_x;
+      p.after_y = current_y;
+
       ret_path.push_back(p);
     }
   }

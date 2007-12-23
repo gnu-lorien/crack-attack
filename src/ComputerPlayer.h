@@ -31,6 +31,10 @@ struct PathPortion {
   int key_action;
   int target_x;
   int target_y;
+  int current_x;
+  int current_y;
+  int after_x;
+  int after_y;
 };
 
 /* static */ class ComputerPlayer {
