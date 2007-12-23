@@ -70,13 +70,19 @@ void ComputerPlayer::gameStart()
         if (Grid::flavorAt(x, y) == hunting_for_flavor) {
           // Path to this one and swap it!
           int x_move = 0, y_move = 0;
+
+          int bound_x = x;
+          if (bound_x > GC_PLAY_WIDTH - 2) {
+            bound_x = GC_PLAY_WIDTH - 2;
+          }
+
           int dir, inc;
-          x_move = swap_x - x;
+          x_move = swap_x - bound_x;
           y_move = swap_y - y;
           char lame[255];
           snprintf(lame, 255, "Move from (%d,%d) to (%d,%d)",
               swap_x, swap_y,
-              x, y);
+              bound_x, y);
           MESSAGE(lame);
 
           swap_x = x; swap_y = y;
