@@ -26,6 +26,13 @@
 //class ComputerPlayerAI;
 
 
+struct PathPortion {
+  int alarm;
+  int key_action;
+  int target_x;
+  int target_y;
+};
+
 /* static */ class ComputerPlayer {
 private:
   static bool lost;
@@ -33,10 +40,13 @@ private:
   static ComputerPlayerAI *ai;
   static int start_time;
   static int alarm;
-  static std::vector< std::pair< int, int > > path;
+  static std::vector< PathPortion > path;
 
   static int findTopRed (  );
   static double lightPartition ( int block );
+
+public:
+  static int target_x, target_y;
 
 public:
   static void gameStart (  );

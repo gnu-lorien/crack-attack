@@ -36,7 +36,7 @@ bool ComputerPlayer::_impact;
 ComputerPlayerAI *ComputerPlayer::ai;
 int ComputerPlayer::start_time = 0;
 int ComputerPlayer::alarm = 0;
-std::vector< std::pair< int, int > > ComputerPlayer::path;
+std::vector< PathPortion > ComputerPlayer::path;
 
 void ComputerPlayer::gameStart()
 {
@@ -99,7 +99,12 @@ void ComputerPlayer::gameStart()
               inc = -1;
             }
             for (; x_move != 0; x_move += inc) {
-              path.push_back(std::make_pair(move_delay, dir));
+              PathPortion p;
+              p.alarm = move_delay;
+              p.key_action = dir;
+              p.target_x = bound_x;
+              p.target_y = y;
+              path.push_back(p);
             }
           }
           if (!(0 == y_move)) {
@@ -111,7 +116,12 @@ void ComputerPlayer::gameStart()
               inc = -1;
             }
             for (; y_move != 0; y_move += inc) {
-              path.push_back(std::make_pair(move_delay, dir));
+              PathPortion p;
+              p.alarm = move_delay;
+              p.key_action = dir;
+              p.target_x = bound_x;
+              p.target_y = y;
+              path.push_back(p);
             }
           }
         }
@@ -119,7 +129,7 @@ void ComputerPlayer::gameStart()
     }
   }
 cunt:
-  alarm = start_time + path[0].first;
+  alarm = start_time + path[0].alarm;
 }
 
 int ComputerPlayer::gameFinish()
@@ -145,13 +155,13 @@ void ComputerPlayer::timeStep()
     if (!need_key_up) {
       if (!path.empty()) {
         snprintf(lame, 255, "Executing %d on alarm %d at step %d (%d,%d)",
-            path[0].second,
+            path[0].key_action,
             alarm,
             Game::time_step,
             Swapper::x,
             Swapper::y);
         MESSAGE(lame);
-        Controller::keyboardPlay(path[0].second, 0, 0);
+        Controller::keyboardPlay(path[0].key_action, 0, 0);
         alarm = Game::time_step + 1;
         need_key_up = true;
       } else {
@@ -159,12 +169,12 @@ void ComputerPlayer::timeStep()
       }
     } else {
       if (!path.empty()) {
-        Controller::keyboardUpPlay(path[0].second, 0, 0);
+        Controller::keyboardUpPlay(path[0].key_action, 0, 0);
         need_key_up = false;
       }
       path.erase(path.begin());
       if (!path.empty()) {
-        alarm = alarm + path[0].first;
+        alarm = alarm + path[0].alarm;
       } else {
         snprintf(lame, 255, "Path is empty. No new alarm to set (%d,%d)",
             Swapper::x,
