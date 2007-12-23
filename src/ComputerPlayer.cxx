@@ -40,6 +40,51 @@ std::vector< PathPortion > ComputerPlayer::path;
 int ComputerPlayer::target_x = -1;
 int ComputerPlayer::target_y = -1;
 
+static std::vector< PathPortion > path_between(int start_x, int start_y, int end_x, int end_y, int move_delay = GC_MOVE_DELAY)
+{
+  std::vector< PathPortion > ret_path;
+  int x_move = 0, y_move = 0, t_move = 0;
+  int dir, inc;
+  x_move = start_x - end_x;
+  y_move = start_y - end_y;
+  char lame[255];
+  snprintf(lame, 255, "Move from (%d,%d) to (%d,%d)",
+      start_x, start_y,
+      end_x, end_y);
+  MESSAGE(lame);
+
+  if (!(0 == x_move)) {
+    if (x_move < 0) {
+      dir = GC_RIGHT_KEY;
+      inc = 1;
+    } else {
+      dir = GC_LEFT_KEY;
+      inc = -1;
+    }
+    t_move = x_move;
+  }
+  if (!(0 == y_move)) {
+    if (y_move < 0) {
+      dir = GC_UP_KEY;
+      inc = 1;
+    } else {
+      dir = GC_DOWN_KEY;
+      inc = -1;
+    }
+    t_move = y_move;
+  }
+  for (; t_move != 0; t_move += inc) {
+    PathPortion p;
+    p.alarm = move_delay;
+    p.key_action = dir;
+    p.target_x = end_x;
+    p.target_y = end_y;
+    ret_path.push_back(p);
+  }
+
+  return ret_path;
+}
+
 static void path_all_for_flavor(std::vector< PathPortion > &my_path, int hunting_for_flavor)
 {
   int move_delay = GC_MOVE_DELAY;
