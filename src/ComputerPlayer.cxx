@@ -36,7 +36,6 @@ bool ComputerPlayer::_impact;
 ComputerPlayerAI *ComputerPlayer::ai;
 int ComputerPlayer::start_time = 0;
 int ComputerPlayer::alarm = 0;
-int ComputerPlayer::up_alarm = -1;
 std::vector< std::pair< int, int > > ComputerPlayer::path;
 
 void ComputerPlayer::gameStart()
@@ -63,9 +62,9 @@ void ComputerPlayer::gameStart()
   lost = false;
   //path.push_back(std::make_pair(50, GC_LEFT_KEY));
   static int hunting_for_flavor = 1;
-  int move_delay = GC_MOVE_DELAY + 2;
+  int move_delay = GC_MOVE_DELAY;
   for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
-    for (int y = 0; y < GC_PLAY_HEIGHT; ++y) {
+    for (int y = 1; y < Grid::top_effective_row; ++y) {
       if (GR_BLOCK == Grid::residentTypeAt(x, y)) {
         if (Grid::flavorAt(x, y) == hunting_for_flavor) {
           // Path to this one and swap it!
@@ -89,7 +88,6 @@ void ComputerPlayer::gameStart()
             for (; x_move != 0; x_move += inc) {
               path.push_back(std::make_pair(move_delay, dir));
             }
-            path.push_back(std::make_pair(move_delay, dir));
           }
           if (!(0 == y_move)) {
             if (y_move < 0) {
@@ -102,9 +100,7 @@ void ComputerPlayer::gameStart()
             for (; y_move != 0; y_move += inc) {
               path.push_back(std::make_pair(move_delay, dir));
             }
-            path.push_back(std::make_pair(move_delay, dir));
           }
-          goto cunt;
         }
       }
     }
@@ -121,7 +117,7 @@ int ComputerPlayer::gameFinish()
 void ComputerPlayer::timeStep()
 {
   static bool first_time = true;
-  static int alternating = 0;
+  static bool need_key_up = false;
   /*
   if (!(MetaState::mode & CM_AI))
     return;
@@ -131,39 +127,38 @@ void ComputerPlayer::timeStep()
   */
 
   
-  if (Game::time_step >= up_alarm && up_alarm != -1) {
+  if (Game::time_step >= alarm && alarm != -1) {
     char lame[255];
-    if (!path.empty()) {
-      Controller::keyboardUpPlay(path[0].second, 0, 0);
-      up_alarm = -1;
-    }
-    path.erase(path.begin());
-    if (!path.empty()) {
-      alarm = alarm + path[0].first;
+    if (!need_key_up) {
+      if (!path.empty()) {
+        snprintf(lame, 255, "Executing %d on alarm %d at step %d (%d,%d)",
+            path[0].second,
+            alarm,
+            Game::time_step,
+            Swapper::x,
+            Swapper::y);
+        MESSAGE(lame);
+        Controller::keyboardPlay(path[0].second, 0, 0);
+        alarm = Game::time_step + 1;
+        need_key_up = true;
+      } else {
+        MESSAGE("Trying to activate an empty path!");
+      }
     } else {
-      snprintf(lame, 255, "Path is empty. No new alarm to set (%d,%d)",
-          Swapper::x,
-          Swapper::y);
-      MESSAGE(lame);
-      alarm = -1;
-      up_alarm = -1;
-    }
-  } else if (Game::time_step >= alarm && alarm != -1) {
-    char lame[255];
-    if (!path.empty()) {
-      snprintf(lame, 255, "Executing %d on alarm %d at step %d (%d,%d)",
-          path[0].second,
-          alarm,
-          Game::time_step,
-          Swapper::x,
-          Swapper::y);
-      MESSAGE(lame);
-      Controller::keyboardPlay(path[0].second, 0, 0);
-      alarm = Game::time_step;
-      up_alarm = Game::time_step + GC_MOVE_DELAY / 3;
-    } else {
-      up_alarm = -1;
-      alarm = -1;
+      if (!path.empty()) {
+        Controller::keyboardUpPlay(path[0].second, 0, 0);
+        need_key_up = false;
+      }
+      path.erase(path.begin());
+      if (!path.empty()) {
+        alarm = alarm + path[0].first;
+      } else {
+        snprintf(lame, 255, "Path is empty. No new alarm to set (%d,%d)",
+            Swapper::x,
+            Swapper::y);
+        MESSAGE(lame);
+        alarm = -1;
+      }
     }
   }
 
