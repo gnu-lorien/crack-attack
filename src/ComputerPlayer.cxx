@@ -40,6 +40,78 @@ std::vector< PathPortion > ComputerPlayer::path;
 int ComputerPlayer::target_x = -1;
 int ComputerPlayer::target_y = -1;
 
+static bool has_row_path_between(int x1, int x2, int row)
+{
+  int lesser_x, greater_x;
+  if (x1 > x2) {
+    lesser_x = x2;
+    greater_x = x1;
+  } else {
+    lesser_x = x1;
+    greater_x = x2;
+  }
+
+  // The simple case is that all of the things between the two locations are blocks
+  // This means that there can be no falling holes
+
+  bool all_blocks = true;
+  for (; lesser_x >= greater_x; ++lesser_x) {
+    if (GR_BLOCK != Grid::residentTypeAt(lesser_x, row)) {
+      all_blocks = false;
+    }
+  }
+  if (all_blocks) {
+    return true;
+  }
+
+  // The complicated case is an empty, because we need to check that the state below
+  // is one in which we won't fall
+
+  bool will_fall = false;
+  for (; lesser_x >= greater_x; ++lesser_x) {
+    if (GR_EMPTY == Grid::residentTypeAt(lesser_x, row)) {
+      if (row > 1) {
+        if (GR_EMPTY == Grid::residentTypeAt(lesser_x, row - 1)) {
+          will_fall = true;
+          break;
+        }
+      }
+    }
+  }
+  if (will_fall)
+    return false;
+
+  // Also have to make sure there aren't any of the special things blocking us.
+  // At this point we know that they are not all blocks, but any empty spaces have
+  // no holes. Any areas that aren't blocks or empty then must be something else that
+  // can block us
+  for (; lesser_x >= greater_x; ++lesser_x) {
+    if (GR_EMPTY != Grid::residentTypeAt(lesser_x, row)) {
+      if (GR_BLOCK != Grid::residentTypeAt(lesser_x, row)) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+static int flavor_has_row_path_to(int x, int row, int flavor) {
+}
+
+static std::vector<int> row_flavors(int row, int flavor)
+{
+  std::vector<int> locations;
+  for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
+    if (GR_BLOCK == Grid::residentTypeAt(x, row)) {
+      if (Grid::flavorAt(x, row) == flavor) {
+        locations.push_back(x);
+      }
+    }
+  }
+  return locations;
+}
+
 static std::vector< PathPortion > path_between(int start_x, int start_y, int end_x, int end_y, int move_delay = GC_MOVE_DELAY)
 {
   std::vector< PathPortion > ret_path;
