@@ -55,12 +55,13 @@ static bool has_row_path_between(int x1, int x2, int row)
   // This means that there can be no falling holes
 
   bool all_blocks = true;
-  for (; lesser_x >= greater_x; ++lesser_x) {
-    if (GR_BLOCK != Grid::residentTypeAt(lesser_x, row)) {
+  for (int counter_x = lesser_x; counter_x <= greater_x; ++counter_x) {
+    if (GR_BLOCK != Grid::stateAt(counter_x, row)) {
       all_blocks = false;
     }
   }
   if (all_blocks) {
+    MESSAGE("Returning that they're all blocks");
     return true;
   }
 
@@ -68,31 +69,37 @@ static bool has_row_path_between(int x1, int x2, int row)
   // is one in which we won't fall
 
   bool will_fall = false;
-  for (; lesser_x >= greater_x; ++lesser_x) {
-    if (GR_EMPTY == Grid::residentTypeAt(lesser_x, row)) {
+  for (int counter_x = lesser_x; counter_x <= greater_x; ++counter_x) {
+    if (GR_EMPTY == Grid::stateAt(counter_x, row)) {
       if (row > 1) {
-        if (GR_EMPTY == Grid::residentTypeAt(lesser_x, row - 1)) {
+        if (GR_EMPTY == Grid::stateAt(counter_x, row - 1)) {
           will_fall = true;
           break;
         }
       }
     }
   }
-  if (will_fall)
+  if (will_fall) {
+    MESSAGE("Will fall");
     return false;
+  } else {
+    MESSAGE("Won't fall");
+  }
 
   // Also have to make sure there aren't any of the special things blocking us.
   // At this point we know that they are not all blocks, but any empty spaces have
   // no holes. Any areas that aren't blocks or empty then must be something else that
   // can block us
-  for (; lesser_x >= greater_x; ++lesser_x) {
-    if (GR_EMPTY != Grid::residentTypeAt(lesser_x, row)) {
-      if (GR_BLOCK != Grid::residentTypeAt(lesser_x, row)) {
+  for (int counter_x = lesser_x; counter_x <= greater_x; ++counter_x) {
+    if (GR_EMPTY != Grid::stateAt(counter_x, row)) {
+      if (GR_BLOCK != Grid::stateAt(counter_x, row)) {
+        MESSAGE("Found non-empty and non-block");
         return false;
       }
     }
   }
 
+  MESSAGE("Block can move in its row!");
   return true;
 }
 
@@ -238,6 +245,20 @@ void ComputerPlayer::gameStart()
   start_time = Game::time_step;
   alarm = start_time + GC_MOVE_DELAY;
   lost = false;
+  bool all_blocks = true;
+  for (int y = Grid::top_effective_row; y >= 3; --y) {
+    for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
+      if (GR_BLOCK != Grid::stateAt(x, y)) {
+        all_blocks = false;
+        break;
+      }
+    }
+  }
+  if (all_blocks) {
+    MESSAGE("All blocks");
+  } else {
+    MESSAGE("Not all blocks");
+  }
   //path.push_back(std::make_pair(50, GC_LEFT_KEY));
   /*
   for (int i = 0; i < 5; ++i) {
@@ -247,6 +268,7 @@ void ComputerPlayer::gameStart()
   int swap_x = Swapper::x, swap_y = Swapper::y;
 
   for (int y = Grid::top_effective_row; y >= 3; --y) {
+    bool found_path = false;
     for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
       if (GR_BLOCK == Grid::residentTypeAt(x, y)) {
         int current_flavor = Grid::flavorAt(x, y);
@@ -260,7 +282,6 @@ void ComputerPlayer::gameStart()
               has_row_path_between(
                 x, locations[i], y - 1));
         }
-        bool found_path = false;
         for (unsigned int i = 0; i < has_path.size(); ++i) {
           if (has_path[i]) {
             if (!path.empty())
@@ -286,6 +307,8 @@ void ComputerPlayer::gameStart()
           break;
       }
     }
+    if (found_path)
+      break;
   }
 
   assert(!path.empty());
