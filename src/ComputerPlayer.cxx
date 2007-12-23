@@ -71,6 +71,11 @@ void ComputerPlayer::gameStart()
           int dir, inc;
           x_move = Swapper::x - x;
           y_move = Swapper::y - y;
+          char lame[255];
+          snprintf(lame, 255, "Move from (%d,%d) to (%d,%d)",
+              Swapper::x, Swapper::y,
+              x, y);
+          MESSAGE(lame);
           if (!(0 == x_move)) {
             if (x_move < 0) {
               dir = GC_RIGHT_KEY;
@@ -80,7 +85,7 @@ void ComputerPlayer::gameStart()
               inc = -1;
             }
             for (; x_move != 0; x_move += inc) {
-              path.push_back(std::make_pair(GC_MOVE_DELAY - 1, dir));
+              path.push_back(std::make_pair(GC_MOVE_DELAY + 2, dir));
             }
           }
           if (!(0 == y_move)) {
@@ -92,13 +97,15 @@ void ComputerPlayer::gameStart()
               inc = -1;
             }
             for (; y_move != 0; y_move += inc) {
-              path.push_back(std::make_pair(GC_MOVE_DELAY - 1, dir));
+              path.push_back(std::make_pair(GC_MOVE_DELAY + 2, dir));
             }
           }
+          goto cunt;
         }
       }
     }
   }
+cunt:
   alarm = start_time + path[0].first;
 }
 
@@ -120,14 +127,28 @@ void ComputerPlayer::timeStep()
   */
 
   
-  if (Game::time_step >= alarm) {
+  if (Game::time_step >= alarm && alarm != -1) {
+    char lame[255];
     Controller::entry(GLUT_LEFT);
     if (!path.empty()) {
+      snprintf(lame, 255, "Executing %d on alarm %d at step %d (%d,%d)",
+          path[0].second,
+          alarm,
+          Game::time_step,
+          Swapper::x,
+          Swapper::y);
+      MESSAGE(lame);
       Controller::keyboardPlay(path[0].second, 0, 0);
     }
     path.erase(path.begin());
     if (!path.empty()) {
       alarm = Game::time_step + path[0].first;
+    } else {
+      snprintf(lame, 255, "Path is empty. No new alarm to set (%d,%d)",
+          Swapper::x,
+          Swapper::y);
+      MESSAGE(lame);
+      alarm = -1;
     }
   }
   // handle the lights
