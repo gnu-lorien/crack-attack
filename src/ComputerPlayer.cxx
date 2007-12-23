@@ -43,16 +43,25 @@ int ComputerPlayer::target_y = -1;
 static std::vector< PathPortion > path_between(int start_x, int start_y, int end_x, int end_y, int move_delay = GC_MOVE_DELAY)
 {
   std::vector< PathPortion > ret_path;
-  int x_move = 0, y_move = 0, t_move = 0;
+  int x_move = 0, y_move = 0;
   int dir, inc;
-  x_move = start_x - end_x;
+  int bound_end_x = end_x;
+  int current_x, current_y;
+
+  if (bound_end_x > GC_PLAY_WIDTH - 2) {
+    bound_end_x = GC_PLAY_WIDTH - 2;
+  }
+
+  x_move = start_x - bound_end_x;
   y_move = start_y - end_y;
+
   char lame[255];
   snprintf(lame, 255, "Move from (%d,%d) to (%d,%d)",
       start_x, start_y,
-      end_x, end_y);
+      bound_end_x, end_y);
   MESSAGE(lame);
 
+  current_x = start_x; current_y = start_y;
   if (!(0 == x_move)) {
     if (x_move < 0) {
       dir = GC_RIGHT_KEY;
@@ -65,7 +74,7 @@ static std::vector< PathPortion > path_between(int start_x, int start_y, int end
       PathPortion p;
       p.alarm = move_delay;
       p.key_action = dir;
-      p.target_x = end_x;
+      p.target_x = bound_end_x;
       p.target_y = end_y;
       ret_path.push_back(p);
     }
@@ -82,7 +91,7 @@ static std::vector< PathPortion > path_between(int start_x, int start_y, int end
       PathPortion p;
       p.alarm = move_delay;
       p.key_action = dir;
-      p.target_x = end_x;
+      p.target_x = bound_end_x;
       p.target_y = end_y;
       ret_path.push_back(p);
     }
@@ -108,14 +117,9 @@ static void path_all_for_flavor(std::vector< PathPortion > &my_path, int hunting
     for (int y = 1; y < (Grid::top_effective_row + 1); ++y) {
       if (GR_BLOCK == Grid::residentTypeAt(x, y)) {
         if (Grid::flavorAt(x, y) == hunting_for_flavor) {
-          int bound_x = x;
-          if (bound_x > GC_PLAY_WIDTH - 2) {
-            bound_x = GC_PLAY_WIDTH - 2;
-          }
-
           std::vector< PathPortion > additional_path = path_between(
               swap_x, swap_y,
-              bound_x, y);
+              x, y);
           if (!additional_path.empty())
             my_path.insert(my_path.end(), additional_path.begin(), additional_path.end());
           swap_x = x; swap_y = y;
