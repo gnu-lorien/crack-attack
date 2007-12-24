@@ -39,6 +39,8 @@ int ComputerPlayer::alarm = 0;
 std::vector< PathPortion > ComputerPlayer::path;
 int ComputerPlayer::target_x = -1;
 int ComputerPlayer::target_y = -1;
+int ComputerPlayer::destination_x = -1;
+int ComputerPlayer::destination_y = -1;
 
 static bool has_row_path_between(int x1, int x2, int row)
 {
@@ -232,8 +234,9 @@ static std::vector< PathPortion > swap_between(int swap_x, int swap_y, int start
     PathPortion p;
     p.alarm = swap_delay;
     p.key_action = GC_SWAP_KEY;
-    p.target_x = end_x;
+    p.target_x = start_x;
     p.target_y = row;
+    p.destination = std::make_pair(end_x, row);
     p.current_x = p.after_x = current_x;
     p.current_y = p.after_y = current_y;
 
@@ -244,8 +247,9 @@ static std::vector< PathPortion > swap_between(int swap_x, int swap_y, int start
       PathPortion p;
       p.alarm = move_delay;
       p.key_action = dir;
-      p.target_x = end_x;
+      p.target_x = start_x;
       p.target_y = row;
+      p.destination = std::make_pair(end_x, row);
 
       p.current_x = current_x;
       p.current_y = current_y;
@@ -415,6 +419,8 @@ void ComputerPlayer::timeStep()
       Controller::keyboardPlay(path[0].key_action, 0, 0);
       target_x = path[0].target_x;
       target_y = path[0].target_y;
+      destination_x = path[0].destination.first;
+      destination_y = path[0].destination.second;
       snprintf(lame, 255, "Target (%d,%d)", target_x, target_y);
       MESSAGE(lame);
       alarm = Game::time_step + 1;
@@ -443,6 +449,8 @@ void ComputerPlayer::timeStep()
         }
         target_x = -1;
         target_y = -1;
+        destination_x = -1;
+        destination_y = -1;
       }
     }
   }

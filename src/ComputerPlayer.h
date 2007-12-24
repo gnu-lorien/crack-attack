@@ -35,6 +35,7 @@ struct PathPortion {
   int current_y;
   int after_x;
   int after_y;
+  std::pair<int, int> destination;
 };
 
 /* static */ class ComputerPlayer {
@@ -51,6 +52,7 @@ private:
 
 public:
   static int target_x, target_y;
+  static int destination_x, destination_y;
 
 public:
   static void gameStart (  );

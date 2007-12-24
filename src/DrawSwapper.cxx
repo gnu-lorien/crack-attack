@@ -96,6 +96,60 @@ void Displayer::drawComputerPlayerTarget (   )
     glDisable(GL_BLEND);
 }
 
+void Displayer::drawComputerPlayerDestination (   )
+{
+  // blocks have already been drawn, so we use their material calls
+
+  if ((ComputerPlayer::destination_x == -1) || (ComputerPlayer::destination_y == -1))
+    return;
+
+  if (!X::invisibleSwapper())
+    glColor3fv(swapper_colors[2]);
+
+  else {
+    if (!X::needDrawSwapper()) return;
+
+    glEnable(GL_BLEND);
+    glColor4f(swapper_colors[Swapper::color][0],
+     swapper_colors[Swapper::color][1], swapper_colors[Swapper::color][2],
+     X::swapperAlpha());
+  }
+
+  glPushMatrix();
+
+    GLfloat x = ComputerPlayer::destination_x * DC_GRID_ELEMENT_LENGTH
+     + (DC_PLAY_OFFSET_X + 0.5f * DC_GRID_ELEMENT_LENGTH);
+    GLfloat y = ComputerPlayer::destination_y * DC_GRID_ELEMENT_LENGTH + play_offset_y;
+
+    GLfloat x1 = (ComputerPlayer::destination_x + 1) * DC_GRID_ELEMENT_LENGTH
+     + (DC_PLAY_OFFSET_X + 0.5f * DC_GRID_ELEMENT_LENGTH);
+
+    glTranslatef(x, y, DC_PLAY_OFFSET_Z);
+
+    // Bottom right
+    glCallList(swapper_list);
+
+    // Top left
+    glScalef(-1.0f, -1.0f, 1.0f);
+    glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+    glCallList(swapper_list);
+
+    // Top right
+    glScalef(-1.0f, 1.0f, 1.0f);
+    glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+    glCallList(swapper_list);
+
+    // Bottom left
+    glScalef(-1.0f, -1.0f, 1.0f);
+    glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+    glCallList(swapper_list);
+
+  glPopMatrix();
+
+  if (X::invisibleSwapper())
+    glDisable(GL_BLEND);
+}
+
 void Displayer::drawSwapper (   )
 {
   // blocks have already been drawn, so we use their material calls

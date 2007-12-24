@@ -278,6 +278,7 @@ void Displayer::displayMeta (   )
 
     drawSwapper();
     drawComputerPlayerTarget();
+    drawComputerPlayerDestination();
 
     glDisable(GL_DEPTH_TEST);
 
@@ -349,6 +350,7 @@ void Displayer::displayPlay (   )
 
     drawSwapper();
     drawComputerPlayerTarget();
+    drawComputerPlayerDestination();
 
     glDisable(GL_DEPTH_TEST);
 
