@@ -64,6 +64,9 @@ void Displayer::drawComputerPlayerTarget (   )
      + (DC_PLAY_OFFSET_X + 0.5f * DC_GRID_ELEMENT_LENGTH);
     GLfloat y = ComputerPlayer::target_y * DC_GRID_ELEMENT_LENGTH + play_offset_y;
 
+    GLfloat x1 = (ComputerPlayer::target_x + 1) * DC_GRID_ELEMENT_LENGTH
+     + (DC_PLAY_OFFSET_X + 0.5f * DC_GRID_ELEMENT_LENGTH);
+
     LightManager::setupGarbageLights(x - (0.5f * DC_GRID_ELEMENT_LENGTH), y,
      1, 2);
 
@@ -138,15 +141,22 @@ void Displayer::drawComputerPlayerTarget (   )
 
     glTranslatef(x, y, DC_PLAY_OFFSET_Z);
 
+    // Bottom right
     glCallList(swapper_list);
 
+    // Top left
     glScalef(-1.0f, -1.0f, 1.0f);
+    glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
     glCallList(swapper_list);
 
+    // Top right
     glScalef(-1.0f, 1.0f, 1.0f);
+    glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
     glCallList(swapper_list);
 
+    // Bottom left
     glScalef(-1.0f, -1.0f, 1.0f);
+    glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
     glCallList(swapper_list);
 
   glPopMatrix();
