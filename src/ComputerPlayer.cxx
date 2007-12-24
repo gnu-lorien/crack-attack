@@ -424,7 +424,9 @@ void ComputerPlayer::timeStep()
       target_y = path[0].target_y;
       destination_x = path[0].destination.first;
       destination_y = path[0].destination.second;
-      snprintf(lame, 255, "Target (%d,%d)", target_x, target_y);
+      snprintf(lame, 255, "Target (%d,%d) Destination (%d,%d)",
+          target_x, target_y,
+          destination_x, destination_y);
       MESSAGE(lame);
       alarm = Game::time_step + 1;
       need_key_up = true;

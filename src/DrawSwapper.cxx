@@ -117,11 +117,11 @@ void Displayer::drawComputerPlayerDestination (   )
 
   glPushMatrix();
 
-    GLfloat x = ComputerPlayer::destination_x * DC_GRID_ELEMENT_LENGTH
+    GLfloat x = (ComputerPlayer::destination_x - 1) * DC_GRID_ELEMENT_LENGTH
      + (DC_PLAY_OFFSET_X + 0.5f * DC_GRID_ELEMENT_LENGTH);
     GLfloat y = ComputerPlayer::destination_y * DC_GRID_ELEMENT_LENGTH + play_offset_y;
 
-    GLfloat x1 = (ComputerPlayer::destination_x + 1) * DC_GRID_ELEMENT_LENGTH
+    GLfloat x1 = ComputerPlayer::destination_x * DC_GRID_ELEMENT_LENGTH
      + (DC_PLAY_OFFSET_X + 0.5f * DC_GRID_ELEMENT_LENGTH);
 
     glTranslatef(x, y, DC_PLAY_OFFSET_Z);
