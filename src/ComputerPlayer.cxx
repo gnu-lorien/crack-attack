@@ -209,7 +209,8 @@ static std::vector< PathPortion > swap_between(int swap_x, int swap_y, int start
       current_y = row;
       std::vector< PathPortion > additional_path = path_between(
           swap_x, swap_y,
-          current_x, current_y);
+          current_x, current_y,
+          move_delay);
       if (!additional_path.empty())
         ret_path.insert(ret_path.end(), additional_path.begin(), additional_path.end());
     } else {
@@ -217,7 +218,8 @@ static std::vector< PathPortion > swap_between(int swap_x, int swap_y, int start
       current_y = row;
       std::vector< PathPortion > additional_path = path_between(
           swap_x, swap_y,
-          current_x, current_y);
+          current_x, current_y,
+          move_delay);
       if (!additional_path.empty())
         ret_path.insert(ret_path.end(), additional_path.begin(), additional_path.end());
     }
@@ -289,7 +291,8 @@ static std::vector< PathPortion > path_for_top_vertical_combo(int swap_x, int sw
             }
             std::vector< PathPortion > additional_path = swap_between(
                 swap_x, swap_y,
-                locations[i], x, y - 1);
+                locations[i], x, y - 1,
+                GC_SWAP_DELAY * 3, 50);
             if (!additional_path.empty()) {
               ret_path.insert(ret_path.end(), additional_path.begin(), additional_path.end());
               return ret_path;
@@ -372,16 +375,16 @@ void ComputerPlayer::gameStart()
     MESSAGE("Not all blocks");
   }
   //path.push_back(std::make_pair(50, GC_LEFT_KEY));
+  /*
   for (int i = 0; i < 5; ++i) {
     path_all_for_flavor(path, i);
   }
-  /*
+  */
   int swap_x = Swapper::x, swap_y = Swapper::y;
 
   std::vector< PathPortion > additional_path = path_for_top_vertical_combo(swap_x, swap_y);
   if (!additional_path.empty())
     path.insert(path.end(), additional_path.begin(), additional_path.end());
-  */
 
   assert(!path.empty());
   alarm = start_time + path[0].alarm;
