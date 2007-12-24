@@ -224,6 +224,9 @@ static std::vector< PathPortion > swap_between(int swap_x, int swap_y, int start
         ret_path.insert(ret_path.end(), additional_path.begin(), additional_path.end());
     }
   }
+  for (int i = 0; i < ret_path.size(); ++i) {
+    ret_path[i].destination = std::make_pair(end_x, row);
+  }
 
   if (x_move < 0) {
     dir = GC_RIGHT_KEY;
