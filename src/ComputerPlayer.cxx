@@ -467,8 +467,14 @@ void ComputerPlayer::timeStep()
         MESSAGE(lame);
         int swap_x = Swapper::x, swap_y = Swapper::y;
         std::vector< PathPortion > additional_path = path_for_top_vertical_combo(swap_x, swap_y);
-        if (!additional_path.empty())
+        if (!additional_path.empty()) {
           path.insert(path.begin(), additional_path.begin(), additional_path.end());
+        } else {
+          PathPortion p;
+          p.alarm = GC_MOVE_DELAY;
+          p.key_action = GC_ADVANCE_KEY;
+          path.push_back(p);
+        }
 
         if (!path.empty()) {
           alarm = alarm + path[0].alarm;
