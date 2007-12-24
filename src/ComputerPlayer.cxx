@@ -375,40 +375,9 @@ void ComputerPlayer::gameStart()
   */
   int swap_x = Swapper::x, swap_y = Swapper::y;
 
-  for (int y = Grid::top_effective_row; y >= 3; --y) {
-    bool found_path = false;
-    for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
-      if (GR_BLOCK == Grid::stateAt(x, y)) {
-        int current_flavor = Grid::flavorAt(x, y);
-        std::vector<int> locations = row_flavors(y - 1, current_flavor);
-        if (locations.empty()) {
-          continue;
-        }
-        std::vector<bool> has_path;
-        for (unsigned int i = 0; i < locations.size(); ++i) {
-          has_path.push_back(
-              has_row_path_between(
-                x, locations[i], y - 1));
-        }
-        for (unsigned int i = 0; i < has_path.size(); ++i) {
-          if (has_path[i]) {
-            if (!path.empty())
-            {
-              PathPortion p = path[path.size() - 1];
-              swap_x = p.target_x;
-              swap_y = p.target_y;
-            }
-            std::vector< PathPortion > additional_path = swap_between(
-                swap_x, swap_y,
-                locations[i], x, y - 1);
-            if (!additional_path.empty())
-              path.insert(path.end(), additional_path.begin(), additional_path.end());
-            found_path = true;
-          }
-        }
-      }
-    }
-  }
+  std::vector< PathPortion > additional_path = path_for_top_vertical_combo(swap_x, swap_y);
+  if (!additional_path.empty())
+    path.insert(path.end(), additional_path.begin(), additional_path.end());
 
   assert(!path.empty());
   alarm = start_time + path[0].alarm;
