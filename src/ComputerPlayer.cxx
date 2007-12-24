@@ -267,6 +267,34 @@ static std::vector< PathPortion > swap_between(int swap_x, int swap_y, int start
   }
 }
 
+static std::vector< PathPortion > gravity_flavor_path(int swap_x, int swap_y, int current_flavor, int x, int y)
+{
+  std::vector< PathPortion > ret_path;
+  std::vector<int> locations = row_flavors(y, current_flavor);
+  if (locations.empty()) {
+    return ret_path;
+  }
+  std::vector<bool> has_path;
+  for (unsigned int i = 0; i < locations.size(); ++i) {
+    has_path.push_back(
+        has_row_path_between(
+          x, locations[i], y));
+  }
+  for (unsigned int i = 0; i < has_path.size(); ++i) {
+    if (has_path[i]) {
+      std::vector< PathPortion > additional_path = swap_between(
+          swap_x, swap_y,
+          locations[i], x, y);
+          //GC_SWAP_DELAY * 3, 50);
+      if (!additional_path.empty()) {
+        ret_path.insert(ret_path.end(), additional_path.begin(), additional_path.end());
+        return ret_path;
+      }
+    }
+  }
+  return ret_path;
+}
+
 static std::vector< PathPortion > path_for_top_vertical_combo(int swap_x, int swap_y)
 {
   std::vector< PathPortion > ret_path;
@@ -274,32 +302,24 @@ static std::vector< PathPortion > path_for_top_vertical_combo(int swap_x, int sw
     for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
       if (GR_BLOCK == Grid::stateAt(x, y)) {
         int current_flavor = Grid::flavorAt(x, y);
-        std::vector<int> locations = row_flavors(y - 1, current_flavor);
-        if (locations.empty()) {
-          continue;
+        if (!ret_path.empty())
+        {
+          PathPortion p = ret_path[ret_path.size() - 1];
+          swap_x = p.target_x;
+          swap_y = p.target_y;
         }
-        std::vector<bool> has_path;
-        for (unsigned int i = 0; i < locations.size(); ++i) {
-          has_path.push_back(
-              has_row_path_between(
-                x, locations[i], y - 1));
-        }
-        for (unsigned int i = 0; i < has_path.size(); ++i) {
-          if (has_path[i]) {
-            if (!ret_path.empty())
-            {
-              PathPortion p = ret_path[ret_path.size() - 1];
-              swap_x = p.target_x;
-              swap_y = p.target_y;
-            }
-            std::vector< PathPortion > additional_path = swap_between(
-                swap_x, swap_y,
-                locations[i], x, y - 1,
-                GC_SWAP_DELAY * 3, 50);
-            if (!additional_path.empty()) {
-              ret_path.insert(ret_path.end(), additional_path.begin(), additional_path.end());
-              return ret_path;
-            }
+        std::vector< PathPortion > one_down = gravity_flavor_path(swap_x, swap_y, current_flavor, x, y - 1);
+        std::vector< PathPortion > two_down;
+        if (!one_down.empty()) {
+          two_down = gravity_flavor_path(
+              one_down[one_down.size()-1].after_x,
+              one_down[one_down.size()-1].after_y,
+              current_flavor,
+              x, y - 2);
+          if (!two_down.empty()) {
+            ret_path.insert(ret_path.end(), one_down.begin(), one_down.end());
+            ret_path.insert(ret_path.end(), two_down.begin(), two_down.end());
+            return ret_path;
           }
         }
       }
