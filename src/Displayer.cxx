@@ -328,7 +328,7 @@ void Displayer::displayPlay (   )
   if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
     drawLevelLights();
 
-  if (!((Game::state & (GS_PAUSED | GS_SYNC_WAIT)) == GS_PAUSED)) {
+  //if (!((Game::state & (GS_PAUSED | GS_SYNC_WAIT)) == GS_PAUSED)) {
 
     LightManager::timeStepInitialize();
 
@@ -355,7 +355,7 @@ void Displayer::displayPlay (   )
     glDisable(GL_DEPTH_TEST);
 
     LightManager::resetHeadLight();
-  }
+  //}
 
   if (!(MetaState::mode & CM_REALLY_LOW_GRAPHICS))
     glDisable(GL_LIGHTING);
