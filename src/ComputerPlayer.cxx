@@ -368,16 +368,16 @@ void ComputerPlayer::gameStart()
     MESSAGE("Not all blocks");
   }
   //path.push_back(std::make_pair(50, GC_LEFT_KEY));
-  /*
   for (int i = 0; i < 5; ++i) {
     path_all_for_flavor(path, i);
   }
-  */
+  /*
   int swap_x = Swapper::x, swap_y = Swapper::y;
 
   std::vector< PathPortion > additional_path = path_for_top_vertical_combo(swap_x, swap_y);
   if (!additional_path.empty())
     path.insert(path.end(), additional_path.begin(), additional_path.end());
+  */
 
   assert(!path.empty());
   alarm = start_time + path[0].alarm;
