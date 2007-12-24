@@ -63,7 +63,7 @@ static bool has_row_path_between(int x1, int x2, int row)
     }
   }
   if (all_blocks) {
-    MESSAGE("Returning that they're all blocks");
+    //MESSAGE("Returning that they're all blocks");
     return true;
   }
 
@@ -82,10 +82,10 @@ static bool has_row_path_between(int x1, int x2, int row)
     }
   }
   if (will_fall) {
-    MESSAGE("Will fall");
+    //MESSAGE("Will fall");
     return false;
   } else {
-    MESSAGE("Won't fall");
+    //MESSAGE("Won't fall");
   }
 
   // Also have to make sure there aren't any of the special things blocking us.
@@ -95,13 +95,13 @@ static bool has_row_path_between(int x1, int x2, int row)
   for (int counter_x = lesser_x; counter_x <= greater_x; ++counter_x) {
     if (GR_EMPTY != Grid::stateAt(counter_x, row)) {
       if (GR_BLOCK != Grid::stateAt(counter_x, row)) {
-        MESSAGE("Found non-empty and non-block");
+        //MESSAGE("Found non-empty and non-block");
         return false;
       }
     }
   }
 
-  MESSAGE("Block can move in its row!");
+  //MESSAGE("Block can move in its row!");
   return true;
 }
 
