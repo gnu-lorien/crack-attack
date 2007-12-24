@@ -298,7 +298,7 @@ static std::vector< PathPortion > gravity_flavor_path(int swap_x, int swap_y, in
 static std::vector< PathPortion > path_for_top_vertical_combo(int swap_x, int swap_y)
 {
   std::vector< PathPortion > ret_path;
-  for (int y = Grid::top_effective_row; y >= 3; --y) {
+  for (int y = Grid::top_occupied_row; y >= 3; --y) {
     for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
       if (GR_BLOCK == Grid::stateAt(x, y)) {
         int current_flavor = Grid::flavorAt(x, y);
