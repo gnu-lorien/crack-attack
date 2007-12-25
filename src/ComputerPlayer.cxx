@@ -295,7 +295,7 @@ static Path swap_between(int swap_x, int swap_y, int start_x, int end_x, int row
 static std::vector< PathPortion > gravity_flavor_path(int swap_x, int swap_y, int current_flavor, int x, int y, int &chosen_x)
 {
   std::vector< PathPortion > ret_path;
-  std::vector<int> locations = row_flavors(y, current_flavor);
+  std::vector<int> locations = row_flavors(y, current_flavor, x);
   if (locations.empty()) {
     return ret_path;
   }
