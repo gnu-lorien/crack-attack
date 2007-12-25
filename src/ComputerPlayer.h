@@ -38,6 +38,9 @@ struct PathPortion {
   std::pair<int, int> destination;
 };
 
+typedef std::vector< PathPortion > Path;
+typedef std::vector< Path > Paths;
+
 /* static */ class ComputerPlayer {
 private:
   static bool lost;
@@ -45,7 +48,7 @@ private:
   static ComputerPlayerAI *ai;
   static int start_time;
   static int alarm;
-  static std::vector< PathPortion > path;
+  static Path path;
 
   static int findTopRed (  );
   static double lightPartition ( int block );

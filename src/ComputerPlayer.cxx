@@ -297,8 +297,9 @@ static std::vector< PathPortion > gravity_flavor_path(int swap_x, int swap_y, in
 
 static std::vector< PathPortion > path_for_top_vertical_combo(int swap_x, int swap_y)
 {
-  std::vector< PathPortion > ret_path;
+  Paths paths;
   for (int y = Grid::top_occupied_row; y >= 3; --y) {
+    Path ret_path;
     for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
       if (GR_BLOCK == Grid::stateAt(x, y)) {
         int current_flavor = Grid::flavorAt(x, y);
@@ -319,13 +320,31 @@ static std::vector< PathPortion > path_for_top_vertical_combo(int swap_x, int sw
           if (!two_down.empty()) {
             ret_path.insert(ret_path.end(), one_down.begin(), one_down.end());
             ret_path.insert(ret_path.end(), two_down.begin(), two_down.end());
-            return ret_path;
+            paths.push_back(ret_path);
           }
         }
       }
     }
   }
 
+  // Use numeric limits instead
+  const int path_max = 2000000;
+  const int path_null = -1;
+  std::pair<int, int> least_path(path_max, path_null);
+
+  if (!paths.empty()) {
+    for (size_t i = 0; i < paths.size(); ++i) {
+      if (paths[i].size() < least_path.first) {
+        least_path = std::make_pair(paths[i].size(), i);
+      }
+    }
+    if (least_path.second != path_null) {
+      return paths[least_path.second];
+    }
+  }
+
+
+  Path ret_path;
   return ret_path;
 }
 
