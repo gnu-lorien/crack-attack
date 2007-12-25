@@ -29,6 +29,8 @@
 #include "Grid.h"
 #include "Swapper.h"
 
+#include <sstream>
+
 //#define WAIT_TIME ( GC_STEPS_PER_SECOND * 10 )
 
 bool ComputerPlayer::lost;
@@ -153,12 +155,6 @@ static std::vector< PathPortion > path_between(int start_x, int start_y, int end
 
   x_move = start_x - bound_end_x;
   y_move = start_y - end_y;
-
-  char lame[255];
-  snprintf(lame, 255, "Move from (%d,%d) to (%d,%d)",
-      start_x, start_y,
-      bound_end_x, end_y);
-  MESSAGE(lame);
 
   current_x = start_x; current_y = start_y;
   if (!(0 == x_move)) {
@@ -394,6 +390,9 @@ static std::vector< PathPortion > path_for_top_vertical_combo(int swap_x, int sw
   std::pair<int, int> least_path(path_max, path_null);
 
   if (!paths.empty()) {
+    std::ostringstream s;
+    s << paths.size() << std::ends;
+    MESSAGE("# of paths to choose from " << s.str());
     for (size_t i = 0; i < paths.size(); ++i) {
       if (paths[i].size() < least_path.first) {
         least_path = std::make_pair(paths[i].size(), i);
@@ -471,11 +470,6 @@ void ComputerPlayer::gameStart()
         break;
       }
     }
-  }
-  if (all_blocks) {
-    MESSAGE("All blocks");
-  } else {
-    MESSAGE("Not all blocks");
   }
   //path.push_back(std::make_pair(50, GC_LEFT_KEY));
   /*
