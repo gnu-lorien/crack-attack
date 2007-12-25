@@ -90,6 +90,78 @@ void Displayer::drawComputerPlayerTarget (   )
 void Displayer::drawComputerPlayerDestination (   )
 {
   // blocks have already been drawn, so we use their material calls
+
+  if (!ComputerPlayer::last_choices.empty()) {
+    std::vector< ComboAccounting > choices = ComputerPlayer::last_choices;
+    GLfloat color_increment = 1.0f / (GLfloat)(choices.size() + 1);
+    GLfloat color[3] = {color_increment, 1.0f, 1.0f};
+
+    for (size_t choices_idx = 0; choices_idx < choices.size(); ++choices_idx) {
+      color[0] = color_increment * (choices_idx + 1);
+      glColor3fv(color);
+      for (size_t i = 0; i < choices[choices_idx].combo_start.size(); ++i) {
+        std::pair<int, int> target = choices[choices_idx].combo_start[i];
+        glPushMatrix();
+
+          GLfloat x = (target.first - 1) * DC_GRID_ELEMENT_LENGTH
+           + (DC_PLAY_OFFSET_X + 0.5f * DC_GRID_ELEMENT_LENGTH);
+          GLfloat y = target.second * DC_GRID_ELEMENT_LENGTH + play_offset_y;
+
+          glTranslatef(x, y, DC_PLAY_OFFSET_Z);
+
+          // Bottom right
+          glCallList(swapper_list);
+
+          // Top left
+          glScalef(-1.0f, -1.0f, 1.0f);
+          glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+          glCallList(swapper_list);
+
+          // Top right
+          glScalef(-1.0f, 1.0f, 1.0f);
+          glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+          glCallList(swapper_list);
+
+          // Bottom left
+          glScalef(-1.0f, -1.0f, 1.0f);
+          glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+          glCallList(swapper_list);
+
+        glPopMatrix();
+      }
+      for (size_t i = 0; i < choices[choices_idx].combo_end.size(); ++i) {
+        std::pair<int, int> target = choices[choices_idx].combo_end[i];
+        glPushMatrix();
+
+          GLfloat x = (target.first - 1) * DC_GRID_ELEMENT_LENGTH
+           + (DC_PLAY_OFFSET_X + 0.5f * DC_GRID_ELEMENT_LENGTH);
+          GLfloat y = target.second * DC_GRID_ELEMENT_LENGTH + play_offset_y;
+
+          glTranslatef(x, y, DC_PLAY_OFFSET_Z);
+
+          // Bottom right
+          glCallList(swapper_list);
+
+          // Top left
+          glScalef(-1.0f, -1.0f, 1.0f);
+          glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+          glCallList(swapper_list);
+
+          // Top right
+          glScalef(-1.0f, 1.0f, 1.0f);
+          glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+          glCallList(swapper_list);
+
+          // Bottom left
+          glScalef(-1.0f, -1.0f, 1.0f);
+          glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+          glCallList(swapper_list);
+
+        glPopMatrix();
+      }
+    }
+  }
+
   if (ComputerPlayer::path.empty())
     return;
 
