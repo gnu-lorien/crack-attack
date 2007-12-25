@@ -25,6 +25,10 @@
 
 //class ComputerPlayerAI;
 
+class ComboAccounting {
+  std::vector< std::pair<int, int> > combo_start;
+  std::vector< std::pair<int, int> > combo_end;
+};
 
 struct PathPortion {
   int alarm;
@@ -35,7 +39,7 @@ struct PathPortion {
   int current_y;
   int after_x;
   int after_y;
-  std::pair<int, int> destination;
+  ComboAccounting accounting;
 };
 
 typedef std::vector< PathPortion > Path;
@@ -48,14 +52,12 @@ private:
   static ComputerPlayerAI *ai;
   static int start_time;
   static int alarm;
-  static Path path;
 
   static int findTopRed (  );
   static double lightPartition ( int block );
 
 public:
-  static int target_x, target_y;
-  static int destination_x, destination_y;
+  static Path path;
 
 public:
   static void gameStart (  );
