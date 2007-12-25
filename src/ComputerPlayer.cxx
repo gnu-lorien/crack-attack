@@ -586,3 +586,10 @@ bool ComputerPlayer::impact (bool reset)
   if (reset) _impact = false;
   return ret;
 }
+
+void ComputerPlayer::shiftUp (  )
+{
+  for (size_t i = 0; i < path.size(); ++i) {
+    path[i].shiftUp();
+  }
+}

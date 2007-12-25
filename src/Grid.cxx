@@ -34,6 +34,7 @@
 #include "Swapper.h"
 #include "BlockManager.h"
 #include "Random.h"
+#include "ComputerPlayer.h"
 
 GridElement Grid::grid[GC_PLAY_WIDTH][GC_PLAY_HEIGHT];
 CheckRegistryElement Grid::check_registry[GC_GRID_SIZE];
@@ -361,6 +362,7 @@ bool Grid::shiftGridUp (   )
 
   // shift swapper up
   Swapper::shiftUp();
+  ComputerPlayer::shiftUp();
 
   return true;
 }

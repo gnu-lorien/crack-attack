@@ -28,6 +28,15 @@
 struct ComboAccounting {
   std::vector< std::pair<int, int> > combo_start;
   std::vector< std::pair<int, int> > combo_end;
+
+  void shiftUp() {
+    for (size_t i = 0; i < combo_start.size(); ++i) {
+      combo_start[i].second++;
+    }
+    for (size_t i = 0; i < combo_end.size(); ++i) {
+      combo_end[i].second++;
+    }
+  };
 };
 
 struct PathPortion {
@@ -40,6 +49,13 @@ struct PathPortion {
   int after_x;
   int after_y;
   ComboAccounting accounting;
+
+  void shiftUp() {
+    ++target_y;
+    ++current_y;
+    ++after_y;
+    accounting.shiftUp();
+  };
 };
 
 typedef std::vector< PathPortion > Path;
@@ -62,6 +78,7 @@ public:
 public:
   static void gameStart (  );
   static void timeStep (   );
+  static void shiftUp (   );
   static int gameFinish (    );
 
   static void addGarbage ( int height, int width, int flavor );
