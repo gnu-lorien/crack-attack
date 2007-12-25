@@ -396,19 +396,23 @@ static Path choose_from_paths(Paths paths)
   std::pair<int, int> least_path(path_max, path_null);
 
   if (!paths.empty()) {
-    std::ostringstream s;
+    std::ostringstream s, p, r;
     s << paths.size() << std::ends;
     MESSAGE("# of paths to choose from " << s.str());
     ComputerPlayer::last_choices.clear();
     for (size_t i = 0; i < paths.size(); ++i) {
       ComputerPlayer::last_choices.push_back(paths[i][0].accounting);
+      p << " [" << i << ": " << paths[i].size() << "]";
     }
+    MESSAGE("Sizes " << p.str());
     for (size_t i = 0; i < paths.size(); ++i) {
       if (paths[i].size() < least_path.first) {
         least_path = std::make_pair(paths[i].size(), i);
       }
     }
     if (least_path.second != path_null) {
+      r << least_path.second;
+      MESSAGE("Picking " << r.str());
       return paths[least_path.second];
     }
   }
