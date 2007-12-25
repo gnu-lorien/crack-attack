@@ -37,10 +37,6 @@ ComputerPlayerAI *ComputerPlayer::ai;
 int ComputerPlayer::start_time = 0;
 int ComputerPlayer::alarm = 0;
 std::vector< PathPortion > ComputerPlayer::path;
-int ComputerPlayer::target_x = -1;
-int ComputerPlayer::target_y = -1;
-int ComputerPlayer::destination_x = -1;
-int ComputerPlayer::destination_y = -1;
 
 static bool has_row_path_between(int x1, int x2, int row)
 {
@@ -193,9 +189,9 @@ static std::vector< PathPortion > path_between(int start_x, int start_y, int end
   return ret_path;
 }
 
-static std::vector< PathPortion > swap_between(int swap_x, int swap_y, int start_x, int end_x, int row, int swap_delay = GC_SWAP_DELAY, int move_delay = GC_MOVE_DELAY)
+static Path swap_between(int swap_x, int swap_y, int start_x, int end_x, int row, int swap_delay = GC_SWAP_DELAY, int move_delay = GC_MOVE_DELAY)
 {
-  std::vector< PathPortion > ret_path;
+  Path ret_path;
   int x_move = 0, current_x, current_y;
   int dir, inc;
 
@@ -224,9 +220,11 @@ static std::vector< PathPortion > swap_between(int swap_x, int swap_y, int start
         ret_path.insert(ret_path.end(), additional_path.begin(), additional_path.end());
     }
   }
-  for (int i = 0; i < ret_path.size(); ++i) {
+  /*
+  for (size_t i = 0; i < ret_path.size(); ++i) {
     ret_path[i].destination = std::make_pair(end_x, row);
   }
+  */
 
   if (x_move < 0) {
     dir = GC_RIGHT_KEY;
@@ -241,7 +239,7 @@ static std::vector< PathPortion > swap_between(int swap_x, int swap_y, int start
     p.key_action = GC_SWAP_KEY;
     p.target_x = start_x;
     p.target_y = row;
-    p.destination = std::make_pair(end_x, row);
+    //p.destination = std::make_pair(end_x, row);
     p.current_x = p.after_x = current_x;
     p.current_y = p.after_y = current_y;
 
@@ -254,7 +252,7 @@ static std::vector< PathPortion > swap_between(int swap_x, int swap_y, int start
       p.key_action = dir;
       p.target_x = start_x;
       p.target_y = row;
-      p.destination = std::make_pair(end_x, row);
+      //p.destination = std::make_pair(end_x, row);
 
       p.current_x = current_x;
       p.current_y = current_y;
@@ -265,9 +263,11 @@ static std::vector< PathPortion > swap_between(int swap_x, int swap_y, int start
       ret_path.push_back(p);
     }
   }
+
+  return ret_path;
 }
 
-static std::vector< PathPortion > gravity_flavor_path(int swap_x, int swap_y, int current_flavor, int x, int y)
+static std::vector< PathPortion > gravity_flavor_path(int swap_x, int swap_y, int current_flavor, int x, int y, int &chosen_x)
 {
   std::vector< PathPortion > ret_path;
   std::vector<int> locations = row_flavors(y, current_flavor);
@@ -288,6 +288,7 @@ static std::vector< PathPortion > gravity_flavor_path(int swap_x, int swap_y, in
           //GC_SWAP_DELAY * 3, 50);
       if (!additional_path.empty()) {
         ret_path.insert(ret_path.end(), additional_path.begin(), additional_path.end());
+        chosen_x = locations[i];
         return ret_path;
       }
     }
@@ -303,17 +304,28 @@ static std::vector< PathPortion > path_for_top_vertical_combo(int swap_x, int sw
     for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
       if (GR_BLOCK == Grid::stateAt(x, y)) {
         int current_flavor = Grid::flavorAt(x, y);
-        std::vector< PathPortion > one_down = gravity_flavor_path(swap_x, swap_y, current_flavor, x, y - 1);
+        int first_combo_x, second_combo_x;
+        std::vector< PathPortion > one_down = gravity_flavor_path(swap_x, swap_y, current_flavor, x, y - 1, first_combo_x);
         std::vector< PathPortion > two_down;
         if (!one_down.empty()) {
           two_down = gravity_flavor_path(
               one_down[one_down.size()-1].current_x,
               one_down[one_down.size()-1].current_y,
               current_flavor,
-              x, y - 2);
+              x, y - 2, second_combo_x);
           if (!two_down.empty()) {
             ret_path.insert(ret_path.end(), one_down.begin(), one_down.end());
             ret_path.insert(ret_path.end(), two_down.begin(), two_down.end());
+            ComboAccounting ca;
+            ca.combo_start.push_back(std::make_pair(x, y));
+            ca.combo_start.push_back(std::make_pair(first_combo_x, y - 1));
+            ca.combo_start.push_back(std::make_pair(second_combo_x, y - 2));
+            ca.combo_end.push_back(std::make_pair(x, y));
+            ca.combo_end.push_back(std::make_pair(x, y - 1));
+            ca.combo_end.push_back(std::make_pair(x, y - 2));
+            for (size_t i = 0; i < ret_path.size(); ++i) {
+              ret_path[i].accounting = ca;
+            }
             paths.push_back(ret_path);
           }
         }
@@ -433,7 +445,6 @@ int ComputerPlayer::gameFinish()
 
 void ComputerPlayer::timeStep()
 {
-  static bool first_time = true;
   static bool need_key_up = false;
   /*
   if (!(MetaState::mode & CM_AI))
@@ -456,14 +467,6 @@ void ComputerPlayer::timeStep()
           Swapper::y);
       MESSAGE(lame);
       Controller::keyboardPlay(path[0].key_action, 0, 0);
-      target_x = path[0].target_x;
-      target_y = path[0].target_y;
-      destination_x = path[0].destination.first;
-      destination_y = path[0].destination.second;
-      snprintf(lame, 255, "Target (%d,%d) Destination (%d,%d)",
-          target_x, target_y,
-          destination_x, destination_y);
-      MESSAGE(lame);
       alarm = Game::time_step + 1;
       need_key_up = true;
     } else {
@@ -494,10 +497,6 @@ void ComputerPlayer::timeStep()
         } else {
           alarm = -1;
         }
-        target_x = -1;
-        target_y = -1;
-        destination_x = -1;
-        destination_y = -1;
       }
     }
   }

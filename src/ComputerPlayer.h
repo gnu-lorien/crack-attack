@@ -25,7 +25,7 @@
 
 //class ComputerPlayerAI;
 
-class ComboAccounting {
+struct ComboAccounting {
   std::vector< std::pair<int, int> > combo_start;
   std::vector< std::pair<int, int> > combo_end;
 };
