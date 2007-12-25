@@ -94,10 +94,12 @@ void Displayer::drawComputerPlayerDestination (   )
   if (!ComputerPlayer::last_choices.empty()) {
     std::vector< ComboAccounting > choices = ComputerPlayer::last_choices;
     GLfloat color_increment = 1.0f / (GLfloat)(choices.size() + 1);
-    GLfloat color[3] = {color_increment, 1.0f, 1.0f};
+    GLfloat color[3];
 
     for (size_t choices_idx = 0; choices_idx < choices.size(); ++choices_idx) {
       color[0] = color_increment * (choices_idx + 1);
+      color[1] = color_increment * (choices_idx + 1);
+      color[2] = color_increment * (choices_idx + 1);
       glColor3fv(color);
       for (size_t i = 0; i < choices[choices_idx].combo_start.size(); ++i) {
         std::pair<int, int> target = choices[choices_idx].combo_start[i];
