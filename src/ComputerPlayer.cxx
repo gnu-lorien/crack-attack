@@ -303,18 +303,12 @@ static std::vector< PathPortion > path_for_top_vertical_combo(int swap_x, int sw
     for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
       if (GR_BLOCK == Grid::stateAt(x, y)) {
         int current_flavor = Grid::flavorAt(x, y);
-        if (!ret_path.empty())
-        {
-          PathPortion p = ret_path[ret_path.size() - 1];
-          swap_x = p.target_x;
-          swap_y = p.target_y;
-        }
         std::vector< PathPortion > one_down = gravity_flavor_path(swap_x, swap_y, current_flavor, x, y - 1);
         std::vector< PathPortion > two_down;
         if (!one_down.empty()) {
           two_down = gravity_flavor_path(
-              one_down[one_down.size()-1].after_x,
-              one_down[one_down.size()-1].after_y,
+              one_down[one_down.size()-1].current_x,
+              one_down[one_down.size()-1].current_y,
               current_flavor,
               x, y - 2);
           if (!two_down.empty()) {
