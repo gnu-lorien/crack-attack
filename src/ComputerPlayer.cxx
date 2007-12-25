@@ -550,6 +550,7 @@ void ComputerPlayer::timeStep()
         Path additional_path = choose_from_paths(additional_paths);
         if (!additional_path.empty()) {
           path.insert(path.end(), additional_path.begin(), additional_path.end());
+
         } else {
           PathPortion p;
           p.alarm = GC_MOVE_DELAY;
