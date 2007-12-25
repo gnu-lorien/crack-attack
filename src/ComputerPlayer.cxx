@@ -39,6 +39,7 @@ ComputerPlayerAI *ComputerPlayer::ai;
 int ComputerPlayer::start_time = 0;
 int ComputerPlayer::alarm = 0;
 std::vector< PathPortion > ComputerPlayer::path;
+std::vector< ComboAccounting > ComputerPlayer::last_choices;
 
 static bool has_row_path_between(int x1, int x2, int row)
 {
@@ -317,7 +318,7 @@ static std::vector< PathPortion > gravity_flavor_path(int swap_x, int swap_y, in
   return ret_path;
 }
 
-static std::vector< PathPortion > path_for_top_vertical_combo(int swap_x, int swap_y)
+static Paths path_for_top_vertical_combo(int swap_x, int swap_y)
 {
   Paths paths;
   for (int y = Grid::top_occupied_row; y >= 3; --y) {
@@ -384,6 +385,11 @@ static std::vector< PathPortion > path_for_top_vertical_combo(int swap_x, int sw
     }
   }
 
+  return paths;
+}
+
+static Path choose_from_paths(Paths paths)
+{
   // Use numeric limits instead
   const int path_max = 2000000;
   const int path_null = -1;
@@ -402,10 +408,6 @@ static std::vector< PathPortion > path_for_top_vertical_combo(int swap_x, int sw
       return paths[least_path.second];
     }
   }
-
-
-  Path ret_path;
-  return ret_path;
 }
 
 static void path_all_for_flavor(std::vector< PathPortion > &my_path, int hunting_for_flavor)
@@ -479,7 +481,9 @@ void ComputerPlayer::gameStart()
   */
   int swap_x = Swapper::x, swap_y = Swapper::y;
 
-  std::vector< PathPortion > additional_path = path_for_top_vertical_combo(swap_x, swap_y);
+  Paths paths = path_for_top_vertical_combo(swap_x, swap_y);
+  Path additional_path = choose_from_paths(
+      path_for_top_vertical_combo(swap_x, swap_y));
   if (!additional_path.empty())
     path.insert(path.end(), additional_path.begin(), additional_path.end());
 
@@ -531,9 +535,10 @@ void ComputerPlayer::timeStep()
             Swapper::y);
         MESSAGE(lame);
         int swap_x = Swapper::x, swap_y = Swapper::y;
-        std::vector< PathPortion > additional_path = path_for_top_vertical_combo(swap_x, swap_y);
+        Paths additional_paths = path_for_top_vertical_combo(swap_x, swap_y);
+        Path additional_path = choose_from_paths(additional_paths);
         if (!additional_path.empty()) {
-          path.insert(path.begin(), additional_path.begin(), additional_path.end());
+          path.insert(path.end(), additional_path.begin(), additional_path.end());
         } else {
           PathPortion p;
           p.alarm = GC_MOVE_DELAY;

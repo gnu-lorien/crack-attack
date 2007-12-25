@@ -74,6 +74,7 @@ private:
 
 public:
   static Path path;
+  static std::vector< ComboAccounting > last_choices;
 
 public:
   static void gameStart (  );
