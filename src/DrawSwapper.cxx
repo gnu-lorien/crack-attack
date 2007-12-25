@@ -98,8 +98,12 @@ void Displayer::drawComputerPlayerDestination (   )
 
     for (size_t choices_idx = 0; choices_idx < choices.size(); ++choices_idx) {
       color[0] = color_increment * (choices_idx + 1);
-      color[1] = color_increment * (choices_idx + 1);
-      color[2] = color_increment * (choices_idx + 1);
+      color[1] = 1.0f - (color_increment * (choices_idx + 1));
+      if (choices_idx % 2) {
+        color[2] = color_increment * (choices_idx + 1);
+      } else {
+        color[2] = 1.0f - (color_increment * (choices_idx + 1));
+      }
       glColor3fv(color);
       for (size_t i = 0; i < choices[choices_idx].combo_start.size(); ++i) {
         std::pair<int, int> target = choices[choices_idx].combo_start[i];
@@ -112,7 +116,7 @@ void Displayer::drawComputerPlayerDestination (   )
           glTranslatef(x, y, DC_PLAY_OFFSET_Z);
 
           // Bottom right
-          glCallList(swapper_list);
+          //glCallList(swapper_list);
 
           // Top left
           glScalef(-1.0f, -1.0f, 1.0f);
@@ -122,12 +126,12 @@ void Displayer::drawComputerPlayerDestination (   )
           // Top right
           glScalef(-1.0f, 1.0f, 1.0f);
           glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
-          glCallList(swapper_list);
+          //glCallList(swapper_list);
 
           // Bottom left
           glScalef(-1.0f, -1.0f, 1.0f);
           glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
-          glCallList(swapper_list);
+          //glCallList(swapper_list);
 
         glPopMatrix();
       }
@@ -142,12 +146,12 @@ void Displayer::drawComputerPlayerDestination (   )
           glTranslatef(x, y, DC_PLAY_OFFSET_Z);
 
           // Bottom right
-          glCallList(swapper_list);
+          //glCallList(swapper_list);
 
           // Top left
           glScalef(-1.0f, -1.0f, 1.0f);
           glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
-          glCallList(swapper_list);
+          //glCallList(swapper_list);
 
           // Top right
           glScalef(-1.0f, 1.0f, 1.0f);
@@ -157,7 +161,7 @@ void Displayer::drawComputerPlayerDestination (   )
           // Bottom left
           glScalef(-1.0f, -1.0f, 1.0f);
           glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
-          glCallList(swapper_list);
+          //glCallList(swapper_list);
 
         glPopMatrix();
       }
