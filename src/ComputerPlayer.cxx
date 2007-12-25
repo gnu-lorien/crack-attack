@@ -305,29 +305,59 @@ static std::vector< PathPortion > path_for_top_vertical_combo(int swap_x, int sw
       if (GR_BLOCK == Grid::stateAt(x, y)) {
         int current_flavor = Grid::flavorAt(x, y);
         int first_combo_x, second_combo_x;
-        std::vector< PathPortion > one_down = gravity_flavor_path(swap_x, swap_y, current_flavor, x, y - 1, first_combo_x);
-        std::vector< PathPortion > two_down;
-        if (!one_down.empty()) {
+        bool has_path[2] = {false, false}, has_match[2] = {false, false};
+        Path one_down, two_down;
+
+        if ((GR_BLOCK == Grid::stateAt(x, y - 1)) &&
+            (Grid::flavorAt(x, y - 1) == current_flavor)) {
+          has_match[0] = true;
+          first_combo_x = x;
+        } else {
+          one_down =  gravity_flavor_path(swap_x, swap_y, current_flavor, x, y - 1, first_combo_x);
+          if (!one_down.empty()) {
+            has_path[0] = true;
+            has_match[0] = true;
+          }
+        }
+
+        if ((GR_BLOCK == Grid::stateAt(x, y - 2)) &&
+            (Grid::flavorAt(x, y - 2) == current_flavor)) {
+          has_match[1] = true;
+          second_combo_x = x;
+        } else {
+          int two_down_x, two_down_y;
+          if (has_path[0]) {
+            two_down_x = one_down[one_down.size()-1].current_x;
+            two_down_y = one_down[one_down.size()-1].current_y;
+          } else {
+            two_down_x = swap_x;
+            two_down_y = swap_y;
+          }
           two_down = gravity_flavor_path(
-              one_down[one_down.size()-1].current_x,
-              one_down[one_down.size()-1].current_y,
+              two_down_x, two_down_y,
               current_flavor,
               x, y - 2, second_combo_x);
           if (!two_down.empty()) {
-            ret_path.insert(ret_path.end(), one_down.begin(), one_down.end());
-            ret_path.insert(ret_path.end(), two_down.begin(), two_down.end());
-            ComboAccounting ca;
-            ca.combo_start.push_back(std::make_pair(x, y));
-            ca.combo_start.push_back(std::make_pair(first_combo_x, y - 1));
-            ca.combo_start.push_back(std::make_pair(second_combo_x, y - 2));
-            ca.combo_end.push_back(std::make_pair(x, y));
-            ca.combo_end.push_back(std::make_pair(x, y - 1));
-            ca.combo_end.push_back(std::make_pair(x, y - 2));
-            for (size_t i = 0; i < ret_path.size(); ++i) {
-              ret_path[i].accounting = ca;
-            }
-            paths.push_back(ret_path);
+            has_path[1] = true;
+            has_match[1] = true;
           }
+        }
+        if (has_match[0] && has_match[1]) {
+          if (has_path[0])
+            ret_path.insert(ret_path.end(), one_down.begin(), one_down.end());
+          if (has_path[1])
+            ret_path.insert(ret_path.end(), two_down.begin(), two_down.end());
+          ComboAccounting ca;
+          ca.combo_start.push_back(std::make_pair(x, y));
+          ca.combo_start.push_back(std::make_pair(first_combo_x, y - 1));
+          ca.combo_start.push_back(std::make_pair(second_combo_x, y - 2));
+          ca.combo_end.push_back(std::make_pair(x, y));
+          ca.combo_end.push_back(std::make_pair(x, y - 1));
+          ca.combo_end.push_back(std::make_pair(x, y - 2));
+          for (size_t i = 0; i < ret_path.size(); ++i) {
+            ret_path[i].accounting = ca;
+          }
+          paths.push_back(ret_path);
         }
       }
     }
@@ -434,7 +464,7 @@ void ComputerPlayer::gameStart()
   if (!additional_path.empty())
     path.insert(path.end(), additional_path.begin(), additional_path.end());
 
-  assert(!path.empty());
+  //assert(!path.empty());
   alarm = start_time + path[0].alarm;
 }
 
