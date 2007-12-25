@@ -408,6 +408,9 @@ static Path choose_from_paths(Paths paths)
       return paths[least_path.second];
     }
   }
+
+  Path blank_path;
+  return blank_path;
 }
 
 static void path_all_for_flavor(std::vector< PathPortion > &my_path, int hunting_for_flavor)
