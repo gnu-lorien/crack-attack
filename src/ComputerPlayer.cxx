@@ -101,16 +101,41 @@ static bool has_row_path_between(int x1, int x2, int row)
   return true;
 }
 
-static std::vector<int> row_flavors(int row, int flavor)
+static std::vector<int> row_flavors(int row, int flavor, int closest_to = 0)
 {
   std::vector<int> locations;
-  for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
-    if (GR_BLOCK == Grid::stateAt(x, row)) {
-      if (Grid::flavorAt(x, row) == flavor) {
-        locations.push_back(x);
+
+  assert(closest_to < GC_PLAY_WIDTH);
+  assert(closest_to >= 0);
+
+  if (0 == closest_to) {
+    for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
+      if (GR_BLOCK == Grid::stateAt(x, row)) {
+        if (Grid::flavorAt(x, row) == flavor) {
+          locations.push_back(x);
+        }
       }
     }
+    return locations;
   }
+
+  int sign = 1;
+  int idx = closest_to;
+  int count = 0;
+  const int max_count = 12;
+
+  while (count <= max_count) {
+    idx += (count * sign);
+    if ((idx >= 0) && (idx < GC_PLAY_WIDTH)) {
+      if ((GR_BLOCK == Grid::stateAt(idx, row)) &&
+          (Grid::flavorAt(idx, row) == flavor)) {
+        locations.push_back(idx);
+      }
+    }
+    ++count;
+    sign *= -1;
+  }
+
   return locations;
 }
 
