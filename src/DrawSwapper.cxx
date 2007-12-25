@@ -45,27 +45,24 @@ const GLfloat swapper_colors[4][3]
 void Displayer::drawComputerPlayerTarget (   )
 {
   // blocks have already been drawn, so we use their material calls
+  int target_x, target_y;
 
-  if ((ComputerPlayer::target_x == -1) || (ComputerPlayer::target_y == -1))
+  if (ComputerPlayer::path.empty())
     return;
 
-  if (!X::invisibleSwapper())
-    glColor3fv(swapper_colors[1]);
+  target_x = ComputerPlayer::path[0].target_x;
+  target_y = ComputerPlayer::path[0].target_y;
 
-  else {
-    if (!X::needDrawSwapper()) return;
+  if ((target_x == -1) || (target_y == -1))
+    return;
 
-    glEnable(GL_BLEND);
-    glColor4f(swapper_colors[Swapper::color][0],
-     swapper_colors[Swapper::color][1], swapper_colors[Swapper::color][2],
-     X::swapperAlpha());
-  }
+  glColor3fv(swapper_colors[1]);
 
   glPushMatrix();
 
-    GLfloat x = (ComputerPlayer::target_x - 1) * DC_GRID_ELEMENT_LENGTH
+    GLfloat x = (target_x - 1) * DC_GRID_ELEMENT_LENGTH
      + (DC_PLAY_OFFSET_X + 0.5f * DC_GRID_ELEMENT_LENGTH);
-    GLfloat y = ComputerPlayer::target_y * DC_GRID_ELEMENT_LENGTH + play_offset_y;
+    GLfloat y = target_y * DC_GRID_ELEMENT_LENGTH + play_offset_y;
 
     glTranslatef(x, y, DC_PLAY_OFFSET_Z);
 
@@ -88,60 +85,81 @@ void Displayer::drawComputerPlayerTarget (   )
     glCallList(swapper_list);
 
   glPopMatrix();
-
-  if (X::invisibleSwapper())
-    glDisable(GL_BLEND);
 }
 
 void Displayer::drawComputerPlayerDestination (   )
 {
   // blocks have already been drawn, so we use their material calls
-
-  if ((ComputerPlayer::destination_x == -1) || (ComputerPlayer::destination_y == -1))
+  if (ComputerPlayer::path.empty())
     return;
 
-  if (!X::invisibleSwapper())
+  for (size_t i = 0; i < ComputerPlayer::path[0].accounting.combo_start.size(); ++i) {
+    std::pair<int, int> target = ComputerPlayer::path[0].accounting.combo_start[i];
+
     glColor3fv(swapper_colors[2]);
 
-  else {
-    if (!X::needDrawSwapper()) return;
+    glPushMatrix();
 
-    glEnable(GL_BLEND);
-    glColor4f(swapper_colors[Swapper::color][0],
-     swapper_colors[Swapper::color][1], swapper_colors[Swapper::color][2],
-     X::swapperAlpha());
+      GLfloat x = (target.first - 1) * DC_GRID_ELEMENT_LENGTH
+       + (DC_PLAY_OFFSET_X + 0.5f * DC_GRID_ELEMENT_LENGTH);
+      GLfloat y = target.second * DC_GRID_ELEMENT_LENGTH + play_offset_y;
+
+      glTranslatef(x, y, DC_PLAY_OFFSET_Z);
+
+      // Bottom right
+      glCallList(swapper_list);
+
+      // Top left
+      glScalef(-1.0f, -1.0f, 1.0f);
+      glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+      glCallList(swapper_list);
+
+      // Top right
+      glScalef(-1.0f, 1.0f, 1.0f);
+      glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+      glCallList(swapper_list);
+
+      // Bottom left
+      glScalef(-1.0f, -1.0f, 1.0f);
+      glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+      glCallList(swapper_list);
+
+    glPopMatrix();
   }
 
-  glPushMatrix();
+  for (size_t i = 0; i < ComputerPlayer::path[0].accounting.combo_end.size(); ++i) {
+    std::pair<int, int> target = ComputerPlayer::path[0].accounting.combo_end[i];
 
-    GLfloat x = (ComputerPlayer::destination_x - 1) * DC_GRID_ELEMENT_LENGTH
-     + (DC_PLAY_OFFSET_X + 0.5f * DC_GRID_ELEMENT_LENGTH);
-    GLfloat y = ComputerPlayer::destination_y * DC_GRID_ELEMENT_LENGTH + play_offset_y;
+    glColor3fv(swapper_colors[3]);
 
-    glTranslatef(x, y, DC_PLAY_OFFSET_Z);
+    glPushMatrix();
 
-    // Bottom right
-    glCallList(swapper_list);
+      GLfloat x = (target.first - 1) * DC_GRID_ELEMENT_LENGTH
+       + (DC_PLAY_OFFSET_X + 0.5f * DC_GRID_ELEMENT_LENGTH);
+      GLfloat y = target.second * DC_GRID_ELEMENT_LENGTH + play_offset_y;
 
-    // Top left
-    glScalef(-1.0f, -1.0f, 1.0f);
-    glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
-    glCallList(swapper_list);
+      glTranslatef(x, y, DC_PLAY_OFFSET_Z);
 
-    // Top right
-    glScalef(-1.0f, 1.0f, 1.0f);
-    glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
-    glCallList(swapper_list);
+      // Bottom right
+      glCallList(swapper_list);
 
-    // Bottom left
-    glScalef(-1.0f, -1.0f, 1.0f);
-    glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
-    glCallList(swapper_list);
+      // Top left
+      glScalef(-1.0f, -1.0f, 1.0f);
+      glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+      glCallList(swapper_list);
 
-  glPopMatrix();
+      // Top right
+      glScalef(-1.0f, 1.0f, 1.0f);
+      glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+      glCallList(swapper_list);
 
-  if (X::invisibleSwapper())
-    glDisable(GL_BLEND);
+      // Bottom left
+      glScalef(-1.0f, -1.0f, 1.0f);
+      glTranslatef(-1 * DC_GRID_ELEMENT_LENGTH, 0, 0);
+      glCallList(swapper_list);
+
+    glPopMatrix();
+  }
 }
 
 void Displayer::drawSwapper (   )
