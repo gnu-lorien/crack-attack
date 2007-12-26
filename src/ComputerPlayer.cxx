@@ -318,6 +318,43 @@ static std::vector< PathPortion > gravity_flavor_path(int swap_x, int swap_y, in
   return ret_path;
 }
 
+static std::vector<int> row_threshold_flavors(int row, size_t threshold = 3)
+{
+  assert(threshold > 0);
+  size_t flavor_counts[BF_NUMBER_NORMAL];
+  std::vector<int> flavors_matching_threshold;
+
+  for (size_t i = 0; i < BF_NUMBER_NORMAL; ++i) {
+    flavor_counts[i] = 0;
+  }
+
+  for (size_t i = 0; i < GC_PLAY_WIDTH; ++i) {
+    if (GR_BLOCK == Grid::stateAt(i, row)) {
+      ++flavor_counts[Grid::flavorAt(i, row)];
+    }
+  }
+
+  for (size_t i = 0; i < BF_NUMBER_NORMAL; ++i) {
+    if (flavor_counts[i] >= threshold) {
+      flavors_matching_threshold.push_back(i);
+    }
+  }
+
+  return flavors_matching_threshold;
+}
+
+static Paths path_for_top_horizontal_combo(int swap_x, int swap_y)
+{
+  Path paths;
+  for (int y = Grid::top_occupied_row; y >= 3; --y) {
+    Path ret_path;
+    std::vector<int> combo_flavors = row_threshold_flavors(y, 3);
+    if (combo_flavors.empty()) {
+      continue;
+    }
+  }
+}
+
 static Paths path_for_top_vertical_combo(int swap_x, int swap_y)
 {
   Paths paths;
