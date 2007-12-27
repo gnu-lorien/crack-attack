@@ -659,11 +659,25 @@ void ComputerPlayer::timeStep()
         Paths additional_paths;
         Path additional_path;
         if (randomChoice < 3) {
+          MESSAGE("Trying horz");
           additional_paths = path_for_top_horizontal_combo(swap_x, swap_y);
           additional_path = choose_from_paths(additional_paths);
         } else {
-          additional_paths = path_for_top_horizontal_combo(swap_x, swap_y);
+          MESSAGE("Trying vertical");
+          additional_paths = path_for_top_vertical_combo(swap_x, swap_y);
           additional_path = choose_from_paths(additional_paths);
+        }
+        if (additional_path.empty()) {
+          MESSAGE("Failed.");
+          if (randomChoice >= 3) {
+            MESSAGE("Trying horz");
+            additional_paths = path_for_top_horizontal_combo(swap_x, swap_y);
+            additional_path = choose_from_paths(additional_paths);
+          } else {
+            MESSAGE("Trying vertical");
+            additional_paths = path_for_top_vertical_combo(swap_x, swap_y);
+            additional_path = choose_from_paths(additional_paths);
+          }
         }
         if (!additional_path.empty()) {
           path.insert(path.end(), additional_path.begin(), additional_path.end());
