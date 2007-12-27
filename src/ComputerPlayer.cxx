@@ -338,7 +338,7 @@ static std::vector< PathPortion > gravity_flavor_path(int swap_x, int swap_y, in
   return ret_path;
 }
 
-static std::vector<int> row_threshold_flavors(int row, size_t threshold = 3)
+static std::vector<int> row_threshold_flavors(int row, size_t threshold = GC_MIN_PATTERN_LENGTH)
 {
   assert(threshold > 0);
   size_t flavor_counts[BF_NUMBER];
@@ -515,7 +515,7 @@ static Paths path_for_top_horizontal_combo(int swap_x, int swap_y)
 {
   Paths paths;
   for (int y = Grid::top_occupied_row; y >= 1; --y) {
-    std::vector<int> combo_flavors = row_threshold_flavors(y, 3);
+    std::vector<int> combo_flavors = row_threshold_flavors(y);
     if (combo_flavors.empty()) {
       continue;
     }
@@ -552,7 +552,7 @@ static Paths path_for_top_horizontal_combo(int swap_x, int swap_y)
 static Paths path_for_top_vertical_combo(int swap_x, int swap_y)
 {
   Paths paths;
-  for (int y = Grid::top_occupied_row; y >= 3; --y) {
+  for (int y = Grid::top_occupied_row; y >= GC_MIN_PATTERN_LENGTH; --y) {
     Path ret_path;
     for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
       if (GR_BLOCK == Grid::stateAt(x, y)) {
@@ -678,15 +678,6 @@ void ComputerPlayer::gameStart()
   start_time = Game::time_step;
   alarm = start_time + GC_MOVE_DELAY;
   lost = false;
-  bool all_blocks = true;
-  for (int y = Grid::top_effective_row; y >= 3; --y) {
-    for (int x = 0; x < GC_PLAY_WIDTH; ++x) {
-      if (GR_BLOCK != Grid::stateAt(x, y)) {
-        all_blocks = false;
-        break;
-      }
-    }
-  }
   //path.push_back(std::make_pair(50, GC_LEFT_KEY));
   /*
   for (int i = 0; i < 5; ++i) {
