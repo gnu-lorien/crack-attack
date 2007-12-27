@@ -370,6 +370,11 @@ static Paths path_for_top_horizontal_combo(int swap_x, int swap_y)
       first  = locations[0];
       second = locations[1];
       third  = locations[2];
+      if ((!has_row_path_between(first + 1, second, y)) ||
+          (!has_row_path_between(first + 2, third, y))) {
+        MESSAGE("No row path");
+        continue;
+      }
 
       if ((GR_BLOCK == Grid::stateAt(first + 1, y)) &&
           (Grid::flavorAt(first + 1, y) == current_flavor)) {
