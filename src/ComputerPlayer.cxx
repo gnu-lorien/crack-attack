@@ -590,9 +590,8 @@ void ComputerPlayer::gameStart()
   */
   int swap_x = Swapper::x, swap_y = Swapper::y;
 
-  Paths paths = path_for_top_vertical_combo(swap_x, swap_y);
-  Path additional_path = choose_from_paths(
-      path_for_top_vertical_combo(swap_x, swap_y));
+  Paths paths = path_for_top_horizontal_combo(swap_x, swap_y);
+  Path additional_path = choose_from_paths(paths);
   if (!additional_path.empty())
     path.insert(path.end(), additional_path.begin(), additional_path.end());
 
@@ -644,7 +643,7 @@ void ComputerPlayer::timeStep()
             Swapper::y);
         MESSAGE(lame);
         int swap_x = Swapper::x, swap_y = Swapper::y;
-        Paths additional_paths = path_for_top_vertical_combo(swap_x, swap_y);
+        Paths additional_paths = path_for_top_horizontal_combo(swap_x, swap_y);
         Path additional_path = choose_from_paths(additional_paths);
         if (!additional_path.empty()) {
           path.insert(path.end(), additional_path.begin(), additional_path.end());
