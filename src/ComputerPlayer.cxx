@@ -536,7 +536,7 @@ static Paths path_for_top_vertical_combo(int swap_x, int swap_y)
   return paths;
 }
 
-static Path choose_from_paths(Paths paths)
+static Path choose_shortest_path(Paths paths)
 {
   // Use numeric limits instead
   const int path_max = 2000000;
@@ -569,6 +569,11 @@ static Path choose_from_paths(Paths paths)
 
   Path blank_path;
   return blank_path;
+}
+
+static Path choose_from_paths(Paths paths)
+{
+  return choose_shortest_path(paths);
 }
 
 static void path_all_for_flavor(std::vector< PathPortion > &my_path, int hunting_for_flavor)
