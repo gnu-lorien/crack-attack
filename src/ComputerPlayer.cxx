@@ -497,8 +497,8 @@ static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, 
     ca.combo_start.push_back(std::make_pair(second, y));
     ca.combo_start.push_back(std::make_pair(third, y));
     ca.combo_end.push_back(std::make_pair(first, y));
-    ca.combo_end.push_back(std::make_pair(first + 1, y));
-    ca.combo_end.push_back(std::make_pair(first + 2, y));
+    ca.combo_end.push_back(std::make_pair(target_for_second, y));
+    ca.combo_end.push_back(std::make_pair(target_for_third, y));
     for (size_t i = 0; i < ret_path.size(); ++i) {
       ret_path[i].accounting = ca;
     }
