@@ -752,6 +752,15 @@ void ComputerPlayer::timeStep()
         MESSAGE(lame);
         int swap_x = Swapper::x, swap_y = Swapper::y;
         int randomChoice = Random::number(6);
+        Paths horz_paths, vert_paths, all_paths;
+        Path additional_path;
+
+        horz_paths = path_for_top_horizontal_combo(swap_x, swap_y);
+        vert_paths = path_for_top_vertical_combo(swap_x, swap_y);
+        all_paths.insert(all_paths.end(), horz_paths.begin(), horz_paths.end());
+        all_paths.insert(all_paths.end(), vert_paths.begin(), vert_paths.end());
+        additional_path = choose_from_paths(all_paths);
+        /*
         Paths additional_paths;
         Path additional_path;
         if (randomChoice < 3) {
@@ -775,6 +784,7 @@ void ComputerPlayer::timeStep()
             additional_path = choose_from_paths(additional_paths);
           }
         }
+        */
         if (!additional_path.empty()) {
           path.insert(path.end(), additional_path.begin(), additional_path.end());
 
