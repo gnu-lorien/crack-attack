@@ -31,6 +31,8 @@
 
 #include <sstream>
 
+using namespace std;
+
 //#define WAIT_TIME ( GC_STEPS_PER_SECOND * 10 )
 
 bool ComputerPlayer::lost;
@@ -345,14 +347,73 @@ static std::vector<int> row_threshold_flavors(int row, size_t threshold = 3)
 
 static Paths path_for_top_horizontal_combo(int swap_x, int swap_y)
 {
-  Path paths;
+  Paths paths;
   for (int y = Grid::top_occupied_row; y >= 3; --y) {
-    Path ret_path;
     std::vector<int> combo_flavors = row_threshold_flavors(y, 3);
     if (combo_flavors.empty()) {
       continue;
     }
+    for (size_t i = 0; i < combo_flavors.size(); ++i) {
+      size_t first, second, third;
+      Path ret_path, one, two;
+      int current_flavor = combo_flavors[i];
+      bool has_path[2] = {false, false}, has_match[2] = {false, false};
+      std::vector<int> locations = row_flavors(y, current_flavor);
+
+      assert(locations.size() >= 3);
+      first  = locations[0];
+      second = locations[1];
+      third  = locations[2];
+
+      if ((GR_BLOCK == Grid::stateAt(first + 1, y)) &&
+          (Grid::flavorAt(first + 1, y) == current_flavor)) {
+        has_match[0] = true;
+      } else {
+        one = swap_between(
+            swap_x, swap_y,
+            second, first + 1, y);
+        if (!one.empty()) {
+          has_path[0] = true;
+          has_match[0] = true;
+        }
+      }
+      int two_swap_x, two_swap_y;
+      if (has_path[0]) {
+        two_swap_x = one[one.size() - 1].current_x;
+        two_swap_y = one[one.size() - 1].current_y;
+      } else {
+        two_swap_x = swap_x;
+        two_swap_y = swap_y;
+      }
+      two = swap_between(
+          two_swap_x, two_swap_y,
+          third, first + 2, y);
+      if (!one.empty()) {
+        has_path[1] = true;
+        has_match[1] = true;
+      }
+
+      if (has_match[0] && has_match[1]) {
+        if (has_path[0])
+          ret_path.insert(ret_path.end(), one.begin(), one.end());
+        if (has_path[1])
+          ret_path.insert(ret_path.end(), one.begin(), one.end());
+        ComboAccounting ca;
+        ca.combo_start.push_back(std::make_pair(first, y));
+        ca.combo_start.push_back(std::make_pair(second, y));
+        ca.combo_start.push_back(std::make_pair(third, y));
+        ca.combo_end.push_back(std::make_pair(first, y));
+        ca.combo_end.push_back(std::make_pair(first + 1, y));
+        ca.combo_end.push_back(std::make_pair(first + 2, y));
+        for (size_t i = 0; i < ret_path.size(); ++i) {
+          ret_path[i].accounting = ca;
+        }
+        paths.push_back(ret_path);
+      }
+    }
   }
+
+  return paths;
 }
 
 static Paths path_for_top_vertical_combo(int swap_x, int swap_y)
