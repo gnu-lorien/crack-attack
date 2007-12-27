@@ -394,7 +394,7 @@ static Paths path_for_top_horizontal_combo(int swap_x, int swap_y)
       two = swap_between(
           two_swap_x, two_swap_y,
           third, first + 2, y);
-      if (!one.empty()) {
+      if (!two.empty()) {
         has_path[1] = true;
         has_match[1] = true;
       }
