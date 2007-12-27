@@ -397,7 +397,7 @@ static Paths path_for_top_horizontal_combo(int swap_x, int swap_y)
         if (has_path[0])
           ret_path.insert(ret_path.end(), one.begin(), one.end());
         if (has_path[1])
-          ret_path.insert(ret_path.end(), one.begin(), one.end());
+          ret_path.insert(ret_path.end(), two.begin(), two.end());
         ComboAccounting ca;
         ca.combo_start.push_back(std::make_pair(first, y));
         ca.combo_start.push_back(std::make_pair(second, y));
