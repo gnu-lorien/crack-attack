@@ -465,7 +465,8 @@ static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, 
   }
 
   if ((GR_BLOCK == Grid::stateAt(target_for_third, y)) &&
-      (Grid::flavorAt(target_for_third, y) == current_flavor)) {
+      (Grid::flavorAt(target_for_third, y) == current_flavor) &&
+      (second != target_for_third)) {
     has_match[1] = true;
   } else {
     int two_swap_x, two_swap_y;
