@@ -519,6 +519,8 @@ static Path choose_from_paths(Paths paths)
       MESSAGE("Picking " << r.str());
       return paths[least_path.second];
     }
+  } else {
+    MESSAGE("Choosing from empty paths");
   }
 
   Path blank_path;
