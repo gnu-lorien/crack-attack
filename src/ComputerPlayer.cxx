@@ -54,6 +54,9 @@ static bool has_row_path_between(int x1, int x2, int row)
     greater_x = x2;
   }
 
+  if ((greater_x - lesser_x) == 1)
+    return true;
+
   // The simple case is that all of the things between the two locations are blocks
   // This means that there can be no falling holes
 
