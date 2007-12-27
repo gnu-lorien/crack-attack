@@ -325,9 +325,7 @@ static std::vector<int> row_threshold_flavors(int row, size_t threshold = 3)
   assert(threshold > 0);
   size_t flavor_counts[BF_NUMBER];
   std::vector<int> flavors_matching_threshold;
-  sstream s;
-
-  s << row << "=>";
+  ostringstream s;
 
   for (size_t i = 0; i < BF_NUMBER; ++i) {
     flavor_counts[i] = 0;
@@ -340,15 +338,15 @@ static std::vector<int> row_threshold_flavors(int row, size_t threshold = 3)
   }
 
   for (size_t i = 0; i < BF_NUMBER; ++i) {
-    s << "[" << i << ":" << flavor_counts[i];
     if (flavor_counts[i] >= threshold) {
       flavors_matching_threshold.push_back(i);
-      s << "*";
     }
-    s << "]" << ends;
   }
 
-  MESSAGE("Flavs" << s.str());
+  if (!flavors_matching_threshold.empty()) {
+    s << row << " should have horz combo" << ends;
+    MESSAGE("Row " << s.str());
+  }
 
   return flavors_matching_threshold;
 }
