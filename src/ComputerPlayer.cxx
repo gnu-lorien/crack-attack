@@ -396,6 +396,8 @@ static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, 
   bool has_path[2] = {false, false}, has_match[2] = {false, false};
   size_t target_for_second, target_for_third;
 
+  assert(second < third);
+
   if (second < first) {
     target_for_second = first - 1;
   } else {
@@ -492,11 +494,8 @@ static Paths path_for_top_horizontal_combo(int swap_x, int swap_y)
       const size_t options_max = 6;
       int options[options_max][3] =
         { {0, 1, 2},
-          {0, 2, 1},
           {1, 0, 2},
-          {1, 2, 0},
-          {2, 0, 1},
-          {2, 1, 0} };
+          {2, 0, 1} };
       for (size_t idx = 0; idx < options_max; ++idx) {
         Path path = generate_horizontal_swap_path(
           swap_x, swap_y,
