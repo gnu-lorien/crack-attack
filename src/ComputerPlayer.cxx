@@ -354,6 +354,41 @@ static std::vector<int> row_threshold_flavors(int row, size_t threshold = 3)
   return flavors_matching_threshold;
 }
 
+static Path choose_shortest_path(Paths paths)
+{
+  // Use numeric limits instead
+  const int path_max = 2000000;
+  const int path_null = -1;
+  std::pair<int, int> least_path(path_max, path_null);
+
+  if (!paths.empty()) {
+    std::ostringstream s, p, r;
+    s << paths.size() << std::ends;
+    MESSAGE("# of paths to choose from " << s.str());
+    ComputerPlayer::last_choices.clear();
+    for (size_t i = 0; i < paths.size(); ++i) {
+      ComputerPlayer::last_choices.push_back(paths[i][0].accounting);
+      p << " [" << i << ": " << paths[i].size() << "]";
+    }
+    MESSAGE("Sizes " << p.str());
+    for (size_t i = 0; i < paths.size(); ++i) {
+      if (paths[i].size() < least_path.first) {
+        least_path = std::make_pair(paths[i].size(), i);
+      }
+    }
+    if (least_path.second != path_null) {
+      r << least_path.second;
+      MESSAGE("Picking " << r.str());
+      return paths[least_path.second];
+    }
+  } else {
+    MESSAGE("Choosing from empty paths");
+  }
+
+  Path blank_path;
+  return blank_path;
+}
+
 static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, size_t second, size_t third, size_t y)
 {
   Path ret_path, one, two;
@@ -453,13 +488,29 @@ static Paths path_for_top_horizontal_combo(int swap_x, int swap_y)
       std::vector<int> locations = row_flavors(y, combo_flavors[i]);
       assert(locations.size() >= 3);
 
-      Path path = generate_horizontal_swap_path(
+      Paths local_paths;
+      const size_t options_max = 6;
+      int options[options_max][3] =
+        { {0, 1, 2},
+          {0, 2, 1},
+          {1, 0, 2},
+          {1, 2, 0},
+          {2, 0, 1},
+          {2, 1, 0} };
+      for (size_t idx = 0; idx < options_max; ++idx) {
+        Path path = generate_horizontal_swap_path(
           swap_x, swap_y,
-          locations[0], locations[1], locations[2],
+          locations[options[idx][0]],
+          locations[options[idx][1]],
+          locations[options[idx][2]],
           y);
-      if (!path.empty()) {
-        paths.push_back(path);
+        if (!path.empty())
+          local_paths.push_back(path);
       }
+
+      Path shortest_path = choose_shortest_path(local_paths);
+      if (!shortest_path.empty())
+        paths.push_back(shortest_path);
     }
   }
 
@@ -534,41 +585,6 @@ static Paths path_for_top_vertical_combo(int swap_x, int swap_y)
   }
 
   return paths;
-}
-
-static Path choose_shortest_path(Paths paths)
-{
-  // Use numeric limits instead
-  const int path_max = 2000000;
-  const int path_null = -1;
-  std::pair<int, int> least_path(path_max, path_null);
-
-  if (!paths.empty()) {
-    std::ostringstream s, p, r;
-    s << paths.size() << std::ends;
-    MESSAGE("# of paths to choose from " << s.str());
-    ComputerPlayer::last_choices.clear();
-    for (size_t i = 0; i < paths.size(); ++i) {
-      ComputerPlayer::last_choices.push_back(paths[i][0].accounting);
-      p << " [" << i << ": " << paths[i].size() << "]";
-    }
-    MESSAGE("Sizes " << p.str());
-    for (size_t i = 0; i < paths.size(); ++i) {
-      if (paths[i].size() < least_path.first) {
-        least_path = std::make_pair(paths[i].size(), i);
-      }
-    }
-    if (least_path.second != path_null) {
-      r << least_path.second;
-      MESSAGE("Picking " << r.str());
-      return paths[least_path.second];
-    }
-  } else {
-    MESSAGE("Choosing from empty paths");
-  }
-
-  Path blank_path;
-  return blank_path;
 }
 
 static Path choose_from_paths(Paths paths)
