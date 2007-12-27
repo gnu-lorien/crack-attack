@@ -412,10 +412,8 @@ static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, 
   size_t target_for_second, target_for_third;
   ostringstream s, p;
 
-  /*
   s << "first " << first << " second " << second << " third " << third << ends;
   MESSAGE("HorzSwapPath " << s.str());
-  */
 
   assert(second < third);
 
@@ -439,10 +437,8 @@ static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, 
     }
   }
 
-  /*
   p << "second " << target_for_second << " third " << target_for_third << ends;
   MESSAGE("HorzSwapTargets " << p.str());
-  */
 
   if ((target_for_second < 0) || (target_for_second >= GC_PLAY_WIDTH) ||
       (target_for_third < 0) || (target_for_third >= GC_PLAY_WIDTH)) {
@@ -507,11 +503,9 @@ static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, 
       ret_path[i].accounting = ca;
     }
 
-    /*
     ostringstream r;
     r << ret_path.size() << ret_path;
     MESSAGE("Found: " << r.str());
-    */
   }
 
   return ret_path;
@@ -762,11 +756,15 @@ void ComputerPlayer::timeStep()
         Paths horz_paths, vert_paths, all_paths;
         Path additional_path;
 
+        int time = glutGet((GLenum) GLUT_ELAPSED_TIME);
         horz_paths = path_for_top_horizontal_combo(swap_x, swap_y);
         vert_paths = path_for_top_vertical_combo(swap_x, swap_y);
         all_paths.insert(all_paths.end(), horz_paths.begin(), horz_paths.end());
         all_paths.insert(all_paths.end(), vert_paths.begin(), vert_paths.end());
         additional_path = choose_from_paths(all_paths);
+        int after_time = glutGet((GLenum) GLUT_ELAPSED_TIME);
+        snprintf(lame, 255, "Elapsed AI calc time %d", after_time - time);
+        MESSAGE(lame);
         /*
         Paths additional_paths;
         Path additional_path;
