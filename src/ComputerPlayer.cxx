@@ -323,10 +323,10 @@ static std::vector< PathPortion > gravity_flavor_path(int swap_x, int swap_y, in
 static std::vector<int> row_threshold_flavors(int row, size_t threshold = 3)
 {
   assert(threshold > 0);
-  size_t flavor_counts[BF_NUMBER_NORMAL];
+  size_t flavor_counts[BF_NUMBER];
   std::vector<int> flavors_matching_threshold;
 
-  for (size_t i = 0; i < BF_NUMBER_NORMAL; ++i) {
+  for (size_t i = 0; i < BF_NUMBER; ++i) {
     flavor_counts[i] = 0;
   }
 
@@ -336,7 +336,7 @@ static std::vector<int> row_threshold_flavors(int row, size_t threshold = 3)
     }
   }
 
-  for (size_t i = 0; i < BF_NUMBER_NORMAL; ++i) {
+  for (size_t i = 0; i < BF_NUMBER; ++i) {
     if (flavor_counts[i] >= threshold) {
       flavors_matching_threshold.push_back(i);
     }
