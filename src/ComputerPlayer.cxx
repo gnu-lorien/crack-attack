@@ -395,7 +395,7 @@ static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, 
   int current_flavor = Grid::flavorAt(first, y);
   bool has_path[2] = {false, false}, has_match[2] = {false, false};
   size_t target_for_second, target_for_third;
-  ostringstream s;
+  ostringstream s, p;
   s << "first " << first << " second " << second << " third " << third << ends;
   MESSAGE("HorzSwapPath " << s.str());
 
@@ -419,6 +419,15 @@ static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, 
     } else {
       target_for_third = first + 2;
     }
+  }
+
+  p << "second " << target_for_second << " third " << target_for_third << ends;
+  MESSAGE("HorzSwapTargets " << p.str());
+
+  if ((target_for_second < 0) || (target_for_second >= GC_PLAY_WIDTH) ||
+      (target_for_third < 0) || (target_for_third >= GC_PLAY_WIDTH)) {
+    MESSAGE("Potentials out of bounds");
+    return ret_path;
   }
 
   if ((!has_row_path_between(target_for_second, second, y)) ||
