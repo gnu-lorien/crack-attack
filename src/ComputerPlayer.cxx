@@ -43,6 +43,21 @@ int ComputerPlayer::alarm = 0;
 std::vector< PathPortion > ComputerPlayer::path;
 std::vector< ComboAccounting > ComputerPlayer::last_choices;
 
+ostream& operator<< (ostream& os, const Path& path)
+{
+  if (path.empty())
+    return os;
+  os << "(" << path[0].current_x << "," << path[0].current_y << ")-";
+  for (size_t i = 0; i < path.size(); ++i) {
+    if (path[i].key_action == GC_SWAP_KEY) {
+      os << "SWAP-";
+    } else {
+      os << "(" << path[i].after_x << "," << path[i].after_y << ")-";
+    }
+  }
+  return os;
+}
+
 static bool has_row_path_between(int x1, int x2, int row)
 {
   int lesser_x, greater_x;
@@ -485,6 +500,10 @@ static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, 
     for (size_t i = 0; i < ret_path.size(); ++i) {
       ret_path[i].accounting = ca;
     }
+
+    ostringstream r;
+    r << ret_path.size() << ret_path;
+    MESSAGE("Found: " << r.str());
   }
 
   return ret_path;
