@@ -395,6 +395,9 @@ static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, 
   int current_flavor = Grid::flavorAt(first, y);
   bool has_path[2] = {false, false}, has_match[2] = {false, false};
   size_t target_for_second, target_for_third;
+  ostringstream s;
+  s << "first " << first << " second " << second << " third " << third << ends;
+  MESSAGE("HorzSwapPath " << s.str());
 
   assert(second < third);
 
@@ -491,7 +494,7 @@ static Paths path_for_top_horizontal_combo(int swap_x, int swap_y)
       assert(locations.size() >= 3);
 
       Paths local_paths;
-      const size_t options_max = 6;
+      const size_t options_max = 3;
       int options[options_max][3] =
         { {0, 1, 2},
           {1, 0, 2},
