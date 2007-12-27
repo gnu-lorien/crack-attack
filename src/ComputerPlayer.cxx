@@ -741,7 +741,7 @@ void ComputerPlayer::timeStep()
           Game::time_step,
           Swapper::x,
           Swapper::y);
-      MESSAGE(lame);
+      //MESSAGE(lame);
       Controller::keyboardPlay(path[0].key_action, 0, 0);
       alarm = Game::time_step + 1;
       need_key_up = true;
@@ -756,7 +756,7 @@ void ComputerPlayer::timeStep()
         snprintf(lame, 255, "Path is empty. No new alarm to set (%d,%d)",
             Swapper::x,
             Swapper::y);
-        MESSAGE(lame);
+        //MESSAGE(lame);
         int swap_x = Swapper::x, swap_y = Swapper::y;
         int randomChoice = Random::number(6);
         Paths horz_paths, vert_paths, all_paths;
