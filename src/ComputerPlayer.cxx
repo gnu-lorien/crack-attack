@@ -379,7 +379,7 @@ static Path choose_shortest_path(Paths paths)
   if (!paths.empty()) {
     std::ostringstream s, p, r;
     s << paths.size() << std::ends;
-    MESSAGE("# of paths to choose from " << s.str());
+    //MESSAGE("# of paths to choose from " << s.str());
     ComputerPlayer::last_choices.clear();
     for (size_t i = 0; i < paths.size(); ++i) {
       ComputerPlayer::last_choices.push_back(paths[i][0].accounting);
@@ -393,11 +393,11 @@ static Path choose_shortest_path(Paths paths)
     }
     if (least_path.second != path_null) {
       r << least_path.second;
-      MESSAGE("Picking " << r.str());
+      //MESSAGE("Picking " << r.str());
       return paths[least_path.second];
     }
   } else {
-    MESSAGE("Choosing from empty paths");
+    //MESSAGE("Choosing from empty paths");
   }
 
   Path blank_path;
@@ -411,8 +411,11 @@ static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, 
   bool has_path[2] = {false, false}, has_match[2] = {false, false};
   size_t target_for_second, target_for_third;
   ostringstream s, p;
+
+  /*
   s << "first " << first << " second " << second << " third " << third << ends;
   MESSAGE("HorzSwapPath " << s.str());
+  */
 
   assert(second < third);
 
@@ -436,8 +439,10 @@ static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, 
     }
   }
 
+  /*
   p << "second " << target_for_second << " third " << target_for_third << ends;
   MESSAGE("HorzSwapTargets " << p.str());
+  */
 
   if ((target_for_second < 0) || (target_for_second >= GC_PLAY_WIDTH) ||
       (target_for_third < 0) || (target_for_third >= GC_PLAY_WIDTH)) {
@@ -502,9 +507,11 @@ static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, 
       ret_path[i].accounting = ca;
     }
 
+    /*
     ostringstream r;
     r << ret_path.size() << ret_path;
     MESSAGE("Found: " << r.str());
+    */
   }
 
   return ret_path;
