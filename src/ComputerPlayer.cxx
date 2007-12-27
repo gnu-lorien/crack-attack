@@ -592,10 +592,14 @@ void ComputerPlayer::gameStart()
 
   Paths paths = path_for_top_horizontal_combo(swap_x, swap_y);
   Path additional_path = choose_from_paths(paths);
+  if (additional_path.empty()) {
+    Paths paths = path_for_top_vertical_combo(swap_x, swap_y);
+    additional_path = choose_from_paths(paths);
+  }
   if (!additional_path.empty())
     path.insert(path.end(), additional_path.begin(), additional_path.end());
 
-  //assert(!path.empty());
+  assert(!path.empty());
   alarm = start_time + path[0].alarm;
 }
 
