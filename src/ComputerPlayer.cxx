@@ -354,6 +354,93 @@ static std::vector<int> row_threshold_flavors(int row, size_t threshold = 3)
   return flavors_matching_threshold;
 }
 
+static Path generate_horizontal_swap_path(int swap_x, int swap_y, size_t first, size_t second, size_t third, size_t y)
+{
+  Path ret_path, one, two;
+  int current_flavor = Grid::flavorAt(first, y);
+  bool has_path[2] = {false, false}, has_match[2] = {false, false};
+  size_t target_for_second, target_for_third;
+
+  if (second < first) {
+    target_for_second = first - 1;
+  } else {
+    target_for_second = first + 1;
+  }
+
+  if (third < first) {
+    if (second < first) {
+      target_for_third = first - 2;
+    } else {
+      target_for_third = first - 1;
+    }
+  } else {
+    if (second < first) {
+      target_for_third = first + 1;
+    } else {
+      target_for_third = first + 2;
+    }
+  }
+
+  if ((!has_row_path_between(target_for_second, second, y)) ||
+      (!has_row_path_between(target_for_third, third, y))) {
+    MESSAGE("No row path");
+    return ret_path;
+  }
+
+  if ((GR_BLOCK == Grid::stateAt(target_for_second, y)) &&
+      (Grid::flavorAt(target_for_second, y) == current_flavor)) {
+    has_match[0] = true;
+  } else {
+    one = swap_between(
+        swap_x, swap_y,
+        second, target_for_second, y);
+    if (!one.empty()) {
+      has_path[0] = true;
+      has_match[0] = true;
+    }
+  }
+
+  if ((GR_BLOCK == Grid::stateAt(target_for_third, y)) &&
+      (Grid::flavorAt(target_for_third, y) == current_flavor)) {
+    has_match[1] = true;
+  } else {
+    int two_swap_x, two_swap_y;
+    if (has_path[0]) {
+      two_swap_x = one[one.size() - 1].current_x;
+      two_swap_y = one[one.size() - 1].current_y;
+    } else {
+      two_swap_x = swap_x;
+      two_swap_y = swap_y;
+    }
+    two = swap_between(
+        two_swap_x, two_swap_y,
+        third, target_for_third, y);
+    if (!two.empty()) {
+      has_path[1] = true;
+      has_match[1] = true;
+    }
+  }
+
+  if (has_match[0] && has_match[1]) {
+    if (has_path[0])
+      ret_path.insert(ret_path.end(), one.begin(), one.end());
+    if (has_path[1])
+      ret_path.insert(ret_path.end(), two.begin(), two.end());
+    ComboAccounting ca;
+    ca.combo_start.push_back(std::make_pair(first, y));
+    ca.combo_start.push_back(std::make_pair(second, y));
+    ca.combo_start.push_back(std::make_pair(third, y));
+    ca.combo_end.push_back(std::make_pair(first, y));
+    ca.combo_end.push_back(std::make_pair(first + 1, y));
+    ca.combo_end.push_back(std::make_pair(first + 2, y));
+    for (size_t i = 0; i < ret_path.size(); ++i) {
+      ret_path[i].accounting = ca;
+    }
+  }
+
+  return ret_path;
+}
+
 static Paths path_for_top_horizontal_combo(int swap_x, int swap_y)
 {
   Paths paths;
