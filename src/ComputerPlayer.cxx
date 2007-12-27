@@ -450,66 +450,15 @@ static Paths path_for_top_horizontal_combo(int swap_x, int swap_y)
       continue;
     }
     for (size_t i = 0; i < combo_flavors.size(); ++i) {
-      size_t first, second, third;
-      Path ret_path, one, two;
-      int current_flavor = combo_flavors[i];
-      bool has_path[2] = {false, false}, has_match[2] = {false, false};
-      std::vector<int> locations = row_flavors(y, current_flavor);
-
+      std::vector<int> locations = row_flavors(y, combo_flavors[i]);
       assert(locations.size() >= 3);
-      first  = locations[0];
-      second = locations[1];
-      third  = locations[2];
-      if ((!has_row_path_between(first + 1, second, y)) ||
-          (!has_row_path_between(first + 2, third, y))) {
-        MESSAGE("No row path");
-        continue;
-      }
 
-      if ((GR_BLOCK == Grid::stateAt(first + 1, y)) &&
-          (Grid::flavorAt(first + 1, y) == current_flavor)) {
-        has_match[0] = true;
-      } else {
-        one = swap_between(
-            swap_x, swap_y,
-            second, first + 1, y);
-        if (!one.empty()) {
-          has_path[0] = true;
-          has_match[0] = true;
-        }
-      }
-      int two_swap_x, two_swap_y;
-      if (has_path[0]) {
-        two_swap_x = one[one.size() - 1].current_x;
-        two_swap_y = one[one.size() - 1].current_y;
-      } else {
-        two_swap_x = swap_x;
-        two_swap_y = swap_y;
-      }
-      two = swap_between(
-          two_swap_x, two_swap_y,
-          third, first + 2, y);
-      if (!two.empty()) {
-        has_path[1] = true;
-        has_match[1] = true;
-      }
-
-      if (has_match[0] && has_match[1]) {
-        if (has_path[0])
-          ret_path.insert(ret_path.end(), one.begin(), one.end());
-        if (has_path[1])
-          ret_path.insert(ret_path.end(), two.begin(), two.end());
-        ComboAccounting ca;
-        ca.combo_start.push_back(std::make_pair(first, y));
-        ca.combo_start.push_back(std::make_pair(second, y));
-        ca.combo_start.push_back(std::make_pair(third, y));
-        ca.combo_end.push_back(std::make_pair(first, y));
-        ca.combo_end.push_back(std::make_pair(first + 1, y));
-        ca.combo_end.push_back(std::make_pair(first + 2, y));
-        for (size_t i = 0; i < ret_path.size(); ++i) {
-          ret_path[i].accounting = ca;
-        }
-        paths.push_back(ret_path);
+      Path path = generate_horizontal_swap_path(
+          swap_x, swap_y,
+          locations[0], locations[1], locations[2],
+          y);
+      if (!path.empty()) {
+        paths.push_back(path);
       }
     }
   }
