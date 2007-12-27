@@ -754,9 +754,6 @@ void ComputerPlayer::timeStep()
         int randomChoice = Random::number(6);
         Paths additional_paths;
         Path additional_path;
-        additional_paths = path_for_top_horizontal_combo(swap_x, swap_y);
-        additional_path = choose_from_paths(additional_paths);
-        /*
         if (randomChoice < 3) {
           MESSAGE("Trying horz");
           additional_paths = path_for_top_horizontal_combo(swap_x, swap_y);
@@ -778,7 +775,6 @@ void ComputerPlayer::timeStep()
             additional_path = choose_from_paths(additional_paths);
           }
         }
-        */
         if (!additional_path.empty()) {
           path.insert(path.end(), additional_path.begin(), additional_path.end());
 
