@@ -348,7 +348,7 @@ static std::vector<int> row_threshold_flavors(int row, size_t threshold = 3)
 static Paths path_for_top_horizontal_combo(int swap_x, int swap_y)
 {
   Paths paths;
-  for (int y = Grid::top_occupied_row; y >= 3; --y) {
+  for (int y = Grid::top_occupied_row; y >= 1; --y) {
     std::vector<int> combo_flavors = row_threshold_flavors(y, 3);
     if (combo_flavors.empty()) {
       continue;
