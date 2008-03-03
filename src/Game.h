@@ -134,124 +134,124 @@
 #define GC_DEFAULT_MULT_FILE_NAME        GC_DATA_DIRECTORY("default_multiplier")
 
 // random angle tables' size; must be power of two
-#define GC_SIZE_RANDOM_ANGLE_TABLE       (256)
+const int GC_SIZE_RANDOM_ANGLE_TABLE       = 256;
 
 // games per match
-#define GC_GAMES_PER_MATCH               (3)
+const int GC_GAMES_PER_MATCH               = 3;
 
 // the play area dimensions; GC_SAFE_HEIGHT - 1 is the board height
-#define GC_PLAY_WIDTH                    (6)
-#define GC_PLAY_HEIGHT                   (45)
-#define GC_SAFE_HEIGHT                   (13)
-#define GC_GRID_SIZE                     (GC_PLAY_WIDTH * GC_PLAY_HEIGHT)
+const int GC_PLAY_WIDTH                    = 6;
+const int GC_PLAY_HEIGHT                   = 45;
+const int GC_SAFE_HEIGHT                   = 13;
+const int GC_GRID_SIZE                     = GC_PLAY_WIDTH * GC_PLAY_HEIGHT;
 
 // object stores
-#define GC_BLOCK_STORE_SIZE              (GC_GRID_SIZE)
-#define GC_GARBAGE_STORE_SIZE            (2 * GC_PLAY_HEIGHT)
-#define GC_COMBO_TABULATOR_STORE_SIZE    (8)
-#define GC_GARBAGE_QUEUE_SIZE            (8)
+const int GC_BLOCK_STORE_SIZE              = GC_GRID_SIZE;
+const int GC_GARBAGE_STORE_SIZE            = 2 * GC_PLAY_HEIGHT;
+const int GC_COMBO_TABULATOR_STORE_SIZE    = 8;
+const unsigned int GC_GARBAGE_QUEUE_SIZE   = 8;
 
 // time steps per second
-#define GC_STEPS_PER_SECOND              (50)
+const int GC_STEPS_PER_SECOND              = 50;
 
 // milliseconds per time step
-#define GC_TIME_STEP_PERIOD              (1000 / GC_STEPS_PER_SECOND)
+const int GC_TIME_STEP_PERIOD              = 1000 / GC_STEPS_PER_SECOND;
 
 // number of subdivisions per grid location
-#define GC_STEPS_PER_GRID                (60)
+const int GC_STEPS_PER_GRID                = 60;
 
 // names
-#define GC_PLAYER_NAME_LENGTH            (256)
+const int GC_PLAYER_NAME_LENGTH            = 256;
 #define GC_DEFAULT_PLAYER_NAME           "NamelessOne"
 
 // velocity of falling; must be a factor of GC_STEPS_PER_GRID
-#define GC_FALL_VELOCITY                 (20)
+const int GC_FALL_VELOCITY                 = 20;
 
 // velocity and time length of swapping
-#define GC_SWAP_VELOCITY                 (10)
-#define GC_SWAP_DELAY                    (GC_STEPS_PER_GRID / GC_SWAP_VELOCITY)
+const int GC_SWAP_VELOCITY                 = 10;
+const int GC_SWAP_DELAY                    = GC_STEPS_PER_GRID / GC_SWAP_VELOCITY;
 
 // velocity of creep
-#define GC_CREEP_DELAY                   (1200)
-#define GC_CREEP_ADVANCE_TIMER_STEP      GC_CREEP_DELAY
-#define GC_CREEP_TIMER_STEP_INCREMENT    (20)
-#define GC_CREEP_INITIAL_TIMER_STEP      GC_CREEP_TIMER_STEP_INCREMENT
-#define GC_CREEP_MAX_TIMER_STEP          (2400)
-#define GC_CREEP_ADVANCE_VELOCITY        (3)
-#define GC_CREEP_INCREMENT_DELAY         (10 * GC_STEPS_PER_SECOND)
+const int GC_CREEP_DELAY                   = 1200;
+const int GC_CREEP_ADVANCE_TIMER_STEP      = GC_CREEP_DELAY;
+const int GC_CREEP_TIMER_STEP_INCREMENT    = 20;
+const int GC_CREEP_INITIAL_TIMER_STEP      = GC_CREEP_TIMER_STEP_INCREMENT;
+const int GC_CREEP_MAX_TIMER_STEP          = 2400;
+const int GC_CREEP_ADVANCE_VELOCITY        = 3;
+const int GC_CREEP_INCREMENT_DELAY         = 10 * GC_STEPS_PER_SECOND;
 
 // delay between safe height violation and loss
-#define GC_LOSS_DELAY                    (7 * GC_STEPS_PER_SECOND)
-#define GC_LOSS_DELAY_ELIMINATION        (1 * GC_STEPS_PER_SECOND)
+const int GC_LOSS_DELAY                    = 7 * GC_STEPS_PER_SECOND;
+const int GC_LOSS_DELAY_ELIMINATION        = 1 * GC_STEPS_PER_SECOND;
 
 // time length between moves
-#define GC_MOVE_DELAY                    (6)
+const int GC_MOVE_DELAY                    = 6;
 
 // time length of block dying
-#define GC_DYING_DELAY                   (90)
+const int GC_DYING_DELAY                   = 90;
 
 // time length of hanging
-#define GC_HANG_DELAY                    (3)
+const int GC_HANG_DELAY                    = 3;
 
 // time length until popping, between popping, and after popping
-#define GC_INTERNAL_POP_DELAY            (15)
-#define GC_INITIAL_POP_DELAY             (50 + GC_INTERNAL_POP_DELAY)
-#define GC_FINAL_POP_DELAY               (50)
+const int GC_INTERNAL_POP_DELAY            = 15;
+const int GC_INITIAL_POP_DELAY             = 50 + GC_INTERNAL_POP_DELAY;
+const int GC_FINAL_POP_DELAY               = 50;
 
 // minimum length of a elimination pattern
-#define GC_MIN_PATTERN_LENGTH            (3)
+const int GC_MIN_PATTERN_LENGTH            = 3;
 
 // chance of a creep row having a special block
-#define GC_NO_SPECIAL_BLOCK_CHANCE_IN    (3)
-#define GC_X_NO_SPECIAL_BLOCK_CHANCE_IN  (10)
+const int GC_NO_SPECIAL_BLOCK_CHANCE_IN    = 3;
+const int GC_X_NO_SPECIAL_BLOCK_CHANCE_IN  = 10;
 
 // chance of garbage shattering to garbage
-#define GC_GARBAGE_TO_GARBAGE_SHATTER    (2)
+const int GC_GARBAGE_TO_GARBAGE_SHATTER    = 2;
 
 // time length before garbage falls
-#define GC_AVERAGE_GARBAGE_DROP_DELAY    (300)
-#define GC_SPREAD_GARBAGE_DROP_DELAY     (40)
+const int GC_AVERAGE_GARBAGE_DROP_DELAY    = 300;
+const int GC_SPREAD_GARBAGE_DROP_DELAY     = 40;
 
 // time length of the introduction pause; should be multiple of 3
-#define GC_START_PAUSE_DELAY             (150)
+const int GC_START_PAUSE_DELAY             = 150;
 
 // maximum height of a garbage block
-#define GC_MAX_GARBAGE_HEIGHT            (11)
+const int GC_MAX_GARBAGE_HEIGHT            = 11;
 
 // score constants
-#define GC_MIN_PATTERN_SCORE             (2)
-#define GC_GRAY_SCORE                    (3)
-#define GC_NUMBER_DIGITS                 (7)
-#define GC_MIN_NUMBER_DIGITS_DISPLAYED   (4)
-#define GC_MAX_SCORE_INCREMENT_DELAY     (12)
-#define GC_MIN_SCORE_INCREMENT_DELAY     (1)
-#define GC_SCORE_DELAY_SLOPE             (2)
-#define GC_SCORE_REC_LENGTH              (30)
-#define GC_SCORE_DEFAULT_TOP_SCORE       (600)
+const int GC_MIN_PATTERN_SCORE             = 2;
+const int GC_GRAY_SCORE                    = 3;
+const int GC_NUMBER_DIGITS                 = 7;
+const int GC_MIN_NUMBER_DIGITS_DISPLAYED   = 4;
+const int GC_MAX_SCORE_INCREMENT_DELAY     = 12;
+const int GC_MIN_SCORE_INCREMENT_DELAY     = 1;
+const int GC_SCORE_DELAY_SLOPE             = 2;
+const int GC_SCORE_REC_LENGTH              = 30;
+const int GC_SCORE_DEFAULT_TOP_SCORE       = 600;
 #define GC_SCORE_REC_DEFAULT_NAME        "-----"
-#define GC_SCORE_MULT_LENGTH             (10)
+const int GC_SCORE_MULT_LENGTH             = 10;
 
 // sine constants
-#define GC_SINE_TABLE_LENGTH             (100)
-#define GC_SINE_TABLE_LOWER_BOUND        (-PI / 2.0f)
-#define GC_SINE_TABLE_STEP_WIDTH         (PI / (GC_SINE_TABLE_LENGTH - 1))
+const int GC_SINE_TABLE_LENGTH             = 100;
+const float GC_SINE_TABLE_LOWER_BOUND      = -PI / 2.0f;
+const float GC_SINE_TABLE_STEP_WIDTH       = PI / (GC_SINE_TABLE_LENGTH - 1);
 
 // initial swapper location
-#define GC_INITIAL_SWAPPER_LOCATION_X    (GC_PLAY_WIDTH / 2 - 1)
-#define GC_INITIAL_SWAPPER_LOCATION_Y    (4)
+const int GC_INITIAL_SWAPPER_LOCATION_X    = GC_PLAY_WIDTH / 2 - 1;
+const int GC_INITIAL_SWAPPER_LOCATION_Y    = 4;
 
 // extreme constants
-#define GC_INVISIBLE_MAX_ALPHA           (330)
-#define GC_INVISIBLE_MIN_ALPHA           (-20)
-#define GC_INVISIBLE_QUICK_DECAY_RATE    (3)
-#define GC_INVISIBLE_PULSE_CHANCE_IN     (30)
-#define GC_INVISIBLE_PULSE_STRENGTH      (70)
-#define GC_CRAZY_LONG_MODE_PERIOD        (150)
-#define GC_CRAZY_SHORT_MODE_PERIOD       (50)
-#define GC_MAX_WILD_NUMBER               (3)
-#define GC_WILD_PERIOD                   (180)
-#define GC_WILD_POLYMORPH_PERIOD         (60)
-#define GC_MAX_SPECIAL_COLOR_NUMBER      (6)
+const int GC_INVISIBLE_MAX_ALPHA           = 330;
+const int GC_INVISIBLE_MIN_ALPHA           = -20;
+const int GC_INVISIBLE_QUICK_DECAY_RATE    = 3;
+const int GC_INVISIBLE_PULSE_CHANCE_IN     = 30;
+const int GC_INVISIBLE_PULSE_STRENGTH      = 70;
+const int GC_CRAZY_LONG_MODE_PERIOD        = 150;
+const int GC_CRAZY_SHORT_MODE_PERIOD       = 50;
+const int GC_MAX_WILD_NUMBER               = 3;
+const int GC_WILD_PERIOD                   = 180;
+const int GC_WILD_POLYMORPH_PERIOD         = 60;
+const int GC_MAX_SPECIAL_COLOR_NUMBER      = 6;
 
 // control keys
 #define GC_LEFT_KEY                      ('a')
@@ -263,11 +263,11 @@
 #define GC_PAUSE_KEY                     ('p')
 
 // Constants for the game window height and width.
-#define GC_RESOLUTION_0                  (400)
-#define GC_RESOLUTION_1                  (570)
-#define GC_RESOLUTION_2                  (680)
-#define GC_RESOLUTION_3                  (970)
-#define GC_RESOLUTION_4                  (1170)
+const int GC_RESOLUTION_0                  = 400;
+const int GC_RESOLUTION_1                  = 570;
+const int GC_RESOLUTION_2                  = 680;
+const int GC_RESOLUTION_3                  = 970;
+const int GC_RESOLUTION_4                  = 1170;
 
 // insure that our communication int is the same length on all machines
 #if (INT_MAX == 2147483647)
@@ -367,24 +367,24 @@
 // be directly after normal flavors; here to prevent header entanglements;
 // the appearance chance of the various flavors can be found in
 // BlockManager::newCreepBlock()
-#define BF_NORMAL_1                 ( 0)
-#define BF_NORMAL_2                 ( 1)
-#define BF_NORMAL_3                 ( 2)
-#define BF_NORMAL_4                 ( 3)
-#define BF_NORMAL_5                 ( 4)
-#define BF_WILD                     ( 5)
-#define BF_GRAY                     ( 6)
-#define BF_BLACK                    ( 7)
-#define BF_WHITE                    ( 8)
-#define BF_SPECIAL_COLOR_1          ( 9)
-#define BF_SPECIAL_COLOR_2          (10)
-#define BF_SPECIAL_COLOR_3          (11)
-#define BF_SPECIAL_COLOR_4          (12)
-#define BF_SPECIAL_COLOR_5          (13)
-#define BF_NUMBER_NORMAL            (BF_NORMAL_5 + 1)
-#define BF_NUMBER                   (BF_SPECIAL_COLOR_5 + 1)
-#define BF_NUMBER_SPECIAL           (BF_NUMBER - (BF_GRAY + 1))
-#define BF_FINAL_GRAY_SPECIAL       (BF_WHITE)
+const int BF_NORMAL_1                 =  0;
+const int BF_NORMAL_2                 =  1;
+const int BF_NORMAL_3                 =  2;
+const int BF_NORMAL_4                 =  3;
+const int BF_NORMAL_5                 =  4;
+const int BF_WILD                     =  5;
+const int BF_GRAY                     =  6;
+const int BF_BLACK                    =  7;
+const int BF_WHITE                    =  8;
+const int BF_SPECIAL_COLOR_1          =  9;
+const int BF_SPECIAL_COLOR_2          = 10;
+const int BF_SPECIAL_COLOR_3          = 11;
+const int BF_SPECIAL_COLOR_4          = 12;
+const int BF_SPECIAL_COLOR_5          = 13;
+const int BF_NUMBER_NORMAL            = BF_NORMAL_5 + 1;
+const int BF_NUMBER                   = BF_SPECIAL_COLOR_5 + 1;
+const int BF_NUMBER_SPECIAL           = BF_NUMBER - (BF_GRAY + 1);
+const int BF_FINAL_GRAY_SPECIAL       = BF_WHITE;
 
 /* static */ class Game {
 public:

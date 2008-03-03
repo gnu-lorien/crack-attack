@@ -4,6 +4,10 @@
 	but the garbage loader didn't look for them for some reason.
 	* Doxyfile: Add configuration to generate doxygen documentation of the
 	source code.
+	* src/Displayer.h: Change constants into numerics rather than defines.
+	* src/Game.h: Change constants into numerics rather than defines. Also
+	document some of the groupings and meanings of the variables in a way
+	that doxygen can parse and understand.
 
 2006-09-24  Andrew Sayman <lorien420@myrealbox.com>
 
