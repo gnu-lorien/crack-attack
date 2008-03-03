@@ -187,7 +187,7 @@ void GarbageFlavorImage::buildGarbageTextureFileName ( char file_name[256],
   std::ostringstream s;
   s << dir_name << GC_GARBAGE_TEX_FILE_NAME_BASE "_"
    << std::setw(GC_GARBAGE_TEX_NUMBER_DIGITS) << std::setfill('0') << n
-   << ".tga" << std::ends;
+   << ".png" << std::ends;
   strncpy(file_name, s.str().data(), 256);
 }
 

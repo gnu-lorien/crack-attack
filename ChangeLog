@@ -1,3 +1,8 @@
+2008-03-02  Andrew Sayman <lorien420@myrealbox.com>
+
+	* src/GarbageFlavorImage.cxx: All flavor images were changed to png
+	but the garbage loader didn't look for them for some reason.
+
 2006-09-24  Andrew Sayman <lorien420@myrealbox.com>
 
 	* src/Communicator.cxx: Set the bandwidth usage to be lower, hopefully
