@@ -658,9 +658,9 @@ private:
   static void generateNameTexture (   );
   static void generateScoreRecord (   );
 
-  static GLuint block_list;
-  static GLuint small_block_list;
-  static GLuint special_block_list;
+  static GLuint block_list[BF_NUMBER];
+  static GLuint small_block_list[BF_NUMBER];
+  static GLuint special_block_list[BF_NUMBER];
   static GLuint garbage_thin_cap_list;
   static GLuint garbage_thin_middle_list;
   static GLuint garbage_thick_corner_list;

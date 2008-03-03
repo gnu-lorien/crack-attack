@@ -153,21 +153,21 @@ void Displayer::drawGarbage (   )
                      + p * garbage_colors[garbage.pop_color][2]);
 
                   glEnable(rescale_method);
-                  glCallList(block_list);
+                  glCallList(block_list[garbage.flavor]);
                   glDisable(rescale_method);
 
                 // if this section has popped
                 } else if (popped > 0) {
                   glColor3fv(garbage_colors[garbage.flavor]);
 
-                  glCallList(block_list);
+                  glCallList(block_list[garbage.flavor]);
 
                 // if this section has not popped
                 } else {
                   glColor3fv(garbage_colors[garbage.pop_color]);
 
                   // the small block is pre-rotated
-                  glCallList(small_block_list);
+                  glCallList(small_block_list[garbage.flavor]);
                 }
 
                 popped--;
@@ -211,7 +211,7 @@ void Displayer::drawGarbage (   )
 
                 glScalef(scale, scale, scale);
 
-                glCallList(block_list);
+                glCallList(block_list[garbage.flavor]);
 
                 glPopMatrix();
               }

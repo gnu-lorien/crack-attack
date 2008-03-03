@@ -221,9 +221,9 @@ inline void Displayer::drawBlock ( Block &block, bool special )
       glTranslatef(x, y, DC_PLAY_OFFSET_Z);
 
       if (!special)
-        glCallList(block_list);
+        glCallList(block_list[block.flavor]);
       else
-        glCallList(special_block_list);
+        glCallList(special_block_list[block.flavor]);
 
     // awaking and popping
     } else if (block.state & BS_AWAKING) {
@@ -266,7 +266,7 @@ inline void Displayer::drawBlock ( Block &block, bool special )
            + p * garbage_colors[block.pop_color][2]);
 
           glEnable(rescale_method);
-          glCallList(block_list);
+          glCallList(block_list[block.flavor]);
           glDisable(rescale_method);
 
         // if we're not popping
@@ -275,14 +275,14 @@ inline void Displayer::drawBlock ( Block &block, bool special )
           glColor3fv(garbage_colors[block.pop_color]);
 
           // the small block is pre-rotated
-          glCallList(small_block_list);
+          glCallList(small_block_list[block.flavor]);
         }
 
       // if we've already popped
       } else {
         glColor3fv(block_colors[block.flavor]);
 
-        glCallList(block_list);
+        glCallList(block_list[block.flavor]);
       }
 
     // swapping
@@ -310,9 +310,9 @@ inline void Displayer::drawBlock ( Block &block, bool special )
       glTranslatef(d_x, 0.0f, 0.0f);
 
       if (!special)
-        glCallList(block_list);
+        glCallList(block_list[block.flavor]);
       else
-        glCallList(special_block_list);
+        glCallList(special_block_list[block.flavor]);
 
     // dying
    } else if (block.state & BS_DYING) {
@@ -339,9 +339,9 @@ inline void Displayer::drawBlock ( Block &block, bool special )
         LightManager::setupBlockLights(x, y);
         glTranslatef(x, y, DC_PLAY_OFFSET_Z);
         if (!special)
-          glCallList(block_list);
+          glCallList(block_list[block.flavor]);
         else
-          glCallList(special_block_list);
+          glCallList(special_block_list[block.flavor]);
 
       // then we shrink and spin
       } else {
@@ -362,9 +362,9 @@ inline void Displayer::drawBlock ( Block &block, bool special )
 
         glEnable(rescale_method);
         if (!special)
-          glCallList(block_list);
+          glCallList(block_list[block.flavor]);
         else
-          glCallList(special_block_list);
+          glCallList(special_block_list[block.flavor]);
         glDisable(rescale_method);
       }
     }
