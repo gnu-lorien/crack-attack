@@ -2,6 +2,8 @@
 
 	* src/GarbageFlavorImage.cxx: All flavor images were changed to png
 	but the garbage loader didn't look for them for some reason.
+	* Doxyfile: Add configuration to generate doxygen documentation of the
+	source code.
 
 2006-09-24  Andrew Sayman <lorien420@myrealbox.com>
 
