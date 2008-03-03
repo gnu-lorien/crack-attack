@@ -51,10 +51,8 @@ void Displayer::generateBlockDisplayList (   )
     block_model = new OBJModel(GC_MODEL_DIRECTORY("crackattackcubemedres.obj"));
     block_model_tex = new OBJModel(GC_MODEL_DIRECTORY("crackattackcubemedres_tex.obj"));
   } else {
-    block_model = new OBJModel(GC_MODEL_DIRECTORY("crackattackcubehires.obj"));
-    block_model_tex = new OBJModel(GC_MODEL_DIRECTORY("crackattackcubehires_tex.obj"));
-    //block_model = new OBJModel(GC_MODEL_DIRECTORY("cube.obj"));
-    //block_model_tex = new OBJModel(GC_MODEL_DIRECTORY("cube.obj"));
+    block_model = new OBJModel(GC_MODEL_DIRECTORY("cube.obj"));
+    block_model_tex = new OBJModel(GC_MODEL_DIRECTORY("cube.obj"));
   }
   block_list = glGenLists(1);
   glNewList(block_list, GL_COMPILE);
