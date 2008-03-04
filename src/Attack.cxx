@@ -160,7 +160,8 @@ void run_crack_attack (
 }
 
 void parseCommandLine ( int argc, char **argv, int &mode, int &port,
- char *host_name, char *player_name , int &height, int &width )
+ char *host_name, char *player_name , int &height, int &width, 
+ char *cube_tileset_dir )
 {
   for (int n = 1; argv[n]; n++) {
 
@@ -188,6 +189,13 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
       player_name[GC_PLAYER_NAME_LENGTH - 1] = '\0';
       for (char *p = player_name; *p; p++)
         if (!isprint(*p)) *p = ' ';
+
+    } else if (!strcmp(argv[n], "--cube-tileset-dir")) {
+
+      if (!argv[n + 1]) usage();
+
+      strncpy(cube_tileset_dir, argv[++n], GC_CUBE_TILSET_DIR_LENGTH);
+      cube_tileset_dir[GC_CUBE_TILSET_DIR_LENGTH - 1] = '\0';
 
     } else if (!strcmp(argv[n], "-l") || !strcmp(argv[n], "--low"))
 
