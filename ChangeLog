@@ -3,6 +3,12 @@
 	* src/Sound.cxx, src/Music.cxx: Include namespace to fix compilation
 	errors
 
+2008-03-07  Andrew Sayman <lorien420@myrealbox.com>
+
+	* acinclude.m4: Add macros to include the Boost libs.
+	* configure.ac: Macro include boost and program_options.
+	* src/Makefile.am: Add boost cpp and ld flags.
+
 2008-03-06  Andrew Sayman <lorien420@myrealbox.com>
 
 	* image textured cubes: Users are now able to create their own cube

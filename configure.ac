@@ -152,6 +152,9 @@ else
     AC_MSG_RESULT(no)
 fi
 
+AX_BOOST_BASE
+AX_BOOST_PROGRAM_OPTIONS
+
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
 AC_C_CONST
