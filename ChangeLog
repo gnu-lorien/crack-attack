@@ -1,3 +1,10 @@
+2008-03-06  Andrew Sayman <lorien420@myrealbox.com>
+
+	* image textured cubes: Users are now able to create their own cube
+	textures. A default theme of sorts has been created as an example. You
+	can specify any directory with obj, mtl, and png files named using the
+	example naming convention.
+
 2008-03-02  Andrew Sayman <lorien420@myrealbox.com>
 
 	* src/GarbageFlavorImage.cxx: All flavor images were changed to png
