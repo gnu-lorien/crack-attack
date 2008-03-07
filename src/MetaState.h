@@ -44,6 +44,7 @@
 public:
   static void programStart ( int _mode,
    char player_name[GC_PLAYER_NAME_LENGTH],
+   char _cube_tileset_dir[GC_CUBE_TILESET_DIR_LENGTH],
    int width,
    int height);
   static void programEnd (   );
@@ -69,6 +70,7 @@ public:
 
   // player name
   static char player_name[GC_PLAYER_NAME_LENGTH];
+  static std::string cube_tileset_dir;
 };
 
 #endif

@@ -77,14 +77,15 @@ int main ( int argc, char **argv )
 #endif
   char player_name[GC_PLAYER_NAME_LENGTH];
   char host_name[GC_HOST_NAME_SIZE];
+  char cube_tileset_dir[GC_CUBE_TILESET_DIR_LENGTH];
   int port;
   int mode = 0;
   int height = -1, width = -1;
   
   player_name[0] = '\0';
   glutInit(&argc, argv);
-  parseCommandLine(argc, argv, mode, port, host_name, player_name, height, width);
-  run_crack_attack(mode, port, host_name, player_name, height, width);
+  parseCommandLine(argc, argv, mode, port, host_name, player_name, height, width, cube_tileset_dir);
+  run_crack_attack(mode, port, host_name, player_name, height, width, cube_tileset_dir);
 
   return 0;
 }
@@ -113,7 +114,8 @@ void run_crack_attack (
     char *host_name, 
     char *player_name,
     int width,
-    int height) {
+    int height,
+    char *cube_tileset_dir) {
   if (!player_name) {
     std::cerr << "Player name not properly allocated" << std::endl;
     return;
@@ -133,6 +135,10 @@ void run_crack_attack (
 #endif
   }
 
+  if (cube_tileset_dir[0] == '\0') {
+    strncpy(cube_tileset_dir, GC_DEFAULT_CUBE_TILESET_DIR, GC_CUBE_TILESET_DIR_LENGTH);
+  }
+
   std::cout << GC_MESSAGE << std::endl;
 
   if (!(mode & CM_SOLO))
@@ -140,7 +146,7 @@ void run_crack_attack (
   else
     Random::seed(Random::generateSeed());
 
-  MetaState::programStart(mode, player_name, width, height);
+  MetaState::programStart(mode, player_name, cube_tileset_dir, width, height);
 
 #ifdef AUDIO_ENABLED
   if (!nosound) {
@@ -194,8 +200,8 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
 
       if (!argv[n + 1]) usage();
 
-      strncpy(cube_tileset_dir, argv[++n], GC_CUBE_TILSET_DIR_LENGTH);
-      cube_tileset_dir[GC_CUBE_TILSET_DIR_LENGTH - 1] = '\0';
+      strncpy(cube_tileset_dir, argv[++n], GC_CUBE_TILESET_DIR_LENGTH);
+      cube_tileset_dir[GC_CUBE_TILESET_DIR_LENGTH - 1] = '\0';
 
     } else if (!strcmp(argv[n], "-l") || !strcmp(argv[n], "--low"))
 

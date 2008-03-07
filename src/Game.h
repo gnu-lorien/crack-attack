@@ -164,6 +164,10 @@ const int GC_STEPS_PER_GRID                = 60;
 const int GC_PLAYER_NAME_LENGTH            = 256;
 #define GC_DEFAULT_PLAYER_NAME           "NamelessOne"
 
+// cube tileset directory
+const int GC_CUBE_TILESET_DIR_LENGTH       = 256;
+#define GC_DEFAULT_CUBE_TILESET_DIR      GC_DATA_DIRECTORY("")
+
 // velocity of falling; must be a factor of GC_STEPS_PER_GRID
 const int GC_FALL_VELOCITY                 = 20;
 

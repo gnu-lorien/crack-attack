@@ -45,15 +45,18 @@ int MetaState::state;
 int MetaState::mode = 0;
 int MetaState::final_time_step;
 char MetaState::player_name[GC_PLAYER_NAME_LENGTH];
+std::string MetaState::cube_tileset_dir;
 
 void MetaState::programStart ( int _mode,
  char _player_name[GC_PLAYER_NAME_LENGTH],
+ char _cube_tileset_dir[GC_CUBE_TILESET_DIR_LENGTH],
  int width,
  int height)
 {
   state = MS_BOTH_KEY_WAIT;
   mode |= _mode;
   strncpy(player_name, _player_name, GC_PLAYER_NAME_LENGTH);
+  cube_tileset_dir = _cube_tileset_dir;
   
   Game::initialize();
   Displayer::initialize(width, height);
