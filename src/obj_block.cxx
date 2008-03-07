@@ -52,11 +52,17 @@ void Displayer::generateBlockDisplayList (   )
       block_model = new OBJModel(GC_MODEL_DIRECTORY("crackattackcubemedres.obj"));
       block_model_tex = new OBJModel(GC_MODEL_DIRECTORY("crackattackcubemedres_tex.obj"));
     } else {
-      const size_t n = 256;
-      char model_name[n];
-      snprintf(model_name, n, "crack_attack_bf_%03d.obj", i);
-      block_model = new OBJModel(GC_MODEL_DIRECTORY(model_name));
-      block_model_tex = new OBJModel(GC_MODEL_DIRECTORY(model_name));
+      if (!MetaState::use_image_cubes) {
+        std::cout << "Using image cubes!" << std::endl;
+        block_model = new OBJModel(GC_MODEL_DIRECTORY("crackattackcubehires.obj"));
+        block_model_tex = new OBJModel(GC_MODEL_DIRECTORY("crackattackcubehires_tex.obj"));
+      } else {
+        const size_t n = 256;
+        char model_name[n];
+        snprintf(model_name, n, "crack_attack_bf_%03d.obj", i);
+        block_model = new OBJModel(GC_MODEL_DIRECTORY(model_name));
+        block_model_tex = new OBJModel(GC_MODEL_DIRECTORY(model_name));
+      }
     }
     block_list[i] = glGenLists(1);
     glNewList(block_list[i], GL_COMPILE);

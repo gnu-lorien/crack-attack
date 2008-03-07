@@ -59,8 +59,12 @@ void MetaState::programStart ( int _mode,
   strncpy(player_name, _player_name, GC_PLAYER_NAME_LENGTH);
 
   cube_tileset_dir = _cube_tileset_dir;
-  if (0 < cube_tileset_dir.length())
+  if (0 < cube_tileset_dir.length()) {
     use_image_cubes = true;
+  } else {
+    cube_tileset_dir = GC_DEFAULT_CUBE_TILESET_DIR;
+    use_image_cubes = false;
+  }
   
   Game::initialize();
   Displayer::initialize(width, height);

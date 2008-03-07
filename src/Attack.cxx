@@ -75,9 +75,9 @@ int main ( int argc, char **argv )
 #ifdef WANT_GTK
   if (argc <= 1) return gui_main(argc, argv);
 #endif
-  char player_name[GC_PLAYER_NAME_LENGTH];
-  char host_name[GC_HOST_NAME_SIZE];
-  char cube_tileset_dir[GC_CUBE_TILESET_DIR_LENGTH];
+  char player_name[GC_PLAYER_NAME_LENGTH] = "";
+  char host_name[GC_HOST_NAME_SIZE] = "";
+  char cube_tileset_dir[GC_CUBE_TILESET_DIR_LENGTH] = "";
   int port;
   int mode = 0;
   int height = -1, width = -1;
@@ -133,10 +133,6 @@ void run_crack_attack (
 #else
     strncpy(player_name, GC_DEFAULT_PLAYER_NAME, GC_PLAYER_NAME_LENGTH);
 #endif
-  }
-
-  if (cube_tileset_dir[0] == '\0') {
-    strncpy(cube_tileset_dir, GC_DEFAULT_CUBE_TILESET_DIR, GC_CUBE_TILESET_DIR_LENGTH);
   }
 
   std::cout << GC_MESSAGE << std::endl;
