@@ -33,6 +33,7 @@
 #include <sstream>
 
 #include "Game.h"
+#include "MetaState.h"
 
 
 #define TL_GARBAGE_TEXTURE_TGA_ID     "Crack Attack! garbage texture"
@@ -74,6 +75,14 @@ public:
     s << GC_LOCAL_DATA_DIRECTORY << base_name << std::ends;
 #endif
     strncpy(file_name, s.str().data(), 256);
+  }
+
+  static inline std::string buildCubeImageFileName ( std::string file_name )
+  {
+    if (file_name.rfind("/") == file_name.length())
+      return MetaState::cube_tileset_dir + file_name;
+    else
+      return MetaState::cube_tileset_dir + "/" + file_name;
   }
 };
 

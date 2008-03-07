@@ -95,6 +95,7 @@ GLubyte *TextureLoader::loadImageNoAlpha ( const char *file_name,
 GLubyte *TextureLoader::loadImage ( const char *file_name, int _height,
     int _width)
 {
+  std::cout << "Loading: " << file_name << std::endl;
   SDL_Surface *img = IMG_Load(file_name);
 
   if (!img) {

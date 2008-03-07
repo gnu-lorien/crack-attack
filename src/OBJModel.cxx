@@ -255,12 +255,11 @@ void OBJModel::load(const string &filename)
       case 'm': // ("mtllib file1 file2 ...")
         if (strncmp(str, "mtllib ", 7) == 0) {
           // Read material libraries
-          string path = stripFilename(filename);
           char* vstr;
 
           vstr = strtok(&str[7], " \r\n"); // skip "mtllib "
           for (; vstr; vstr = strtok(NULL," \r\n")) {
-            loadMTL(path + string(vstr));
+            loadMTL(TextureLoader::buildCubeImageFileName(string(vstr)));
           }
         }
         break;
@@ -370,7 +369,7 @@ void OBJModel::loadMTL(const string &filename)
               {
                 stripNewline(&str[7]);
                 string imageFile =
-                  stripFilename(filename) + string(&str[7]);
+                  TextureLoader::buildCubeImageFileName(&str[7]);
                 mat->textureId = loadImage(imageFile);
                 break;
               }

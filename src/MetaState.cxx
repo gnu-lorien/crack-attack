@@ -46,6 +46,7 @@ int MetaState::mode = 0;
 int MetaState::final_time_step;
 char MetaState::player_name[GC_PLAYER_NAME_LENGTH];
 std::string MetaState::cube_tileset_dir;
+bool MetaState::use_image_cubes;
 
 void MetaState::programStart ( int _mode,
  char _player_name[GC_PLAYER_NAME_LENGTH],
@@ -56,7 +57,10 @@ void MetaState::programStart ( int _mode,
   state = MS_BOTH_KEY_WAIT;
   mode |= _mode;
   strncpy(player_name, _player_name, GC_PLAYER_NAME_LENGTH);
+
   cube_tileset_dir = _cube_tileset_dir;
+  if (0 < cube_tileset_dir.length())
+    use_image_cubes = true;
   
   Game::initialize();
   Displayer::initialize(width, height);

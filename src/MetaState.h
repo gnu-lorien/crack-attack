@@ -70,7 +70,9 @@ public:
 
   // player name
   static char player_name[GC_PLAYER_NAME_LENGTH];
+
   static std::string cube_tileset_dir;
+  static bool use_image_cubes;
 };
 
 #endif
