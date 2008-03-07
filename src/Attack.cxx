@@ -29,6 +29,7 @@
 #include <cstring>
 #include <cctype>
 #include <sys/stat.h>
+#include <fstream>
 
 #ifndef _WIN32
 #  include <pwd.h>
@@ -214,6 +215,12 @@ void options (int argc, char **argv, ca_options &o)
     all.add(desc).add(graphical).add(ai).add(records).add(extreme).add(single_player).add(server).add(client);
 
     store(parse_command_line(argc, argv, all), vm);
+
+    char config_file_name[256];
+    TextureLoader::buildLocalDataFileName("config", config_file_name);
+    std::ifstream ifs(config_file_name);
+    store(parse_config_file(ifs, all), vm);
+
     notify(vm);
 
     conflicting_options(vm, "server", "solo");

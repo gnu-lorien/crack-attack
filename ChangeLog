@@ -9,7 +9,8 @@
 	* configure.ac: Macro include boost and program_options.
 	* src/Makefile.am: Add boost cpp and ld flags.
 	* src/Attack.cxx, src/Attack.h: Use boost::program_options to parse
-	the command line options.
+	the command line options. Also parse ~/.crack-attack/config for more
+	permanently used options.
 	* src/Communicator.h, src/Communicator.cxx, src/MetaState.cxx,
 	src/MetaState.h: Make some non-modified strings const
 
