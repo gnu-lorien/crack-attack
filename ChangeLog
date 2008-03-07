@@ -8,6 +8,10 @@
 	* acinclude.m4: Add macros to include the Boost libs.
 	* configure.ac: Macro include boost and program_options.
 	* src/Makefile.am: Add boost cpp and ld flags.
+	* src/Attack.cxx: First draft of boost::program_options version of the
+	command line parsing. It currently has all of the options and some
+	basic checks. It's not hooked up to the main spawning method to take
+	over yet though.
 
 2008-03-06  Andrew Sayman <lorien420@myrealbox.com>
 

@@ -55,7 +55,10 @@
 
 #define GC_HOST_NAME_SIZE (256)
 
-/*
+#include <boost/program_options.hpp>
+namespace po = boost::program_options;
+
+/**
  * Documentation
  *   html tables don't work right in explorer
  *   man-page bug
@@ -106,6 +109,155 @@ inline void usage (   )
    "        <etc...>"
    << std::endl;
   exit(1);
+}
+
+static void conflicting_options(const po::variables_map& vm,
+                                const char* opt1, const char* opt2)
+{
+    if (vm.count(opt1) && !vm[opt1].defaulted()
+        && vm.count(opt2) && !vm[opt2].defaulted())
+        throw std::logic_error(std::string("Conflicting options '")
+                          + opt1 + "' and '" + opt2 + "'.");
+}
+
+static void option_dependency(const po::variables_map& vm,
+                              const char* for_what, const char* required_option)
+{
+    if (vm.count(for_what) && !vm[for_what].defaulted())
+        if (vm.count(required_option) == 0 || vm[required_option].defaulted())
+            throw std::logic_error(std::string("Option '") + for_what
+                              + "' requires option '" + required_option + "'.");
+}
+
+void options (int argc, char **argv)
+{
+  using namespace std;
+  using namespace po;
+
+  bool no_sound;
+  string player_name;
+  string cube_tileset_dir;
+  int port;
+  int height;
+  string host_name;
+  int mode;
+
+  po::variables_map vm;
+  po::options_description all;
+
+  try {
+    po::options_description desc("Description");
+    desc.add_options()
+      ("help", "Display usage")
+      ("version", "Display version information")
+      ;
+
+    po::options_description graphical("Output options");
+    graphical.add_options()
+      ("low,l", "Use low quality graphics. For slower computers.")
+      ("really,r", "Use the lowest quality graphics. For the slowest computers. Don't pick this unless you really need it. It looks awful.")
+      ("res", value<int>(&height)->default_value(-1),
+        "Specify the height in pixels")
+      ("cube-tileset-dir", po::value<string>(&cube_tileset_dir),
+        "Directory where a cube tileset is stored")
+      ("no-sound", "Turn off sound output")
+      ;
+
+    po::options_description ai("Computer opponent options");
+    ai.add_options()
+      ("hard", "Hard AI")
+      ("medium", "Medium AI")
+      ("easy", "Easy AI")
+      ;
+
+    po::options_description records("Score Recording Options");
+    records.add_options()
+      ("name,n", po::value<string>(&player_name)->default_value(GC_DEFAULT_PLAYER_NAME))
+      ;
+
+    po::options_description extreme("Extreme mode");
+    extreme.add_options()
+      ("extreme,X", "\"Extreme\" mode. Crazy things happen")
+      ;
+
+    po::options_description single_player("Single player");
+    single_player.add_options()
+      ("solo,1", "Solo mode. Play by yourself")
+      ;
+
+    po::options_description server("Server");
+    server.add_options()
+      ("server,s", po::value<int>(&port), "Specify the server port")
+      ("wait,w", "Wait on a connection indefinitely")
+      ;
+
+    po::options_description client("Client");
+    client.add_options()
+      ("client", po::value<string>(&host_name), "IP address to connect to")
+      ("port", po::value<int>(&port), "Port to connect to")
+      ;
+
+    all.add(desc).add(graphical).add(ai).add(records).add(extreme).add(single_player).add(server).add(client);
+
+    cout << all << endl;
+
+    store(parse_command_line(argc, argv, all), vm);
+    notify(vm);
+
+    conflicting_options(vm, "server", "solo");
+    conflicting_options(vm, "server", "client");
+    conflicting_options(vm, "wait", "solo");
+    conflicting_options(vm, "wait", "client");
+    conflicting_options(vm, "easy", "extreme");
+    conflicting_options(vm, "hard", "extreme");
+    conflicting_options(vm, "medium", "extreme");
+
+    option_dependency(vm, "client", "port");
+
+  } catch (exception &e) {
+    cout << e.what() << endl;
+  }
+
+  if (vm.count("help")) {
+    cout << all << endl;
+    usage();
+  }
+
+  if (vm.count("solo")) {
+    mode |= CM_SOLO;
+  } else if (vm.count("server")) {
+    mode |= CM_SERVER;
+  } else if (vm.count("low")) {
+    mode |= CM_LOW_GRAPHICS;
+  } else if (vm.count("really")) {
+    mode |= CM_LOW_GRAPHICS;
+    mode |= CM_REALLY_LOW_GRAPHICS;
+  } else if (vm.count("extreme")) {
+    mode |= CM_X;
+  } else if (vm.count("wait")) {
+    mode |= CM_NO_TIME_OUT;
+  } else if (vm.count("--hard")) {
+    mode |= CM_AI;
+    mode |= CM_AI_HARD;
+  } else if (vm.count("--easy")) {
+    mode |= CM_AI;
+    mode |= CM_AI_EASY;
+  } else if (vm.count("--medium")) {
+    mode |= CM_AI;
+    mode |= CM_AI_MEDIUM;
+  }
+
+  if (!(mode & (CM_SERVER | CM_CLIENT | CM_SOLO)))
+    usage();
+
+  if ((mode & CM_NO_TIME_OUT) && !(mode & CM_SERVER))
+    usage();
+
+  if ((mode & CM_REALLY_LOW_GRAPHICS) && !(mode & CM_LOW_GRAPHICS))
+    usage();
+
+  if ((mode & CM_AI && (mode & CM_X)))
+    usage();
 }
 
 void run_crack_attack (
@@ -165,6 +317,7 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
  char *host_name, char *player_name , int &height, int &width, 
  char *cube_tileset_dir )
 {
+  options(argc, argv);
   for (int n = 1; argv[n]; n++) {
 
     if (!strcmp(argv[n], "--nosound"))
