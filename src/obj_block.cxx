@@ -53,7 +53,6 @@ void Displayer::generateBlockDisplayList (   )
       block_model_tex = new OBJModel(GC_MODEL_DIRECTORY("crackattackcubemedres_tex.obj"));
     } else {
       if (!MetaState::use_image_cubes) {
-        std::cout << "Using image cubes!" << std::endl;
         block_model = new OBJModel(GC_MODEL_DIRECTORY("crackattackcubehires.obj"));
         block_model_tex = new OBJModel(GC_MODEL_DIRECTORY("crackattackcubehires_tex.obj"));
       } else {
