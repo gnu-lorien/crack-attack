@@ -4,6 +4,7 @@
 	textures. A default theme of sorts has been created as an example. You
 	can specify any directory with obj, mtl, and png files named using the
 	example naming convention.
+	* Doxygen: Speed up doxygen generation by setting max nodes to 3.
 
 2008-03-02  Andrew Sayman <lorien420@myrealbox.com>
 
