@@ -49,8 +49,8 @@ std::string MetaState::cube_tileset_dir;
 bool MetaState::use_image_cubes;
 
 void MetaState::programStart ( int _mode,
- char _player_name[GC_PLAYER_NAME_LENGTH],
- char _cube_tileset_dir[GC_CUBE_TILESET_DIR_LENGTH],
+ const char _player_name[GC_PLAYER_NAME_LENGTH],
+ const char _cube_tileset_dir[GC_CUBE_TILESET_DIR_LENGTH],
  int width,
  int height)
 {

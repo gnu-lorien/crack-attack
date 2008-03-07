@@ -29,11 +29,28 @@
 
 #include "Game.h"
 
-void run_crack_attack (int mode, int port, char *host_name, char *player_name, int width, int height, char *cube_tileset_dir);
+typedef struct _options {
+  bool no_sound;
+  std::string player_name;
+  std::string cube_tileset_dir;
+  int port;
+  int height;
+  std::string host_name;
+  int mode;
+
+  _options() :
+    no_sound(false),
+    player_name(""),
+    cube_tileset_dir(""),
+    port(-1),
+    height(-1),
+    host_name(""),
+    mode(0) { }
+} ca_options;
+
+void run_crack_attack (ca_options options);
 void usage (   );
-void parseCommandLine ( int argc, char **argv, int &mode, int &port,
- char *host_name, char player_name[GC_PLAYER_NAME_LENGTH], int &height,
- int &width, char *cube_tileset_dir);
+void options ( int argc, char **argv, ca_options &options);
 void setupLocalDataDirectory (   );
 
 #endif

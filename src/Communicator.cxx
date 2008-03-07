@@ -81,7 +81,7 @@ static void print_ip_address( int ip )
   cout << (ip & 0x000000FF);
 }
 
-void Communicator::startupExchange ( char player_name[GC_PLAYER_NAME_LENGTH] )
+void Communicator::startupExchange ( const char player_name[GC_PLAYER_NAME_LENGTH] )
 {
   // exchange names
   MESSAGE("Exchanging names");
@@ -120,8 +120,8 @@ void Communicator::startupExchange ( char player_name[GC_PLAYER_NAME_LENGTH] )
   }
 }
 
-void Communicator::initialize ( int mode, int port, char host_name[256],
- char player_name[GC_PLAYER_NAME_LENGTH] )
+void Communicator::initialize ( int mode, int port, const char host_name[256],
+ const char player_name[GC_PLAYER_NAME_LENGTH] )
 {
   ENetAddress address;
   host = NULL;

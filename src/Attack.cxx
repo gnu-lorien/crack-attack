@@ -70,25 +70,17 @@ namespace po = boost::program_options;
  *   find and use correct GL_LIGHT_MODEL_COLOR_CONTROL defines
  */
 
-int nosound = 0;
-
 int main ( int argc, char **argv )
 {
   setupLocalDataDirectory();
 #ifdef WANT_GTK
   if (argc <= 1) return gui_main(argc, argv);
 #endif
-  char player_name[GC_PLAYER_NAME_LENGTH] = "";
-  char host_name[GC_HOST_NAME_SIZE] = "";
-  char cube_tileset_dir[GC_CUBE_TILESET_DIR_LENGTH] = "";
-  int port;
-  int mode = 0;
-  int height = -1, width = -1;
+  ca_options opts;
   
-  player_name[0] = '\0';
   glutInit(&argc, argv);
-  parseCommandLine(argc, argv, mode, port, host_name, player_name, height, width, cube_tileset_dir);
-  run_crack_attack(mode, port, host_name, player_name, height, width, cube_tileset_dir);
+  options(argc, argv, opts);
+  run_crack_attack(opts);
 
   return 0;
 }
@@ -129,18 +121,40 @@ static void option_dependency(const po::variables_map& vm,
                               + "' requires option '" + required_option + "'.");
 }
 
-void options (int argc, char **argv)
+static bool want(const po::variables_map& vm,
+                 const char *opt)
+{
+  return vm.count(opt) && !vm[opt].defaulted();
+}
+
+std::ostream& operator<<(std::ostream& os, const ca_options &o)
+{
+  os << "no sound " << o.no_sound
+     << "player_name " << o.player_name
+     << "cube_tileset_dir " << o.cube_tileset_dir
+     << "port " << o.port
+     << "height " << o.height
+     << "host_name " << o.host_name
+     << "mode " << o.mode;
+  return os;
+}
+
+static std::string get_default_name() {
+#ifndef _WIN32
+  struct passwd *uinfo = getpwuid(getuid());
+  if (uinfo) {
+    return std::string(uinfo->pw_name);
+  } else
+    return std::string(GC_DEFAULT_PLAYER_NAME);
+#else
+  return std::string(GC_DEFAULT_PLAYER_NAME);
+#endif
+}
+
+void options (int argc, char **argv, ca_options &o)
 {
   using namespace std;
   using namespace po;
-
-  bool no_sound;
-  string player_name;
-  string cube_tileset_dir;
-  int port;
-  int height;
-  string host_name;
-  int mode;
 
   po::variables_map vm;
   po::options_description all;
@@ -156,11 +170,11 @@ void options (int argc, char **argv)
     graphical.add_options()
       ("low,l", "Use low quality graphics. For slower computers.")
       ("really,r", "Use the lowest quality graphics. For the slowest computers. Don't pick this unless you really need it. It looks awful.")
-      ("res", value<int>(&height)->default_value(-1),
+      ("res", value<int>(&(o.height))->default_value(-1),
         "Specify the height in pixels")
-      ("cube-tileset-dir", po::value<string>(&cube_tileset_dir),
+      ("cube-tileset-dir", po::value<string>(&(o.cube_tileset_dir)),
         "Directory where a cube tileset is stored")
-      ("no-sound", "Turn off sound output")
+      ("no-sound", value<bool>(&(o.no_sound)), "Turn off sound output")
       ;
 
     po::options_description ai("Computer opponent options");
@@ -172,7 +186,7 @@ void options (int argc, char **argv)
 
     po::options_description records("Score Recording Options");
     records.add_options()
-      ("name,n", po::value<string>(&player_name)->default_value(GC_DEFAULT_PLAYER_NAME))
+      ("name,n", po::value<string>(&(o.player_name))->default_value(get_default_name()))
       ;
 
     po::options_description extreme("Extreme mode");
@@ -187,19 +201,17 @@ void options (int argc, char **argv)
 
     po::options_description server("Server");
     server.add_options()
-      ("server,s", po::value<int>(&port), "Specify the server port")
+      ("server,s", po::value<int>(&(o.port)), "Specify the server port")
       ("wait,w", "Wait on a connection indefinitely")
       ;
 
     po::options_description client("Client");
     client.add_options()
-      ("client", po::value<string>(&host_name), "IP address to connect to")
-      ("port", po::value<int>(&port), "Port to connect to")
+      ("client", po::value<string>(&(o.host_name)), "IP address to connect to")
+      ("port", po::value<int>(&(o.port)), "Port to connect to")
       ;
 
     all.add(desc).add(graphical).add(ai).add(records).add(extreme).add(single_player).add(server).add(client);
-
-    cout << all << endl;
 
     store(parse_command_line(argc, argv, all), vm);
     notify(vm);
@@ -223,81 +235,74 @@ void options (int argc, char **argv)
     usage();
   }
 
-  if (vm.count("solo")) {
-    mode |= CM_SOLO;
-  } else if (vm.count("server")) {
-    mode |= CM_SERVER;
-  } else if (vm.count("low")) {
-    mode |= CM_LOW_GRAPHICS;
-  } else if (vm.count("really")) {
-    mode |= CM_LOW_GRAPHICS;
-    mode |= CM_REALLY_LOW_GRAPHICS;
-  } else if (vm.count("extreme")) {
-    mode |= CM_X;
-  } else if (vm.count("wait")) {
-    mode |= CM_NO_TIME_OUT;
-  } else if (vm.count("--hard")) {
-    mode |= CM_AI;
-    mode |= CM_AI_HARD;
-  } else if (vm.count("--easy")) {
-    mode |= CM_AI;
-    mode |= CM_AI_EASY;
-  } else if (vm.count("--medium")) {
-    mode |= CM_AI;
-    mode |= CM_AI_MEDIUM;
+  if (want(vm,"solo")) {
+    cout << "Adding solo" << endl;
+    o.mode |= CM_SOLO;
+  } else if (want(vm,"server")) {
+    cout << "Adding server" << endl;
+    o.mode |= CM_SERVER;
+  } else if (want(vm,"low")) {
+    cout << "Adding low" << endl;
+    o.mode |= CM_LOW_GRAPHICS;
+  } else if (want(vm,"really")) {
+    cout << "Adding really" << endl;
+    o.mode |= CM_LOW_GRAPHICS;
+    o.mode |= CM_REALLY_LOW_GRAPHICS;
+  } else if (want(vm,"extreme")) {
+    cout << "Adding extreme" << endl;
+    o.mode |= CM_X;
+  } else if (want(vm,"wait")) {
+    cout << "Adding wait" << endl;
+    o.mode |= CM_NO_TIME_OUT;
+  } else if (want(vm,"hard")) {
+    cout << "Adding hard" << endl;
+    o.mode |= CM_AI;
+    o.mode |= CM_AI_HARD;
+  } else if (want(vm,"easy")) {
+    cout << "Adding easy" << endl;
+    o.mode |= CM_AI;
+    o.mode |= CM_AI_EASY;
+  } else if (want(vm,"medium")) {
+    cout << "Adding medium" << endl;
+    o.mode |= CM_AI;
+    o.mode |= CM_AI_MEDIUM;
   }
 
-  if (!(mode & (CM_SERVER | CM_CLIENT | CM_SOLO)))
-    usage();
+  cout << o << endl;
 
-  if ((mode & CM_NO_TIME_OUT) && !(mode & CM_SERVER))
+  if (!(o.mode & (CM_SERVER | CM_CLIENT | CM_SOLO))) {
+    cout << "serv, cli, solo conflict" << endl;
     usage();
+  }
 
-  if ((mode & CM_REALLY_LOW_GRAPHICS) && !(mode & CM_LOW_GRAPHICS))
+  if ((o.mode & CM_NO_TIME_OUT) && !(o.mode & CM_SERVER)) {
+    cout << "notimeout on when no server" << endl;
     usage();
+  }
 
-  if ((mode & CM_AI && (mode & CM_X)))
+  if ((o.mode & CM_REALLY_LOW_GRAPHICS) && !(o.mode & CM_LOW_GRAPHICS)) {
+    cout << "really low without low" << endl;
     usage();
+  }
+
+  if ((o.mode & CM_AI && (o.mode & CM_X))) {
+    cout << "ai and x" << endl;
+    usage();
+  }
 }
 
-void run_crack_attack (
-    int mode, 
-    int port, 
-    char *host_name, 
-    char *player_name,
-    int width,
-    int height,
-    char *cube_tileset_dir) {
-  if (!player_name) {
-    std::cerr << "Player name not properly allocated" << std::endl;
-    return;
-  }
-
-  if (player_name[0] == '\0') {
-#ifndef _WIN32
-    struct passwd *uinfo = getpwuid(getuid());
-    if (uinfo) {
-      strncpy(player_name, uinfo->pw_name, GC_PLAYER_NAME_LENGTH);
-      for (int n = strlen(player_name); n--; )
-        player_name[n] = toupper(player_name[n]);
-    } else
-      strncpy(player_name, GC_DEFAULT_PLAYER_NAME, GC_PLAYER_NAME_LENGTH);
-#else
-    strncpy(player_name, GC_DEFAULT_PLAYER_NAME, GC_PLAYER_NAME_LENGTH);
-#endif
-  }
-
+void run_crack_attack (ca_options o) {
   std::cout << GC_MESSAGE << std::endl;
 
-  if (!(mode & CM_SOLO))
-    Communicator::initialize(mode, port, host_name, player_name);
+  if (!(o.mode & CM_SOLO))
+    Communicator::initialize(o.mode, o.port, o.host_name.c_str(), o.player_name.c_str());
   else
     Random::seed(Random::generateSeed());
 
-  MetaState::programStart(mode, player_name, cube_tileset_dir, width, height);
+  MetaState::programStart(o.mode, o.player_name.c_str(), o.cube_tileset_dir.c_str(), o.height, o.height);
 
 #ifdef AUDIO_ENABLED
-  if (!nosound) {
+  if (!o.no_sound) {
     Sound::initialize();
     Music::initialize();
     Music::play_prelude();
@@ -313,6 +318,7 @@ void run_crack_attack (
 #endif
 }
 
+/*
 void parseCommandLine ( int argc, char **argv, int &mode, int &port,
  char *host_name, char *player_name , int &height, int &width, 
  char *cube_tileset_dir )
@@ -414,6 +420,7 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
   if ((mode & CM_AI && (mode & CM_X)))
     usage();
 }
+*/
 
 #define MKDIR(x,y) (mkdir(x, y))
 #ifdef _WIN32

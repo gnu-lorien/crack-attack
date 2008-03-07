@@ -85,8 +85,8 @@ public:
 
 /* static */ class Communicator {
 public:
-  static void initialize ( int mode, int port, char host_name[256],
-   char player_name[GC_PLAYER_NAME_LENGTH] );
+  static void initialize ( int mode, int port, const char host_name[256],
+   const char player_name[GC_PLAYER_NAME_LENGTH] );
   static void gameStart (   );
   static void gameFinish (   );
   static void cleanUp (   );
@@ -324,7 +324,7 @@ private:
     }
   }
 
-  static void startupExchange ( char player_name[GC_PLAYER_NAME_LENGTH] );
+  static void startupExchange ( const char player_name[GC_PLAYER_NAME_LENGTH] );
 
   static ENetHost * host;
   static ENetPeer * peer;
