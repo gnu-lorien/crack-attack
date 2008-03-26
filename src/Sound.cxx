@@ -33,6 +33,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 
+using namespace std;
 
 typedef map <string,Mix_Chunk*> ChunkMap;
 vector<string> sounds;

@@ -31,6 +31,8 @@
 #include "Random.h"
 #include "Sound.h"
 
+using namespace std;
+
 Mix_Music *music    = NULL;
 int music_available = 0;
 int keep_playing   = 0;
