@@ -262,16 +262,27 @@ void parseCommandLine ( int argc, char **argv, int &mode, int &port,
     usage();
 }
 
-#define MKDIR(x,y) (mkdir(x, y))
 #ifdef _WIN32
 #  include <dir.h>
-#  undef MKDIR
-#  define MKDIR(x,y) (_mkdir(x))
 #endif
+
+static int MKDIR(const char *dir_name, mode_t mode)
+{
+#ifdef _WIN32
+  return _mkdir(dir_name);
+#else
+  return mkdir(dir_name, mode);
+#endif
+}
+
+static int MKDIR(const std::string &dir_name, mode_t mode)
+{
+  return MKDIR(dir_name.data(), mode);
+}
 
 void setupLocalDataDirectory (   )
 {
-  char local_directory[256];
+  std::string local_directory;
   TextureLoader::buildLocalDataDirectoryName(local_directory);
   if (!TextureLoader::fileExists(local_directory)
       && MKDIR(local_directory, 0777)

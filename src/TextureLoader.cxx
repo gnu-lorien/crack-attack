@@ -48,7 +48,7 @@ using namespace std;
 // the header of an uncompressed TGA file
 const GLubyte header_image[11] = { 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-GLubyte *TextureLoader::loadImageAlpha ( const char *file_name, int _height,
+GLubyte *TextureLoader::loadImageAlpha ( const std::string &file_name, int _height,
  int _width )
 {
   GLubyte *full_texture = loadImage(file_name, _height, _width);
@@ -68,7 +68,7 @@ GLubyte *TextureLoader::loadImageAlpha ( const char *file_name, int _height,
   return alpha_texture;
 }
 
-GLubyte *TextureLoader::loadImageNoAlpha ( const char *file_name,
+GLubyte *TextureLoader::loadImageNoAlpha ( const std::string &file_name,
     int _height, int _width )
 {
   GLubyte *full_texture = loadImage(file_name, _height, _width);
@@ -92,14 +92,19 @@ GLubyte *TextureLoader::loadImageNoAlpha ( const char *file_name,
   return no_alpha_texture;
 }
 
-GLubyte *TextureLoader::loadImage ( const char *file_name, int _height,
+GLubyte *TextureLoader::loadImage ( const std::string &file_name, int _height,
     int _width)
 {
-  SDL_Surface *img = IMG_Load(file_name);
+  SDL_Surface *img = IMG_Load(file_name.data());
 
   if (!img) {
-    cerr << "Error opening texture file '" << file_name << "'." << endl;
-    exit(1);
+    SDL_RWops *img_file_rwops = SDL_RWFromFile(file_name.data(), "r");
+    img = IMG_LoadTyped_RW(img_file_rwops, 1, "TGA");
+    if (!img) {
+      cerr << "Error opening texture file '" << file_name << "'. "
+       << IMG_GetError() << endl;
+      exit(1);
+    }
   }
 
   int width = img->w;
@@ -155,20 +160,20 @@ GLubyte *TextureLoader::loadImage ( const char *file_name, int _height,
   return texture;
 }
 
-void TextureLoader::createTGA ( const char *tga_file_name, GLubyte *texture,
- int _height, int _width, const char *tga_id )
+void TextureLoader::createTGA ( const std::string &tga_file_name, GLubyte *texture,
+ int _height, int _width, const std::string &tga_id )
 {
 #ifndef _WIN32
-  ofstream file(tga_file_name);
+  ofstream file(tga_file_name.data());
 #else
-  ofstream file(tga_file_name, ios::binary);
+  ofstream file(tga_file_name.data(), ios::binary);
 #endif
   if (file.fail()) {
     cerr << "Error creating texture file '" << tga_file_name << "'." << endl;
     exit(1);
   }
 
-  GLubyte tga_id_length = strlen(tga_id);
+  GLubyte tga_id_length = strlen(tga_id.data());
   file.write((char *) &tga_id_length, 1);
 
   file.write((char *) header_image, sizeof(header_image));
@@ -182,7 +187,7 @@ void TextureLoader::createTGA ( const char *tga_file_name, GLubyte *texture,
   header[5] = 40;
   file.write((char *) header, sizeof(header));
 
-  file.write(tga_id, tga_id_length);
+  file.write(tga_id.data(), tga_id_length);
 
   // tga is BGR
   for (int n = 0; n < _width * _height * 4; n += 4) {
@@ -200,7 +205,7 @@ void TextureLoader::createTGA ( const char *tga_file_name, GLubyte *texture,
   }
 }
 
-bool TextureLoader::fileExists ( const char *file_name )
+bool TextureLoader::fileExists ( const std::string &file_name )
 {
   struct stat file_stats;
 
@@ -213,10 +218,10 @@ bool TextureLoader::fileExists ( const char *file_name )
     return !stat(truncated_file_name, &file_stats);
   }
 #endif
-  return !stat(file_name, &file_stats);
+  return !stat(file_name.data(), &file_stats);
 }
 
-unsigned long TextureLoader::determineImageCheckSum ( const char *file_name,
+unsigned long TextureLoader::determineImageCheckSum ( const std::string &file_name,
  int _height, int _width )
 {
   GLubyte *texture = loadImage(file_name, _height, _width);
@@ -233,13 +238,13 @@ unsigned long TextureLoader::determineImageCheckSum ( const char *file_name,
   return check_sum;
 }
 
-void TextureLoader::determineImageSize ( const char *file_name, int &height,
+void TextureLoader::determineImageSize ( const std::string &file_name, int &height,
     int &width )
 {
-  SDL_Surface *img = IMG_Load(file_name);
+  SDL_Surface *img = IMG_Load(file_name.data());
 
   if (!img) {
-    cerr << "Error opening texture file '" << file_name << "'." << endl;
+    cerr << "Error opening determining image size '" << file_name << "'." << endl;
     exit(1);
   }
 

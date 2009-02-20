@@ -29,6 +29,8 @@
 
 #include "Game.h"
 
+#include <cstdlib>
+
 class Angle {
 public:
   float x;

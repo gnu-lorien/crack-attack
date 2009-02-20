@@ -65,7 +65,7 @@ void Displayer::rerankScoreRecord (   )
 
   for (int n = Score::player_rank; n--; ) {
     std::ostringstream rank_string;
-    rank_string << (GC_SCORE_REC_LENGTH - n) << std::ends;
+    rank_string << (GC_SCORE_REC_LENGTH - n);
 
     for (int i = DC_LETTER_TEX_LENGTH * DC_SCORE_REC_RANK_STRING_TEX_WIDTH * 4;
      i--; )
@@ -88,10 +88,10 @@ void Displayer::generateScoreRankTexture ( int rank, int score,
  const char *name, GLubyte *texture )
 {
   std::ostringstream score_string;
-  score_string << score << std::ends;
+  score_string << score;
 
   std::ostringstream rank_string;
-  rank_string << (GC_SCORE_REC_LENGTH - rank) << std::ends;
+  rank_string << (GC_SCORE_REC_LENGTH - rank);
 
   int score_width
    = String::stringWidth(score_string.str().data(), DC_SCORE_REC_TEX_LENGTH_S -
@@ -187,7 +187,7 @@ void Displayer::generateScoreRecord (   )
   }
 
   std::ostringstream score;
-  score << Score::record[GC_SCORE_REC_LENGTH - 1].score << std::ends;
+  score << Score::record[GC_SCORE_REC_LENGTH - 1].score;
 
   width = String::stringWidth(score.str().data(), DC_SCORE_TO_BEAT_TEX_LENGTH_S);
   subtexture = new GLubyte[DC_LETTER_TEX_LENGTH * width * 4];

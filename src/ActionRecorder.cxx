@@ -41,14 +41,14 @@ struct offset_subtract :
 
 void ActionRecorder::gameFinish (  )
 {
-  char file_name[256];
+  std::string file_name;
   if(actions.size()==0) return;
   int base_ts = actions[0].time_step;
   for(size_t i = 0; i < actions.size(); ++i) {
     actions[i].time_step -= base_ts;
   }
   TextureLoader::buildLocalDataFileName(GC_REPLAY_FILE_NAME, file_name);
-  std::ofstream mult(file_name);
+  std::ofstream mult(file_name.data());
   if(!mult.fail()) {
     size_t size = actions.size();
     for (size_t i=0; i < size; ++i) {

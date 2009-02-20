@@ -58,7 +58,7 @@ GLubyte *Displayer::garbage_texture_data[DC_NUMBER_USE_GARBAGE_TEX];
 
 void Displayer::generateGarbageExtras (   )
 {
-  char file_name[256];
+  std::string file_name;
 
   glGenTextures(1, &garbage_lightmap);
 
@@ -135,7 +135,7 @@ void Displayer::generateGarbageExtras (   )
 
       else if (n == 0 && !(MetaState::mode & CM_SOLO)
        && GarbageFlavorImage::network_texture) {
-        char net_tex_file_name[256];
+        std::string net_tex_file_name;
         TextureLoader::buildLocalDataFileName(GC_GARBAGE_NET_TEX_FILE_NAME,
          net_tex_file_name);
 

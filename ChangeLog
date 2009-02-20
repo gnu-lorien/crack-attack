@@ -1,3 +1,22 @@
+2009-02-20  Andrew Sayman  <andrew.sayman@gmail.com>
+
+	* src/TextureLoader.cxx: Attempt to load a garbage file as a
+	TGA before giving up
+	* src/Displayer.cxx, src/GarbageFlavorImage.cxx,
+	src/TextureLoader.h, src/obj_score_record.cxx: Remove problematic
+	string endings.These have the net result of making appending to
+	these strings impossible.
+	* src/ActionRecorder.cxx, src/Attack.cxx,
+	src/GarbageFlavorImage.cxx, src/GarbageFlavorImage.h,
+	src/Score.cxx, src/TextureLoader.cxx, src/TextureLoader.h,
+	src/gtk-gui/persist.cxx, src/obj_garbage.cxx: Use C++ strings
+	for texture name building calls
+	* src/gtk-gui/persist.cxx: Fix potential string overwrite if
+	GC_PLAYER_NAME_LENGTH changes
+	* src/TextureLoader.cxx: Disambiguate the text error messages
+	* src/Random.h, src/TextureLoader.h: Add necessary include files
+	* src/gtk-gui/Makefile.am: Fix warning about unused LDFLAGS
+
 2008-03-26  Andrew Sayman <lorien420@myrealbox.com>
 
 	* src/Sound.cxx, src/Music.cxx: Include namespace to fix compilation

@@ -48,12 +48,12 @@ void GarbageFlavorImage::initialize (   )
   associated_garbage_id = -1;
 
   // insure existence of default files
-  char file_name[256];
+  std::string file_name;
   for (int n = GC_NUMBER_STANDARD_GARBAGE_TEX; n--; ) {
     GarbageFlavorImage::buildGarbageTextureFileName(file_name, n);
 
     if (!TextureLoader::fileExists(file_name)) {
-      char original_file_name[256];
+      std::string original_file_name;
       GarbageFlavorImage::buildOriginalGarbageTextureFileName(
        original_file_name, n);
 
@@ -75,7 +75,7 @@ bool GarbageFlavorImage::personalGarbageFlavorImageExists (   )
  * a personal garbage flavor image to send.
  */
 {
-  char file_name[256];
+  std::string file_name;
   TextureLoader::buildLocalDataFileName(GC_GARBAGE_MY_TEX_FILE_NAME, file_name);
   return TextureLoader::fileExists(file_name);
 }
@@ -86,7 +86,7 @@ GLubyte *GarbageFlavorImage::loadPersonalGarbageFlavorImage (   )
  * image or by obj_garbage.cxx if in solo mode.
  */
 {
-  char file_name[256];
+  std::string file_name;
   TextureLoader::buildLocalDataFileName(GC_GARBAGE_MY_TEX_FILE_NAME, file_name);
 
   int width, height;
@@ -143,7 +143,7 @@ void GarbageFlavorImage::handleNetworkGarbageFlavorImage ( GLubyte *texture )
  * flavor image.
  */
 {
-  char net_tex_file_name[256];
+  std::string net_tex_file_name;
   TextureLoader::buildLocalDataFileName(GC_GARBAGE_NET_TEX_FILE_NAME,
    net_tex_file_name);
 
@@ -161,7 +161,7 @@ void GarbageFlavorImage::handleNetworkGarbageFlavorImage ( GLubyte *texture )
   // check to see if we already have a copy of it in our main list
   int n;
   int first_open_slot = -1;
-  char file_name[256];
+  std::string file_name;
   for (n = GC_GARBAGE_TEX_MAX_NUMBER; n--; ) {
     GarbageFlavorImage::buildGarbageTextureFileName(file_name, n);
 
@@ -181,26 +181,26 @@ void GarbageFlavorImage::handleNetworkGarbageFlavorImage ( GLubyte *texture )
   }
 }
 
-void GarbageFlavorImage::buildGarbageTextureFileName ( char file_name[256],
- const char *dir_name, int n )
+void GarbageFlavorImage::buildGarbageTextureFileName ( std::string &file_name,
+ const std::string &dir_name, int n )
 {
   std::ostringstream s;
   s << dir_name << GC_GARBAGE_TEX_FILE_NAME_BASE "_"
    << std::setw(GC_GARBAGE_TEX_NUMBER_DIGITS) << std::setfill('0') << n
-   << ".png" << std::ends;
-  strncpy(file_name, s.str().data(), 256);
+   << ".png";
+  file_name = s.str();
 }
 
-void GarbageFlavorImage::buildGarbageTextureFileName ( char file_name[256],
+void GarbageFlavorImage::buildGarbageTextureFileName ( std::string &file_name,
  int n )
 {
-  char base_name[256];
+  std::string base_name;
   buildGarbageTextureFileName(base_name, "", n);
   TextureLoader::buildLocalDataFileName(base_name, file_name);
 }
 
 void GarbageFlavorImage::buildOriginalGarbageTextureFileName (
- char file_name[256], int n )
+ std::string &file_name, int n )
 {
   buildGarbageTextureFileName(file_name, GC_DATA_DIRECTORY(""), n);
 }

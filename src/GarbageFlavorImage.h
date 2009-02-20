@@ -43,10 +43,10 @@ public:
   static GLubyte *loadPersonalGarbageFlavorImage (   );
   static void handleNetworkGarbageFlavorImage ( GLubyte *texture );
 
-  static void buildGarbageTextureFileName ( char file_name[256],
-   const char *dir_name, int n );
-  static void buildGarbageTextureFileName ( char file_name[256], int n );
-  static void buildOriginalGarbageTextureFileName ( char file_name[256],
+  static void buildGarbageTextureFileName ( std::string &file_name,
+   const std::string &dir_name, int n );
+  static void buildGarbageTextureFileName ( std::string &file_name, int n );
+  static void buildOriginalGarbageTextureFileName ( std::string &file_name,
    int n );
 
   static void requestGarbageFlavorImage_inline_split_ ( Garbage &garbage );

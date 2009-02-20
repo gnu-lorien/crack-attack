@@ -18,8 +18,6 @@ endif
 NET_INCLUDES = -I../enet/include
 NET_LIBS = ../enet/libenet.a
 
-crack_attack_LDFLAGS = $(NET_INCLUDES)
-
 INCLUDES = @PACKAGE_CFLAGS@ @DEBUG_INCLUDES@ ${PATH_INCLUDES}
 
 AM_LDFLAGS = ${all_libraries}

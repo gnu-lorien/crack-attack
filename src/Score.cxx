@@ -121,10 +121,10 @@ int Score::gameFinish (   )
 
 bool Score::readMultRecord (   )
 {
-  char file_name[256];
+  std::string file_name;
   char buffer[256];
   TextureLoader::buildLocalDataFileName(GC_MULT_FILE_NAME, file_name);
-  ifstream new_file(file_name);
+  ifstream new_file(file_name.data());
   if (new_file.fail()) return false;
 
   for (int n = GC_SCORE_MULT_LENGTH; n--; ) {
@@ -138,10 +138,10 @@ bool Score::readMultRecord (   )
 
 bool Score::readScoreRecord (   )
 {
-  char file_name[256];
+  std::string file_name;
   TextureLoader::buildLocalDataFileName((MetaState::mode & CM_X)
    ? GC_X_REC_FILE_NAME : GC_REC_FILE_NAME, file_name);
-  ifstream file(file_name);
+  ifstream file(file_name.data());
   if (file.fail()) return false;
 
   char buffer[256];
@@ -156,10 +156,10 @@ bool Score::readScoreRecord (   )
 
 void Score::writeScoreRecord (   )
 {
-  char file_name[256];
+  std::string file_name;
   TextureLoader::buildLocalDataFileName((MetaState::mode & CM_X)
    ? GC_X_REC_FILE_NAME : GC_REC_FILE_NAME, file_name);
-  ofstream file(file_name);
+  ofstream file(file_name.data());
   if (file.fail()) {
     cerr << "Error writing to score record file '" << file_name << "'." << endl;
     exit(1);
@@ -171,7 +171,7 @@ void Score::writeScoreRecord (   )
 
   // mult record
   TextureLoader::buildLocalDataFileName(GC_MULT_FILE_NAME, file_name);
-  ofstream mult(file_name);
+  ofstream mult(file_name.data());
   if (mult.fail()) {
     cerr << "Error writing to score record file '" << file_name << "'." << endl;
     exit(1);
