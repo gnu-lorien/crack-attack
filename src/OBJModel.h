@@ -32,7 +32,7 @@
 class OBJModel
 {
   public:
-    OBJModel() { };
+    OBJModel() { }
     OBJModel(const std::string& filename);
     virtual ~OBJModel();
 
