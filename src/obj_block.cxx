@@ -30,6 +30,7 @@
 
 #include "glext.h"
 
+#include <cstdio>
 #include <cstring>
 
 #include "Game.h"
@@ -56,11 +57,12 @@ void Displayer::generateBlockDisplayList (   )
         block_model = new OBJModel(GC_MODEL_DIRECTORY("crackattackcubehires.obj"));
         block_model_tex = new OBJModel(GC_MODEL_DIRECTORY("crackattackcubehires_tex.obj"));
       } else {
+        std::string base = GC_MODEL_DIRECTORY("crack_attack_bf_");
         const size_t n = 256;
-        char model_name[n];
-        snprintf(model_name, n, "crack_attack_bf_%03d.obj", i);
-        block_model = new OBJModel(GC_MODEL_DIRECTORY(model_name));
-        block_model_tex = new OBJModel(GC_MODEL_DIRECTORY(model_name));
+        char model_number[n];
+        snprintf(model_number, n, "%03d.obj", i);
+        block_model = new OBJModel(base + model_number);
+        block_model_tex = new OBJModel(base + model_number);
       }
     }
     block_list[i] = glGenLists(1);

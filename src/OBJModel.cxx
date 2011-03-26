@@ -23,6 +23,7 @@
 #include "TextureLoader.h"
 
 #include <GL/gl.h>
+#include <cstdio>
 #include <iostream>
 #include <list>
 
