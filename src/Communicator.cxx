@@ -148,7 +148,7 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
   case CM_SERVER: {
     address.host = ENET_HOST_ANY;
 
-    host = enet_host_create(&address, 1, 0, 0);
+    host = enet_host_create(&address, 1, NUM_CHANNELS, 0, 0);
     if (NULL == host) {
       cerr << "An error occured while trying to create the server" << endl;
       exit(1);
@@ -208,7 +208,7 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
 
   }
   case CM_CLIENT: {
-    host = enet_host_create(NULL, 1, 57600 / 8, 14400 / 8);
+    host = enet_host_create(NULL, 1, NUM_CHANNELS, 57600 / 8, 14400 / 8);
     if(NULL == host) {
       cerr << "Could not create ENet host." << endl;
       exit(1);
@@ -224,7 +224,7 @@ void Communicator::initialize ( int mode, int port, char host_name[256],
     }
 
 
-    peer = enet_host_connect(host, &address, NUM_CHANNELS);
+    peer = enet_host_connect(host, &address, NUM_CHANNELS, 0);
     if(NULL == peer) {
       cerr << "No available peers for initiating an ENet connection." << endl;
       exit(1);

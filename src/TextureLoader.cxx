@@ -99,7 +99,7 @@ GLubyte *TextureLoader::loadImage ( const std::string &file_name, int _height,
 
   if (!img) {
     SDL_RWops *img_file_rwops = SDL_RWFromFile(file_name.data(), "r");
-    img = IMG_LoadTyped_RW(img_file_rwops, 1, "TGA");
+    img = IMG_LoadTyped_RW(img_file_rwops, 1, const_cast<char*>("TGA"));
     if (!img) {
       cerr << "Error opening texture file '" << file_name << "'. "
        << IMG_GetError() << endl;
